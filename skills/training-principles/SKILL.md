@@ -1,6 +1,6 @@
 ---
 name: training-principles
-description: "General principles of strength training for hypertrophy: progressive overload, ego lifting, exercise economy, recovery, nutrition, calorie counting and fat loss. Use when: the user asks about programming, progression, training volume, nutrition, fat loss, calorie deficit, or the general approach to strength training."
+description: "General principles of strength training for hypertrophy: progressive overload, ego lifting, exercise economy, recovery, nutrition, protein, calorie counting, fat loss, technique and training to failure. Use when: the user asks about programming, progression, training volume, nutrition, protein, fat loss, technique, training to failure, calorie deficit, or the general approach to strength training."
 ---
 
 > **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none).
@@ -126,6 +126,7 @@ Whatever the goal (hypertrophy, endurance, performance), progression must follow
 - Start by training **regularly** (e.g. 3-4 stable sessions/week).
 - Then gradually increase volume (number of sets per muscle group).
 - Finally, introduce intensity (intensification techniques, drop sets, loads close to max).
+- For beginners, see the `training-programming` skill, "Beginners (source's view)".
 
 ## Intensification technique: isometric stretch at the end of a set
 
@@ -247,6 +248,22 @@ The **first rep and the last rep** of a set must look visually identical. If you
 - Reduce the load or the range of motion rather than lose stability.
 - Stability is the **first criterion** to preserve, before the number of reps or the load.
 
+## Technique mastery and training to failure (source's view)
+
+Source's view, expert opinion, no study cited.
+
+### Technique and body schema
+
+- Perfect technique is not needed to gain muscle, but impeccable technique is needed to keep gaining for years without injury (shoulder, knee, elbow).
+- Mastering technique relies on a good **body schema**: being able to picture your body in space (hip, knee, trunk position) to correct it.
+- It also lets you know when and why technique degrades during a set (see "Execution stability: quality criterion of a set").
+
+### Training to failure
+
+- Source's view: being able to go to real failure on any session, exercise or muscle group, whatever the other variables (short/long sets, short/long rests), is a requirement of an experienced lifter; few can.
+- Technique and body schema are what make training to failure safe (source).
+- See also "Execution stability: quality criterion of a set".
+
 ## Hypertrophy: multiple valid methods
 
 Building muscle is possible with very varied approaches:
@@ -297,6 +314,8 @@ Progress is a **slow** process measured in months and years, not weeks.
 - Commit to a training program and **follow it from start to finish**, even if it isn't perfect.
 - If the program didn't work → correct and modify it. But don't change midway without reason.
 - The patience developed in strength training (19 years of experience, per the source) is transferable to any other sport.
+- For the beginner protocol, see the `training-programming` skill, "Beginners (source's view)".
+- Consistency is the foundation: no technique, exercise or food compensates for not training regularly. Source's view: 3 regular sessions/week beat 5 occasional ones; "regular" does not mean 6-7 days/week but a steady rhythm that does not change.
 
 ### Avoid outside noise
 
@@ -394,6 +413,15 @@ Laboratory tests on common foods (chips, basmati rice, skyr, ready meals) show t
 - **A temporary tool, not a prison**: calorie counting is useful during a learning period to get familiar with the energy value of foods. The goal is to gradually detach from it and eat intuitively in an informed way.
 - **Don't reduce eating to calories**: food is nutrients (micro and macro), balance, and pleasure — not just fuel or bricks for muscle mass.
 
+## Nutrition: protein for muscle gain (source's view)
+
+Source's view, expert opinion; no study named.
+
+- Regular training plus enough protein every day → significant muscle gain, even with a non-optimized program.
+- Source's rule: bodyweight (kg) × 1.8 = g of protein per day; all sources count (animal, plant, powder).
+- Do it every day: e.g. with a 150 g/day target, missing a 40 g meal twice a week slows progress.
+- See also "Nutrition: fat loss" → "Macronutrients and habits" (same coach's example for cuts, framed there as personal experience only).
+
 ## Nutrition: fat loss
 
 ### Calorie deficit is the only driver
@@ -443,3 +471,4 @@ Laboratory tests on common foods (chips, basmati rice, skyr, ready meals) show t
 - Video: "Comment créer son programme de musculation (débutants)" (Nassim Sahili)
 - Video: "Les 5 niveaux de la PERTE DE GRAS expliqués (débutants à pro)" (Nassim Sahili) — "The 5 levels of fat loss explained (beginner to pro)" https://www.youtube.com/watch?v=Pi7j7C0aW1c
 - Video: "Pourquoi j'ai arrêté de faire ces 7 exercices (et ce que je fais à la place)" (Nassim Sahili) — "Why I stopped doing these 7 exercises (and what I do instead)" https://www.youtube.com/watch?v=ifMcCg9Gsac
+- Video: "À quel niveau de musculation êtes-vous vraiment ? (les 5 stades décryptés)" (Nassim Sahili) — "What training level are you really at? (the 5 stages explained)" https://www.youtube.com/watch?v=05WPpiDdC78

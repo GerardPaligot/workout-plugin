@@ -55,8 +55,11 @@ Each exercise has a resistance profile that creates peak tension at a different 
 
 - **High stretch tension**: resistance is greatest when the muscle is lengthened (e.g. lat pulldown for the lats).
 - **High contraction tension**: resistance is greatest when the muscle is shortened (e.g. seated row for the lats).
+- Other examples (source's view): hip thrust → high contraction tension; one-arm dumbbell row → contraction; stiff-leg deadlift → rather stretch; machine dips for the triceps → neither extreme (uses the length-tension relationship, see below).
 
 For complete development of a muscle, you need to cover both types of tension. This lets you train the muscle through its **full range of motion**.
+
+Source's view: contraction-tension exercises are usually easier to feel, so they suit a weak point until it has caught up enough to use stretch-tension exercises, which are harder to feel but probably more effective for muscle gain (see `shoulder-training`, `biceps-training`).
 
 ## Movement path and muscle fiber direction
 
@@ -107,6 +110,12 @@ The **resistance curve** describes at which point in the movement the resistance
 | Cable (raises) | Maximal in the middle of the movement → better synchronized with the force curve |
 | Variable-resistance machine | Designed to be hard at the right moments → potentially the best synchronization |
 | Resistance bands (added to a machine) | Increase resistance at the end of the movement → improve the resistance curve |
+
+- Source's view: the resistance curve is specific to each exercise and variant, while the force curve is specific to the muscle (biceps, pecs, hamstrings differ) and also varies between individuals (insertions, amount of tendon, muscle shape).
+
+Why the lateral raise differs by tool (lever arm, see "Lever arm"): with a dumbbell and the arm along the body, the dumbbell sits under the shoulder joint → ~zero lever arm and resistance; with the arm raised, the lever arm is largest → resistance maximal (rising curve). With a cable set at the lowest pulley, resistance is small at the bottom, small at the top and maximal in the middle where the cable is perpendicular to the arm → bell-shaped curve.
+
+Same arm path with different curves gives somewhat different effects on the muscle (source's view): program each variant on purpose; depending on the individual, one variant may suit better. Use the curve to judge whether an exercise fits your strengths and weaknesses and to pair complementary movements.
 
 ### Synchronizing the two curves
 
@@ -277,3 +286,4 @@ Titles translated from the French originals.
 - Video: "7 TIPS that helped me build BIG PECS" (Nassim Sahili)
 - Video: "6 KEY STEPS to (finally) feel your BACK working" (Nassim Sahili)
 - Video: "Pourquoi j'ai arrêté de faire ces 7 exercices (et ce que je fais à la place)" (Nassim Sahili) — "Why I stopped doing these 7 exercises (and what I do instead)" https://www.youtube.com/watch?v=ifMcCg9Gsac
+- Video: "À quel niveau de musculation êtes-vous vraiment ? (les 5 stades décryptés)" (Nassim Sahili) — "What training level are you really at? (the 5 stages explained)" https://www.youtube.com/watch?v=05WPpiDdC78

@@ -1,6 +1,6 @@
 ---
 name: training-programming
-description: "Methodology for building a strength-training program: macrocycle, mesocycles, microcycles, overreaching, supercompensation, deload. Use when: the user wants to build a program, organize their training cycles, plan their progression over several weeks/months, or understand periodization."
+description: "Methodology for building a strength-training program: macrocycle, mesocycles, microcycles, overreaching, supercompensation, deload. Use when: the user wants to build a program, organize their training cycles, plan their progression over several weeks/months, understand periodization, or asks about beginners, program variables or personalization."
 ---
 
 > **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none).
@@ -154,6 +154,16 @@ If all 3 goals are targeted over a 6-month macrocycle, a coherent order is:
 
 This order is not mandatory but lets you finish the macrocycle in your best form.
 
+## Beginners (source's view)
+
+Source's view (expert opinion): a beginner does not need to think about exercises, sets or reps; regular training is the only requirement.
+
+- Work the whole body every session with basic exercises: 6 exercises per session, 10 minutes per exercise → sessions of about 1 hour.
+- Alternate two different full-body sessions, 3 times per week, for at least 3 months (source: muscle gained, ready for the next level).
+- No sets/reps/rest prescription: choose a load that challenges slightly, keep the same load, do as many reps as possible during the 10 minutes, rest when needed.
+- Stage before learning the program variables (sets, reps, tempo, rest): a beginner need not ask about exercises, sets or reps; at the next level you learn the variables (see "Program variables and personalization").
+- See `training-principles`, "Execution stability: quality criterion of a set" and "Order of progression: frequency → volume → intensity".
+
 ## Cross-cutting rules
 
 ### Every mesocycle ends with overreaching
@@ -171,6 +181,12 @@ Trying to gain muscle, lose fat and gain strength **at the same time** in the sa
 ### Vary the rep ranges
 
 Muscle gain is possible with sets of 5 reps as well as sets of 20 reps. Since you don't know a priori what works best for you, the microcycles let you **explore different ranges** within a single mesocycle.
+
+### Program variables and personalization (source's view)
+
+- Know the variables of a program and how to use them: exercise, sets, reps, tempo, rest, execution (execution is a variable too); see the `lifting-biomechanics` skill (tempo) and `training-principles`, "Execution stability: quality criterion of a set".
+- Source's view: an evolving, personalized program adapts volume and exercise choice to strengths, weaknesses and preferences, stays coherent with the goal, and is organized in specific cycles that provoke specific changes (so planned mesocycle changes are not variety-driven).
+- Following a program without knowing why, and changing it every 2-3 months just for variety, is a sign of not yet being experienced and may explain slow progress (see also `training-principles`, "Patience and commitment to your program").
 
 ## Summary of the typical structure
 
@@ -197,3 +213,4 @@ MACROCYCLE (6 months)
 
 - Video: "Comment créer son programme de musculation (débutants)" (Nassim Sahili) — "How to create your strength-training program (beginners)"
 - Video: "Les 5 niveaux de la PERTE DE GRAS expliqués (débutants à pro)" (Nassim Sahili) — "The 5 levels of fat loss explained (beginner to pro)" https://www.youtube.com/watch?v=Pi7j7C0aW1c
+- Video: "À quel niveau de musculation êtes-vous vraiment ? (les 5 stades décryptés)" (Nassim Sahili) — "What training level are you really at? (the 5 stages explained)" https://www.youtube.com/watch?v=05WPpiDdC78
