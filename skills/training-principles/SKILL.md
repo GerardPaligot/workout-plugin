@@ -1,6 +1,6 @@
 ---
 name: training-principles
-description: "General principles of strength training for hypertrophy: progressive overload, ego lifting, exercise economy, recovery, nutrition, protein, calorie counting, fat loss, technique and training to failure. Use when: the user asks about programming, progression, training volume, nutrition, protein, fat loss, technique, training to failure, calorie deficit, or the general approach to strength training."
+description: "General principles of strength training for hypertrophy: progressive overload, ego lifting, exercise economy, recovery, nutrition, protein, calorie counting, fat loss, technique and training to failure. Use when: the user asks about programming, progression, training volume, weekly volume, sets per muscle, nutrition, protein, fat loss, technique, training to failure, calorie deficit, or the general approach to strength training."
 ---
 
 > **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none).
@@ -54,6 +54,7 @@ Multiplying exercises for the same muscle does not mean better results.
   - Negatively impacts **recovery**.
   - Prevents training as **frequently** as possible.
   - **Limits** overall progress.
+- See "Weekly volume per muscle" for the junk-volume definition.
 
 ### Exercise selection: criteria
 
@@ -127,6 +128,22 @@ Whatever the goal (hypertrophy, endurance, performance), progression must follow
 - Then gradually increase volume (number of sets per muscle group).
 - Finally, introduce intensity (intensification techniques, drop sets, loads close to max).
 - For beginners, see the `training-programming` skill, "Beginners (source's view)".
+
+## Weekly volume per muscle (source's view + studies as reported)
+
+Volume = working sets per muscle per week.
+
+- Study as reported by source (unverified; a 2022 systematic review, not named): low < 12 sets/muscle/week, medium 12-20, high > 20. No hypertrophy difference between medium and high; low consistently inferior.
+- Caveat (source): some studies counted the same sets for several muscles (e.g. 4 sets of bench press counted for pecs AND triceps; same for rows and biceps), which inflates volume on some muscles.
+- Caveat (source): a July 2026 trial found only a small quadriceps difference favouring high volume, none on hamstrings; few participants, suboptimal exercises, and its "high volume" (3 sessions/week, 5-6 exercises, ~3 sets each) is not representative of real high volume.
+- Source's view: all scientific sources agree that returns diminish as volume rises: first roughly linear, then smaller gains, then a decline with abuse (hard to reach). The sets matching each point of the curve are unknown.
+- Source's view, **junk volume**: technically poor reps that don't stimulate the muscle, and sets not intense enough or in excess. It wrecks recovery (see "Exercise economy").
+- Source's view: the real question is less the number of sets than recovery from them. Yates' argument (low volume): if sets are hard enough, 20-30 effective sets per session can't be recovered from; the source partly agrees.
+- Source's view: the volume a lifter can use is limited by sleep, nutrition and stress; if these aren't in order, the useful maximum is probably not high. If they are, it is a pity not to test more volume.
+- Source's view (anecdote, ~16 years of coaching): never saw high volume fail when recovery and the other variables were right; failures came from insufficient intensity, poor exercise choice, unsuited format or neglected recovery.
+- Source's view: bodybuilding legends' volume (Arnold, Cutler) and the low-volume theories of Yates are confounded by steroids, which allowed 2 h sessions 6 days/week without worrying about recovery. Their recommendations are hard to follow.
+- Source's view (tension, flagged, not resolved): this source asks for maximum effort on every set before adding sets, whereas "Order of progression: frequency → volume → intensity" puts intensity last. Likely effort level vs load/techniques, but the sequencing reads as opposed. Second tension (flagged, not resolved): "Order of progression" warns against increasing volume too early without enough frequency; the source's protocol ramps weekly sets without stating a frequency condition.
+- For weekly progression of volume within a cycle, see `training-programming`, "Weekly sets per muscle: progression (source's view)". For triceps counting, see `triceps-training`.
 
 ## Intensification technique: isometric stretch at the end of a set
 
@@ -472,3 +489,4 @@ Source's view, expert opinion; no study named.
 - Video: "Les 5 niveaux de la PERTE DE GRAS expliqués (débutants à pro)" (Nassim Sahili) — "The 5 levels of fat loss explained (beginner to pro)" https://www.youtube.com/watch?v=Pi7j7C0aW1c
 - Video: "Pourquoi j'ai arrêté de faire ces 7 exercices (et ce que je fais à la place)" (Nassim Sahili) — "Why I stopped doing these 7 exercises (and what I do instead)" https://www.youtube.com/watch?v=ifMcCg9Gsac
 - Video: "À quel niveau de musculation êtes-vous vraiment ? (les 5 stades décryptés)" (Nassim Sahili) — "What training level are you really at? (the 5 stages explained)" https://www.youtube.com/watch?v=05WPpiDdC78
+- Video: "Pourquoi tout le monde se met à faire 2 séries en MUSCULATION?" (Nassim Sahili) — "Why is everyone switching to 2 sets in strength training?" https://www.youtube.com/watch?v=1OsDiVvQT7k

@@ -91,9 +91,12 @@ For complete stimulation, an exercise that combines these two actions will be su
 
 With these 3 exercises: complete work from stretch to contraction, good stability, progressive overload possible, good resistance curve.
 
+Source's view: in a 2022 systematic review (as reported, unverified), an exception: triceps more developed at high volume (> 20 sets/week). Caveat: some studies counted pressing sets (e.g. 4 sets of bench press) for both pecs and triceps, which inflates triceps volume. Count triceps sets with this in mind; see `training-principles`, "Weekly volume per muscle".
+
 ## Sources
 
 Title translated from the French original.
 
 - Video: "TRICEPS EXERCISES: from BEST to WORST" (Nassim Sahili)
 - Video: "Pourquoi j'ai arrêté de faire ces 7 exercices (et ce que je fais à la place)" (Nassim Sahili) — "Why I stopped doing these 7 exercises (and what I do instead)" https://www.youtube.com/watch?v=ifMcCg9Gsac
+- Video: "Pourquoi tout le monde se met à faire 2 séries en MUSCULATION?" (Nassim Sahili) — "Why is everyone switching to 2 sets in strength training?" https://www.youtube.com/watch?v=1OsDiVvQT7k

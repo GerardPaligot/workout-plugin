@@ -232,6 +232,7 @@ The exercise does **not automatically** dictate which fibers are loaded — it i
 - Cover both types of tension (stretch + contraction) and the different zones (clavicular, sternal, costal).
 - Avoid **redundant** exercises in the same session (e.g. barbell bench + dumbbell bench + machine bench = 3× the same stretch tension on the same fibers → useless volume).
 - Short rest times (~1 min 30 s-2 min) combined with a controlled tempo → high pump and stimulation even with moderate loads.
+- See `training-principles`, "Weekly volume per muscle".
 
 ## Minimal chest program
 

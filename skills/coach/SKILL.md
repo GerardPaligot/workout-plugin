@@ -20,7 +20,7 @@ Otherwise read the active program's `status.yaml` if the question is about the p
 |-------|----------|
 | Execution, line of force, lever arm | the `lifting-biomechanics` skill |
 | Exercise choice for a muscle | the matching `<muscle>-training` skill + `profile.equipment` |
-| Overload, volume, frequency, ego lifting | the `training-principles` skill |
+| Overload, volume, frequency, ego lifting | the `training-principles` skill / the `training-programming` skill |
 | Nutrition, calories, protein, fat loss, cardio | the `training-principles` skill |
 | Technique, training to failure, beginners, program variables | the `training-principles` skill / the `training-programming` skill |
 | Cycles, mesocycles, microcycles | the `training-programming` skill |
