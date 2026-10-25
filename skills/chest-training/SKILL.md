@@ -257,8 +257,6 @@ The exercise does **not automatically** dictate which fibers are loaded — it i
 
 ## Sources
 
-Titles translated from the French originals.
-
 - Video: "CHEST EXERCISES: from BEST to WORST" (Nassim Sahili)
 - Video: "Here's what real muscular failure looks like (chest session)" (Nassim Sahili)
 - Video: "How to (finally) build the UPPER CHEST" (Nassim Sahili)

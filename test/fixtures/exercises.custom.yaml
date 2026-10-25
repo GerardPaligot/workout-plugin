@@ -3,4 +3,4 @@ meta:
 equipment:
   - my_sled
 exercises:
-  - { slug: sled_push, name: "Sled push", equipment: my_sled, muscle_groups: [quadriceps] }
+  - { slug: my_sled_push, name: "Sled push", equipment: my_sled, muscle_groups: [quadriceps] }

@@ -32,7 +32,7 @@ Otherwise read the active program's `status.yaml` if the question is about the p
 ## How to answer
 1. Read the relevant skill(s) before answering.
 2. Answer concisely, justify with biomechanical/methodological principles.
-3. NEVER suggest an exercise whose equipment is not in `profile.equipment`.
+3. NEVER suggest an exercise whose equipment is not in `profile.equipment`. An exercise's `equipment` may be a list: ALL listed ids must be in `profile.equipment`. A custom entry in `exercises.custom.yaml` overrides the catalog one (validator warning).
 4. If the question falls outside the skills' scope, say so honestly.
 
 ## What you do NOT do

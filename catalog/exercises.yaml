@@ -1,6 +1,7 @@
 meta:
   schema_version: 1
 equipment:
+  # machines and cable
   - chest_press
   - pec_deck
   - shoulder_press
@@ -10,26 +11,42 @@ equipment:
   - leg_extension
   - arm_curl
   - dual_adjustable_pulley
-  - bench
   - captains_chair
-  # free weights (declared only: no exercises yet; a gym picks what it has in onboarding)
+  - smith_machine
+  - leg_curl_machine
+  - hack_squat_machine
+  - calf_raise_machine
+  - hip_abduction_adduction_machine
+  - assisted_pullup_machine
+  # free weights
   - barbell
   - ez_bar
   - dumbbells
   - kettlebell
   - weight_plates
+  - trap_bar
+  - landmine
   # accessories
+  - bench
   - adjustable_bench
   - flat_bench
   - squat_rack
   - pull_up_bar
   - dip_station
   - resistance_bands
+  - suspension_trainer
+  - stability_ball
+  - medicine_ball
+  - sled
+  - hyperextension_bench
+  - preacher_bench
   # cardio
   - bike
   - treadmill
   - elliptical
   - rowing_machine
+  - ski_erg
+  - stair_climber
 exercises:
   - { slug: chest_press_machine, name: "Chest Press machine", equipment: chest_press, muscle_groups: [chest] }
   - { slug: lat_pulldown, name: "Lat pulldown (Lat Machine)", equipment: lat_machine, muscle_groups: [back] }
@@ -37,7 +54,7 @@ exercises:
   - { slug: shoulder_press_machine, name: "Shoulder press machine", equipment: shoulder_press, muscle_groups: [shoulders] }
   - { slug: cable_biceps_curl, name: "Cable biceps curl", equipment: dual_adjustable_pulley, muscle_groups: [biceps] }
   - { slug: cable_triceps_pushdown, name: "Cable triceps pushdown", equipment: dual_adjustable_pulley, muscle_groups: [triceps] }
-  - { slug: dumbbell_squat, name: "Squat (dumbbell)", equipment: dumbbells, muscle_groups: [quadriceps, glutes] }  # legacy — not available at the original gym, referenced by programs/archives/2026-01_upper-lower-recomposition/
+  - { slug: dumbbell_squat, name: "Squat (dumbbell)", equipment: dumbbells, muscle_groups: [quadriceps, glutes] }
   - { slug: cable_squat, name: "Cable squat", equipment: dual_adjustable_pulley, muscle_groups: [quadriceps, glutes] }
   - { slug: leg_press, name: "Leg press", equipment: leg_press, muscle_groups: [quadriceps, glutes] }
   - { slug: single_leg_press, name: "Single-leg press", equipment: leg_press, muscle_groups: [quadriceps, glutes] }
@@ -51,3 +68,142 @@ exercises:
   - { slug: pallof_press, name: "Pallof press (anti-rotation)", equipment: dual_adjustable_pulley, muscle_groups: [abs, core] }
   - { slug: hanging_knee_raise, name: "Hanging knee raise", equipment: captains_chair, muscle_groups: [abs] }
   - { slug: bike_sprints, name: "Bike sprints (15 s)", equipment: bike, muscle_groups: [abs, core] }
+  # quadriceps / squat patterns
+  - { slug: hack_squat, name: "Hack squat (machine)", equipment: hack_squat_machine, muscle_groups: [quadriceps, glutes], type: strength }
+  - { slug: barbell_back_squat, name: "Back squat (barbell)", equipment: [barbell, squat_rack], muscle_groups: [quadriceps, glutes], type: strength }
+  - { slug: barbell_front_squat, name: "Front squat (barbell)", equipment: [barbell, squat_rack], muscle_groups: [quadriceps, glutes], type: strength }
+  - { slug: zercher_squat, name: "Zercher squat", equipment: [barbell, squat_rack], muscle_groups: [quadriceps, glutes], type: strength }
+  - { slug: smith_machine_squat, name: "Squat (Smith machine)", equipment: smith_machine, muscle_groups: [quadriceps, glutes], type: strength }
+  - { slug: goblet_squat, name: "Goblet squat (kettlebell)", equipment: kettlebell, muscle_groups: [quadriceps, glutes], type: strength }
+  - { slug: walking_lunge, name: "Walking lunge (dumbbells)", equipment: dumbbells, muscle_groups: [quadriceps, glutes], type: strength }
+  - { slug: dumbbell_reverse_lunge, name: "Reverse lunge (dumbbells)", equipment: dumbbells, muscle_groups: [quadriceps, glutes], type: strength }
+  - { slug: bulgarian_split_squat, name: "Bulgarian split squat (dumbbells)", equipment: [dumbbells, flat_bench], muscle_groups: [quadriceps, glutes], type: strength }
+  - { slug: dumbbell_step_up, name: "Step-up (dumbbells)", equipment: [dumbbells, flat_bench], muscle_groups: [quadriceps, glutes], type: strength }
+  - { slug: sissy_squat, name: "Sissy squat", equipment: null, muscle_groups: [quadriceps], type: calisthenics }
+  - { slug: bodyweight_squat, name: "Bodyweight squat", equipment: null, muscle_groups: [quadriceps, glutes], type: calisthenics }
+  - { slug: sled_push, name: "Sled push", equipment: sled, muscle_groups: [quadriceps, glutes], type: strength }
+  - { slug: sled_backward_drag, name: "Sled backward drag", equipment: sled, muscle_groups: [quadriceps, hamstrings], type: strength }
+  # hamstrings / glutes
+  - { slug: lying_leg_curl, name: "Lying leg curl", equipment: leg_curl_machine, muscle_groups: [hamstrings], type: strength }
+  - { slug: seated_leg_curl, name: "Seated leg curl", equipment: leg_curl_machine, muscle_groups: [hamstrings], type: strength }
+  - { slug: romanian_deadlift, name: "Romanian deadlift (barbell)", equipment: barbell, muscle_groups: [hamstrings, glutes], type: strength }
+  - { slug: dumbbell_romanian_deadlift, name: "Romanian deadlift (dumbbells)", equipment: dumbbells, muscle_groups: [hamstrings, glutes], type: strength }
+  - { slug: single_leg_romanian_deadlift, name: "Single-leg Romanian deadlift (dumbbell)", equipment: dumbbells, muscle_groups: [hamstrings, glutes], type: strength }
+  - { slug: stiff_leg_deadlift, name: "Stiff-leg deadlift (barbell)", equipment: barbell, muscle_groups: [hamstrings, glutes], type: strength }
+  - { slug: barbell_deadlift, name: "Deadlift (barbell)", equipment: barbell, muscle_groups: [hamstrings, glutes, back], type: strength }
+  - { slug: sumo_deadlift, name: "Sumo deadlift (barbell)", equipment: barbell, muscle_groups: [glutes, hamstrings, adductors], type: strength }
+  - { slug: trap_bar_deadlift, name: "Trap bar deadlift", equipment: trap_bar, muscle_groups: [glutes, quadriceps, hamstrings], type: strength }
+  - { slug: good_morning, name: "Good morning (barbell)", equipment: [barbell, squat_rack], muscle_groups: [hamstrings, glutes, back], type: strength }
+  - { slug: barbell_hip_thrust, name: "Hip thrust (barbell)", equipment: [barbell, flat_bench], muscle_groups: [glutes, hamstrings], type: strength }
+  - { slug: glute_bridge, name: "Glute bridge", equipment: null, muscle_groups: [glutes, hamstrings], type: calisthenics }
+  - { slug: single_leg_glute_bridge, name: "Single-leg glute bridge", equipment: null, muscle_groups: [glutes, hamstrings], type: calisthenics }
+  - { slug: nordic_hamstring_curl, name: "Nordic hamstring curl", equipment: null, muscle_groups: [hamstrings], type: calisthenics }
+  - { slug: kettlebell_swing, name: "Kettlebell swing", equipment: kettlebell, muscle_groups: [glutes, hamstrings], type: plyometric }
+  - { slug: cable_pull_through, name: "Cable pull-through", equipment: dual_adjustable_pulley, muscle_groups: [glutes, hamstrings], type: strength }
+  - { slug: cable_glute_kickback, name: "Cable glute kickback", equipment: dual_adjustable_pulley, muscle_groups: [glutes], type: strength }
+  - { slug: cable_hip_abduction, name: "Cable hip abduction", equipment: dual_adjustable_pulley, muscle_groups: [glutes], type: strength }
+  - { slug: hip_abduction_machine, name: "Hip abduction machine", equipment: hip_abduction_adduction_machine, muscle_groups: [glutes], type: strength }
+  - { slug: hip_adduction_machine, name: "Hip adduction machine", equipment: hip_abduction_adduction_machine, muscle_groups: [adductors], type: strength }
+  - { slug: banded_lateral_walk, name: "Banded lateral walk", equipment: resistance_bands, muscle_groups: [glutes], type: strength }
+  - { slug: stability_ball_leg_curl, name: "Stability ball leg curl", equipment: stability_ball, muscle_groups: [hamstrings, glutes], type: strength }
+  - { slug: suspension_hamstring_curl, name: "Suspension hamstring curl", equipment: suspension_trainer, muscle_groups: [hamstrings, glutes], type: calisthenics }
+  - { slug: hyperextension, name: "Hyperextension (back extension)", equipment: hyperextension_bench, muscle_groups: [back, glutes, hamstrings], type: strength }
+  - { slug: smith_machine_hip_thrust, name: "Hip thrust (Smith machine)", equipment: [smith_machine, flat_bench], muscle_groups: [glutes, hamstrings], type: strength }
+  # calves
+  - { slug: standing_calf_raise_machine, name: "Standing calf raise (machine)", equipment: calf_raise_machine, muscle_groups: [calves], type: strength }
+  - { slug: seated_calf_raise_machine, name: "Seated calf raise (machine)", equipment: calf_raise_machine, muscle_groups: [calves], type: strength }
+  - { slug: smith_machine_calf_raise, name: "Calf raise (Smith machine)", equipment: smith_machine, muscle_groups: [calves], type: strength }
+  - { slug: leg_press_calf_raise, name: "Calf raise (leg press)", equipment: leg_press, muscle_groups: [calves], type: strength }
+  - { slug: single_leg_dumbbell_calf_raise, name: "Single-leg calf raise (dumbbell)", equipment: dumbbells, muscle_groups: [calves], type: strength }
+  - { slug: bodyweight_calf_raise, name: "Bodyweight calf raise", equipment: null, muscle_groups: [calves], type: calisthenics }
+  - { slug: jump_squat, name: "Jump squat", equipment: null, muscle_groups: [quadriceps, glutes, calves], type: plyometric }
+  # chest
+  - { slug: barbell_bench_press, name: "Bench press (barbell)", equipment: [barbell, flat_bench], muscle_groups: [chest, triceps, shoulders], type: strength }
+  - { slug: incline_barbell_press, name: "Incline press (barbell)", equipment: [barbell, adjustable_bench], muscle_groups: [chest, shoulders], type: strength }
+  - { slug: dumbbell_bench_press, name: "Bench press (dumbbells)", equipment: [dumbbells, flat_bench], muscle_groups: [chest, triceps], type: strength }
+  - { slug: incline_dumbbell_press, name: "Semi-incline press (dumbbells)", equipment: [dumbbells, adjustable_bench], muscle_groups: [chest, shoulders], type: strength }
+  - { slug: dumbbell_fly, name: "Dumbbell fly", equipment: [dumbbells, flat_bench], muscle_groups: [chest], type: strength }
+  - { slug: cable_crossover, name: "Cable crossover", equipment: dual_adjustable_pulley, muscle_groups: [chest], type: strength }
+  - { slug: pec_deck_fly, name: "Pec deck fly", equipment: pec_deck, muscle_groups: [chest], type: strength }
+  - { slug: push_up, name: "Push-up", equipment: null, muscle_groups: [chest, triceps, shoulders], type: calisthenics }
+  - { slug: smith_machine_bench_press, name: "Bench press (Smith machine)", equipment: [smith_machine, flat_bench], muscle_groups: [chest, triceps], type: strength }
+  - { slug: dip_station_dips, name: "Dips (dip station)", equipment: dip_station, muscle_groups: [chest, triceps], type: strength }
+  - { slug: band_chest_press, name: "Band chest press", equipment: resistance_bands, muscle_groups: [chest, triceps], type: strength }
+  - { slug: suspension_chest_press, name: "Suspension chest press", equipment: suspension_trainer, muscle_groups: [chest, triceps], type: calisthenics }
+  - { slug: medicine_ball_chest_pass, name: "Medicine ball chest pass", equipment: medicine_ball, muscle_groups: [chest, triceps], type: plyometric }
+  # back / traps
+  - { slug: pull_up, name: "Pull-up (pronated grip)", equipment: pull_up_bar, muscle_groups: [back, lats, biceps], type: calisthenics }
+  - { slug: chin_up, name: "Chin-up (supinated grip)", equipment: pull_up_bar, muscle_groups: [back, lats, biceps], type: calisthenics }
+  - { slug: assisted_pull_up, name: "Assisted pull-up (machine)", equipment: assisted_pullup_machine, muscle_groups: [back, lats, biceps], type: strength }
+  - { slug: suspension_row, name: "Suspension row", equipment: suspension_trainer, muscle_groups: [back, biceps], type: calisthenics }
+  - { slug: barbell_bent_over_row, name: "Bent-over row (barbell)", equipment: barbell, muscle_groups: [back, rear_delts, biceps], type: strength }
+  - { slug: one_arm_dumbbell_row, name: "One-arm row (dumbbell)", equipment: [dumbbells, flat_bench], muscle_groups: [back, lats], type: strength }
+  - { slug: landmine_row, name: "Landmine row (T-bar)", equipment: landmine, muscle_groups: [back], type: strength }
+  - { slug: single_arm_cable_row, name: "Single-arm cable row", equipment: dual_adjustable_pulley, muscle_groups: [back, lats], type: strength }
+  - { slug: straight_arm_pulldown, name: "Straight-arm cable pulldown", equipment: dual_adjustable_pulley, muscle_groups: [lats], type: strength }
+  - { slug: single_arm_cable_lat_pull, name: "Single-arm cable lat pull-in", equipment: dual_adjustable_pulley, muscle_groups: [back, lats], type: strength }
+  - { slug: supinated_lat_pulldown, name: "Supinated-grip lat pulldown", equipment: lat_machine, muscle_groups: [back, lats, biceps], type: strength }
+  - { slug: cable_pullover, name: "Cable pullover", equipment: dual_adjustable_pulley, muscle_groups: [back, lats], type: strength }
+  - { slug: barbell_shrug, name: "Shrug (barbell)", equipment: barbell, muscle_groups: [traps], type: strength }
+  - { slug: dumbbell_shrug, name: "Shrug (dumbbells)", equipment: dumbbells, muscle_groups: [traps], type: strength }
+  - { slug: trap_bar_shrug, name: "Shrug (trap bar)", equipment: trap_bar, muscle_groups: [traps], type: strength }
+  - { slug: band_pull_apart, name: "Band pull-apart", equipment: resistance_bands, muscle_groups: [rear_delts, back], type: strength }
+  # shoulders / rear delts
+  - { slug: overhead_press, name: "Overhead press (barbell)", equipment: barbell, muscle_groups: [shoulders, triceps], type: strength }
+  - { slug: dumbbell_shoulder_press, name: "Shoulder press (dumbbells)", equipment: dumbbells, muscle_groups: [shoulders, triceps], type: strength }
+  - { slug: smith_machine_shoulder_press, name: "Shoulder press (Smith machine)", equipment: smith_machine, muscle_groups: [shoulders, triceps], type: strength }
+  - { slug: landmine_press, name: "Landmine press", equipment: landmine, muscle_groups: [shoulders, chest], type: strength }
+  - { slug: kettlebell_clean_and_press, name: "Kettlebell clean and press", equipment: kettlebell, muscle_groups: [shoulders, triceps, glutes], type: strength }
+  - { slug: pike_push_up, name: "Pike push-up", equipment: null, muscle_groups: [shoulders, triceps], type: calisthenics }
+  - { slug: dumbbell_lateral_raise, name: "Lateral raise (dumbbells)", equipment: dumbbells, muscle_groups: [shoulders], type: strength }
+  - { slug: cable_lateral_raise, name: "Cable lateral raise", equipment: dual_adjustable_pulley, muscle_groups: [shoulders], type: strength }
+  - { slug: plate_front_raise, name: "Front raise (weight plate)", equipment: weight_plates, muscle_groups: [shoulders], type: strength }
+  - { slug: reverse_pec_deck, name: "Reverse pec deck (rear delt fly)", equipment: pec_deck, muscle_groups: [rear_delts], type: strength }
+  - { slug: chest_supported_reverse_fly, name: "Chest-supported reverse fly (dumbbells)", equipment: [dumbbells, adjustable_bench], muscle_groups: [rear_delts], type: strength }
+  - { slug: cable_reverse_fly, name: "Cable reverse fly (high cable)", equipment: dual_adjustable_pulley, muscle_groups: [rear_delts], type: strength }
+  - { slug: cable_seated_row_rear_delt, name: "Cable seated row (rear delt focus)", equipment: low_row, muscle_groups: [rear_delts, back], type: strength }
+  - { slug: face_pull, name: "Face pull (cable)", equipment: dual_adjustable_pulley, muscle_groups: [rear_delts, traps], type: strength }
+  - { slug: band_face_pull, name: "Band face pull", equipment: resistance_bands, muscle_groups: [rear_delts], type: strength }
+  # biceps / forearms
+  - { slug: incline_dumbbell_curl, name: "Incline curl (dumbbells)", equipment: [dumbbells, adjustable_bench], muscle_groups: [biceps], type: strength }
+  - { slug: dumbbell_curl, name: "Biceps curl (dumbbells)", equipment: dumbbells, muscle_groups: [biceps], type: strength }
+  - { slug: hammer_curl, name: "Hammer curl (dumbbells)", equipment: dumbbells, muscle_groups: [biceps, forearms], type: strength }
+  - { slug: ez_bar_curl, name: "EZ-bar curl", equipment: ez_bar, muscle_groups: [biceps], type: strength }
+  - { slug: spider_curl, name: "Spider curl (dumbbells)", equipment: [dumbbells, adjustable_bench], muscle_groups: [biceps], type: strength }
+  - { slug: preacher_curl, name: "Preacher curl (EZ bar)", equipment: [preacher_bench, ez_bar], muscle_groups: [biceps], type: strength }
+  - { slug: low_cable_curl_back_to_pulley, name: "Low cable curl (back to pulley)", equipment: dual_adjustable_pulley, muscle_groups: [biceps], type: strength }
+  - { slug: cable_rope_hammer_curl, name: "Cable rope hammer curl", equipment: dual_adjustable_pulley, muscle_groups: [biceps, forearms], type: strength }
+  - { slug: band_biceps_curl, name: "Band biceps curl", equipment: resistance_bands, muscle_groups: [biceps], type: strength }
+  - { slug: dumbbell_wrist_curl, name: "Wrist curl (dumbbell)", equipment: [dumbbells, flat_bench], muscle_groups: [forearms], type: strength }
+  - { slug: farmers_carry, name: "Farmer's carry (dumbbells)", equipment: dumbbells, muscle_groups: [forearms, traps, core], type: strength }
+  # triceps
+  - { slug: skullcrusher, name: "Skullcrusher (EZ bar)", equipment: [ez_bar, flat_bench], muscle_groups: [triceps], type: strength }
+  - { slug: overhead_dumbbell_triceps_extension, name: "Overhead triceps extension (dumbbell)", equipment: dumbbells, muscle_groups: [triceps], type: strength }
+  - { slug: close_grip_bench_press, name: "Close-grip bench press", equipment: [barbell, flat_bench], muscle_groups: [triceps, chest], type: strength }
+  - { slug: bench_dip, name: "Bench dip", equipment: flat_bench, muscle_groups: [triceps], type: calisthenics }
+  - { slug: diamond_push_up, name: "Diamond push-up", equipment: null, muscle_groups: [triceps, chest], type: calisthenics }
+  - { slug: cable_rope_triceps_pushdown, name: "Cable rope triceps pushdown", equipment: dual_adjustable_pulley, muscle_groups: [triceps], type: strength }
+  - { slug: band_triceps_pushdown, name: "Band triceps pushdown", equipment: resistance_bands, muscle_groups: [triceps], type: strength }
+  # abs / core / obliques
+  - { slug: hanging_leg_raise, name: "Hanging leg raise", equipment: pull_up_bar, muscle_groups: [abs], type: calisthenics }
+  - { slug: hanging_oblique_knee_raise, name: "Hanging oblique knee raise", equipment: captains_chair, muscle_groups: [obliques, abs], type: calisthenics }
+  - { slug: side_plank, name: "Side plank", equipment: null, muscle_groups: [obliques, core], type: calisthenics }
+  - { slug: dead_bug, name: "Dead bug", equipment: null, muscle_groups: [core, abs], type: calisthenics }
+  - { slug: copenhagen_plank, name: "Copenhagen plank", equipment: flat_bench, muscle_groups: [adductors, core], type: calisthenics }
+  - { slug: suitcase_deadlift, name: "Suitcase deadlift (dumbbell)", equipment: dumbbells, muscle_groups: [obliques, core], type: strength }
+  - { slug: cable_woodchop, name: "Cable woodchop", equipment: dual_adjustable_pulley, muscle_groups: [obliques, core], type: strength }
+  - { slug: landmine_rotation, name: "Landmine rotation", equipment: landmine, muscle_groups: [obliques, core], type: strength }
+  - { slug: russian_twist, name: "Russian twist (medicine ball)", equipment: medicine_ball, muscle_groups: [obliques, abs], type: strength }
+  - { slug: medicine_ball_slam, name: "Medicine ball slam", equipment: medicine_ball, muscle_groups: [abs, core, shoulders], type: plyometric }
+  - { slug: stability_ball_crunch, name: "Stability ball crunch", equipment: stability_ball, muscle_groups: [abs], type: strength }
+  - { slug: stability_ball_rollout, name: "Stability ball rollout", equipment: stability_ball, muscle_groups: [abs, core], type: strength }
+  - { slug: suspension_fallout, name: "Suspension fallout", equipment: suspension_trainer, muscle_groups: [abs, core], type: calisthenics }
+  # cardio / conditioning
+  - { slug: steady_state_bike, name: "Steady-state bike ride", equipment: bike, muscle_groups: [quadriceps, glutes], type: cardio }
+  - { slug: treadmill_incline_walk, name: "Treadmill incline walk", equipment: treadmill, muscle_groups: [glutes, calves], type: cardio }
+  - { slug: treadmill_run, name: "Treadmill run", equipment: treadmill, muscle_groups: [quadriceps, hamstrings, calves], type: cardio }
+  - { slug: elliptical_session, name: "Elliptical session", equipment: elliptical, muscle_groups: [quadriceps, glutes], type: cardio }
+  - { slug: rowing_machine_intervals, name: "Rowing machine intervals", equipment: rowing_machine, muscle_groups: [back, quadriceps, glutes, hamstrings], type: cardio }
+  - { slug: ski_erg_intervals, name: "Ski erg intervals", equipment: ski_erg, muscle_groups: [back, lats, triceps, core], type: cardio }
+  - { slug: stair_climber_session, name: "Stair climber session", equipment: stair_climber, muscle_groups: [glutes, quadriceps, calves], type: cardio }
+  - { slug: burpee, name: "Burpee", equipment: null, muscle_groups: [quadriceps, chest, shoulders, core], type: cardio }

@@ -172,20 +172,67 @@ test('custom catalog: new equipment + exercise are usable by profile and session
   assert.equal(main(root), 0);
 });
 
-test('custom catalog: slug colliding with the plugin catalog gives a clear error', () => {
+test('custom catalog: slug colliding with the plugin catalog overrides it with a warning', () => {
   const root = fixtureWorkspace();
   writeFileSync(join(root, 'exercises.custom.yaml'),
-    'meta: { schema_version: 1 }\nequipment: []\nexercises:\n  - { slug: seated_row, name: Dup, equipment: low_row, muscle_groups: [back] }\n');
-  const { errors } = loadCatalog(root);
-  assert.equal(errors.length, 1);
-  assert.match(errors[0], /exercises\.custom\.yaml: exercise slug "seated_row" already exists in the plugin catalog/);
-  assert.equal(main(root), 1);
+    'meta: { schema_version: 1 }\nequipment: []\nexercises:\n  - { slug: seated_row, name: Mine, equipment: low_row, muscle_groups: [lats] }\n');
+  const { doc, errors, warnings } = loadCatalog(root);
+  assert.deepEqual(errors, []);
+  assert.equal(warnings.length, 1);
+  assert.match(warnings[0], /exercises\.custom\.yaml: exercise "seated_row" overrides the plugin catalog entry/);
+  const hits = doc.data.exercises.filter((e) => e.slug === 'seated_row');
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].name, 'Mine');
+  assert.equal(doc.origin.get('seated_row'), 'exercises.custom.yaml');
+  assert.equal(main(root), 0);
 });
 
-test('custom catalog: equipment id colliding with the plugin catalog gives a clear error', () => {
+test('custom catalog: equipment id colliding with the plugin catalog is ignored with a warning', () => {
   const root = fixtureWorkspace();
-  writeFileSync(join(root, 'exercises.custom.yaml'), 'meta: { schema_version: 1 }\nequipment: [leg_press]\nexercises: []\n');
-  assert.match(loadCatalog(root).errors[0], /equipment "leg_press" already exists/);
+  writeFileSync(join(root, 'exercises.custom.yaml'), 'meta: { schema_version: 1 }\nequipment: [leg_press]\nexercises:\n  - { slug: my_press, name: Mine, equipment: leg_press, muscle_groups: [quadriceps] }\n');
+  const { doc, errors, warnings } = loadCatalog(root);
+  assert.deepEqual(errors, []);
+  assert.match(warnings[0], /equipment "leg_press" already exists.*ignored/);
+  assert.equal(doc.data.equipment.filter((e) => e === 'leg_press').length, 1);
+  assert.equal(main(root), 0);
+});
+
+test('custom catalog: duplicates inside exercises.custom.yaml are errors, not plugin-catalog warnings', () => {
+  const root = fixtureWorkspace();
+  writeFileSync(join(root, 'exercises.custom.yaml'), 'meta: { schema_version: 1 }\nequipment: [my_sled, my_sled]\nexercises:\n  - { slug: x, name: A, equipment: my_sled, muscle_groups: [quadriceps] }\n  - { slug: x, name: B, equipment: my_sled, muscle_groups: [quadriceps] }\n');
+  const { doc, errors, warnings } = loadCatalog(root);
+  assert.equal(errors.length, 2);
+  assert.match(errors[0], /equipment "my_sled" is defined twice in exercises\.custom\.yaml/);
+  assert.match(errors[1], /exercise slug "x" is defined twice in exercises\.custom\.yaml/);
+  assert.deepEqual(warnings, []);
+  assert.equal(doc.data.exercises.filter((e) => e.slug === 'x').length, 1);
+});
+
+test('custom catalog: no collision gives no warnings', () => {
+  const root = fixtureWorkspace();
+  cpSync(join(FIXTURE, 'exercises.custom.yaml'), join(root, 'exercises.custom.yaml'));
+  assert.deepEqual(loadCatalog(root).warnings, []);
+});
+
+test('crossValidate: equipment list with known ids accepted', () => {
+  const c = { ...cat, data: { ...cat.data, equipment: ['barbell', 'flat_bench'],
+    exercises: [{ slug: 'bench', name: 'B', equipment: ['barbell', 'flat_bench'], muscle_groups: ['chest'] }] } };
+  assert.deepEqual(crossValidate([c]), []);
+});
+
+test('crossValidate: unknown id inside an equipment list rejected', () => {
+  const c = { ...cat, data: { ...cat.data, equipment: ['barbell'],
+    exercises: [{ slug: 'bench', name: 'B', equipment: ['barbell', 'ghost_bench'], muscle_groups: ['chest'] }] } };
+  const errs = crossValidate([c]);
+  assert.equal(errs.length, 1);
+  assert.ok(errs[0].includes('ghost_bench'));
+});
+
+test('catalog: no duplicate exercise slugs or equipment ids', () => {
+  const doc = loadYaml(join(ROOT, 'catalog', 'exercises.yaml'));
+  const dup = (xs) => xs.filter((x, i) => xs.indexOf(x) !== i);
+  assert.deepEqual(dup(doc.exercises.map((e) => e.slug)), []);
+  assert.deepEqual(dup(doc.equipment), []);
 });
 
 test('custom catalog: invalid custom file fails schema validation', () => {

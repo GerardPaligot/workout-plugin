@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { buildValidators, validateDoc, loadYaml } from '../src/validate.mjs';
 
@@ -42,6 +43,40 @@ test('exercises: muscle group outside vocabulary rejected', () => {
   const bad = { meta: META, equipment: ['x'],
     exercises: [{ slug: 'ok', name: 'X', muscle_groups: ['nonexistent'] }] };
   assert.ok(validateDoc(validators, 'exercises.yaml', bad).length > 0);
+});
+
+const exWith = (ex) => ({ meta: META, equipment: ['barbell', 'flat_bench'],
+  exercises: [{ slug: 'ok', name: 'X', muscle_groups: ['chest'], ...ex }] });
+
+test('exercises: equipment as id, null, or non-empty unique list accepted', () => {
+  for (const equipment of ['barbell', null, ['barbell'], ['barbell', 'flat_bench']]) {
+    assert.deepEqual(validateDoc(validators, 'exercises.yaml', exWith({ equipment })), []);
+  }
+});
+
+test('exercises: empty, duplicated or non-string equipment list rejected', () => {
+  for (const equipment of [[], ['barbell', 'barbell'], [1], 5]) {
+    assert.ok(validateDoc(validators, 'exercises.yaml', exWith({ equipment })).length > 0);
+  }
+});
+
+test('exercises: type accepted when valid, optional, rejected otherwise', () => {
+  for (const type of ['strength', 'calisthenics', 'cardio', 'plyometric', 'mobility']) {
+    assert.deepEqual(validateDoc(validators, 'exercises.yaml', exWith({ type })), []);
+  }
+  assert.deepEqual(validateDoc(validators, 'exercises.yaml', exWith({})), []);
+  assert.ok(validateDoc(validators, 'exercises.yaml', exWith({ type: 'machine' })).length > 0);
+});
+
+const NEW_MUSCLES = ['lats', 'traps', 'obliques', 'forearms', 'adductors'];
+
+test('new muscle values accepted in exercise, profile and macrocycle schemas', () => {
+  assert.deepEqual(validateDoc(validators, 'exercises.yaml', exWith({ muscle_groups: NEW_MUSCLES })), []);
+  const profile = PROFILE();
+  profile.equipment[0].muscles = NEW_MUSCLES;
+  assert.deepEqual(validateDoc(validators, 'profile.yaml', profile), []);
+  const macro = JSON.parse(readFileSync(join(ROOT, 'schemas', 'macrocycle.schema.json'), 'utf8'));
+  for (const m of NEW_MUSCLES) assert.ok(macro.$defs.muscle_group.enum.includes(m), m);
 });
 
 test('status: valid file', () => {

@@ -48,10 +48,14 @@
             "type": "string"
           },
           "equipment": {
-            "type": [
-              "string",
-              "null"
+            "oneOf": [
+              { "type": "string" },
+              { "type": "null" },
+              { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } }
             ]
+          },
+          "type": {
+            "enum": ["strength", "calisthenics", "cardio", "plyometric", "mobility"]
           },
           "muscle_groups": {
             "type": "array",
@@ -74,6 +78,11 @@
         "triceps",
         "quadriceps",
         "hamstrings",
+        "lats",
+        "traps",
+        "obliques",
+        "forearms",
+        "adductors",
         "glutes",
         "calves",
         "abs",

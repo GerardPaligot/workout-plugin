@@ -179,8 +179,6 @@ Because the rear delt is responsible for a slight external rotation, the **neutr
 
 ## Sources
 
-Titles translated from the French originals.
-
 - Video: "SHOULDER EXERCISES: from BEST to WORST exercise" (Nassim Sahili)
 - Video: "How to (finally) build the back of your shoulders" (Nassim Sahili)
 - EMG study (2015): reverse pec deck vs seated row vs lat pulldown for the rear delt

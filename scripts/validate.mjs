@@ -10105,32 +10105,44 @@ function loadCatalog(workspace, catalogPath = CATALOG_PATH) {
     data: { meta: base.meta, equipment: [...base.equipment || []], exercises: [...base.exercises || []] }
   };
   const errors = [];
+  const warnings = [];
   const customPath = join2(workspace, CUSTOM_CATALOG);
-  if (!existsSync(customPath)) return { doc, errors };
+  if (!existsSync(customPath)) return { doc, errors, warnings };
   let custom;
   try {
     custom = loadYaml(customPath);
   } catch (e) {
-    return { doc, errors: [`${CUSTOM_CATALOG}: YAML parse error \u2014 ${e.message}`] };
+    return { doc, errors: [`${CUSTOM_CATALOG}: YAML parse error \u2014 ${e.message}`], warnings };
   }
-  const slugs = new Set(doc.data.exercises.map((e) => e.slug));
   const equip = new Set(doc.data.equipment);
+  const seenEquip = /* @__PURE__ */ new Set();
+  const seenSlugs = /* @__PURE__ */ new Set();
   for (const id of custom?.equipment || []) {
-    if (equip.has(id)) errors.push(`${CUSTOM_CATALOG}: equipment "${id}" already exists in the plugin catalog \u2014 pick another id`);
+    if (seenEquip.has(id)) {
+      errors.push(`${CUSTOM_CATALOG}: equipment "${id}" is defined twice in ${CUSTOM_CATALOG}`);
+      continue;
+    }
+    seenEquip.add(id);
+    if (equip.has(id)) warnings.push(`${CUSTOM_CATALOG}: equipment "${id}" already exists in the plugin catalog \u2014 ignored`);
     else {
       equip.add(id);
       doc.data.equipment.push(id);
     }
   }
   for (const ex of custom?.exercises || []) {
-    if (slugs.has(ex.slug)) errors.push(`${CUSTOM_CATALOG}: exercise slug "${ex.slug}" already exists in the plugin catalog \u2014 pick another slug`);
-    else {
-      slugs.add(ex.slug);
-      doc.data.exercises.push(ex);
-      doc.origin.set(ex.slug, CUSTOM_CATALOG);
+    if (seenSlugs.has(ex.slug)) {
+      errors.push(`${CUSTOM_CATALOG}: exercise slug "${ex.slug}" is defined twice in ${CUSTOM_CATALOG}`);
+      continue;
     }
+    seenSlugs.add(ex.slug);
+    const i = doc.data.exercises.findIndex((e) => e.slug === ex.slug);
+    if (i >= 0) {
+      warnings.push(`${CUSTOM_CATALOG}: exercise "${ex.slug}" overrides the plugin catalog entry`);
+      doc.data.exercises[i] = ex;
+    } else doc.data.exercises.push(ex);
+    doc.origin.set(ex.slug, CUSTOM_CATALOG);
   }
-  return { doc, errors };
+  return { doc, errors, warnings };
 }
 function buildValidators(schemasDir = join2(PLUGIN_ROOT, "schemas")) {
   const ajv = new import__.default({ allErrors: true, strict: false });
@@ -10170,8 +10182,10 @@ function crossValidate(docs, root, catalogDoc) {
   const equipment = new Set(catalog ? catalog.data.equipment || [] : []);
   if (catalog) {
     for (const ex of catalog.data.exercises || []) {
-      if (ex.equipment != null && !equipment.has(ex.equipment)) {
-        errors.push(`${catalog.origin?.get(ex.slug) ?? "exercises.yaml"}: unknown equipment "${ex.equipment}" (exercise ${ex.slug})`);
+      for (const id of [].concat(ex.equipment ?? [])) {
+        if (!equipment.has(id)) {
+          errors.push(`${catalog.origin?.get(ex.slug) ?? "exercises.yaml"}: unknown equipment "${id}" (exercise ${ex.slug})`);
+        }
       }
     }
   }
@@ -10257,6 +10271,7 @@ function main(root) {
     const loaded = loadCatalog(root);
     catalog = loaded.doc;
     loaded.errors.forEach(fail);
+    loaded.warnings.forEach((w) => console.error(`! ${w}`));
     for (const e of validateDoc(validators, "exercises.yaml", loadYaml(CATALOG_PATH))) fail(`catalog/exercises.yaml: ${e}`);
   } catch (e) {
     fail(`plugin catalog unreadable (${CATALOG_PATH}): ${e.message}`);

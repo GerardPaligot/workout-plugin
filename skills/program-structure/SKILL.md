@@ -48,7 +48,7 @@ workflow state and decide which skills are usable:
 
 | State | `status` | Usable skills |
 |-------|----------|---------------|
-| `needs_onboarding` | `profile.yaml` missing (checked first) | `onboarding`, `coach` |
+| `needs_onboarding` | `profile.yaml` missing (checked first) | `onboarding` |
 | `inconsistent` | more than one non-archived program, or a program with `status: archived` still under `programs/` (checked second) | `onboarding`, `coach` (every write skill refused until `programs/` is fixed) |
 | `no_program` | no live program (`active`/`paused`/`completed`) outside archives | `create-program`, `coach`, `onboarding` |
 | `in_progress` | `active` | `track`, `review-mesocycle`**, `create-mesocycle`*, `coach`, `onboarding` |
@@ -121,7 +121,6 @@ start_date: YYYY-MM-DD
 end_date: YYYY-MM-DD
 frequency: "4 sessions/week"
 split: upper_lower                      # upper_lower | full_body | ppl | other
-scheduling: rotation                    # optional: weekdays (default, omit) | rotation
 mesocycles:
   - number: 1
     name: "Mechanical phase"

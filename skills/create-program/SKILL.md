@@ -19,7 +19,7 @@ knowledge skills, and save it in `programs/`.
 3. Otherwise, continue.
 
 ## Absolute constraints
-- NEVER suggest an exercise whose equipment is not in `profile.equipment` (`profile.yaml` + the catalog).
+- NEVER suggest an exercise whose equipment is not in `profile.equipment` (`profile.yaml` + the catalog). An exercise's `equipment` may be a list: ALL listed ids must be in `profile.equipment`. A custom entry in `exercises.custom.yaml` overrides the catalog one (validator warning).
 - Follow the macrocycle → mesocycles → microcycles methodology (the `training-programming` skill).
 - Apply the `training-principles` skill (progressive overload, exercise economy).
 - Validate every exercise with the `lifting-biomechanics` skill.

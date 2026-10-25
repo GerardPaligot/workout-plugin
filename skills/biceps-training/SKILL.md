@@ -103,7 +103,5 @@ Mid-ranking variants (use as needed): spider curl, preacher curl, RX curl, cruci
 
 ## Sources
 
-Title translated from the French original.
-
 - Video: "BICEPS EXERCISES: from BEST to WORST" (Nassim Sahili)
 - Video: "Pourquoi j'ai arrêté de faire ces 7 exercices (et ce que je fais à la place)" (Nassim Sahili) — "Why I stopped doing these 7 exercises (and what I do instead)" https://www.youtube.com/watch?v=ifMcCg9Gsac

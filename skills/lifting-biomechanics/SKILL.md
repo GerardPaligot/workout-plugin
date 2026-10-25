@@ -48,6 +48,7 @@ Same exercise, same sets, same reps, same rest times — but execution changes e
 **Other lever-arm examples (source's view)**:
 - California press: bar lowered to the neck instead of the chest → very large lever arm at the elbow, vs the close-grip bench (see the `triceps-training` skill).
 - Front squat: lever arm between line of force and knee is not especially large unless mobility is great or heels are raised; a back squat with raised heels does the same (see the `quadriceps-training` skill).
+- Pallof press: arms extended = maximal lever arm against rotation (see the `obliques-training` skill).
 
 ## Stretch tension vs contraction tension
 
@@ -272,8 +273,6 @@ A muscle activation technique that consists of **contracting a muscle as hard as
 - Can be used occasionally at the start of a set or between reps to confirm that the target muscle is being recruited.
 
 ## Sources
-
-Titles translated from the French originals.
 
 - Video: "7 tips that helped me build a BIG BACK" (Nassim Sahili)
 - Video: "SHOULDER EXERCISES: from BEST to WORST exercise" (Nassim Sahili)

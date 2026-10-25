@@ -144,7 +144,7 @@ With these 2 exercises (3-4 sets each), the lats are worked through the full ran
 - **Alternative**: do the movement unilaterally, leaning slightly to the side, to align the path with the fibers.
 
 #### High-cable pullover (bent-forward version)
-- When you lean forward 45-90°, the resistance curve is **totally unbalanced**: very hard at the start (lat deeply stretched = weak), very easy at the end.
+- When you lean forward 45-90°, the resistance curve is **totally unbalanced**: very hard at the start (lat deeply stretched = weak), very easy at the end (see the `lifting-biomechanics` skill).
 - The stretched lat cannot produce enough force → triceps compensate over the first few centimeters.
 - **Corrected version (good exercise)**: stay more **upright** → more balanced resistance curve, less compensation.
 - **Optimal version**: unilateral, leaning slightly to the side → perfect path, turns a mediocre exercise into an exceptional one.
@@ -274,8 +274,6 @@ Grips are not strictly equivalent depending on the exercise:
 - Exercise order within a session: see `training-programming`, "Exercise order within a session (source's view)".
 
 ## Sources
-
-Titles translated from the French originals.
 
 - Video: "7 tips that helped me build a BIG BACK" (Nassim Sahili)
 - Video: "BACK EXERCISES: from BEST to WORST" (Nassim Sahili)

@@ -97,8 +97,6 @@ Source's view: in a 2022 systematic review (as reported, unverified), an excepti
 
 ## Sources
 
-Title translated from the French original.
-
 - Video: "TRICEPS EXERCISES: from BEST to WORST" (Nassim Sahili)
 - Video: "Pourquoi j'ai arrêté de faire ces 7 exercices (et ce que je fais à la place)" (Nassim Sahili) — "Why I stopped doing these 7 exercises (and what I do instead)" https://www.youtube.com/watch?v=ifMcCg9Gsac
 - Video: "Pourquoi tout le monde se met à faire 2 séries en MUSCULATION?" (Nassim Sahili) — "Why is everyone switching to 2 sets in strength training?" https://www.youtube.com/watch?v=1OsDiVvQT7k

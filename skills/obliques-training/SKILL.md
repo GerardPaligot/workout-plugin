@@ -48,7 +48,7 @@ The obliques (and the abdominal wall in general) respond particularly well to **
 Isometric movement in which you resist a rotation produced by a cable or a resistance band.
 
 - **Position**: side-on to the cable/band, cable at chest height.
-- **Movement**: alternate between arms flexed (hands against the chest) and arms extended in front of you. Arms extended = maximal lever arm → maximal resistance to rotation.
+- **Movement**: alternate between arms flexed (hands against the chest) and arms extended in front of you. Arms extended = maximal lever arm → maximal resistance to rotation (see the `lifting-biomechanics` skill).
 - **Main target**: **external** oblique.
 - **Variations**: standing, kneeling (more stable).
 - Can be done with a **resistance band** (handy for warm-ups or outdoors).
@@ -119,8 +119,6 @@ Developing the obliques is not enough to make them visible. Visibility depends d
 - If no dedicated session → the first 2 exercises at the end of a strength session + sprints in another session.
 
 ## Sources
-
-Titles translated from the French originals.
 
 - Video: "How to build your OBLIQUES (while keeping a slim waist)" (Nassim Sahili)
 - EMG study (2009): abdominal muscle activation (cited in the video "How to build your OBLIQUES (while keeping a slim waist)")

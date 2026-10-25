@@ -18,16 +18,16 @@ workspace root. Every other skill depends on it.
 1. **Language**: ask first, in English, which language everything shown to them should
    use (code such as `en`, `fr`, `pt-BR`). Conduct the rest of the interview in that language.
 2. **Units**: load `kg` or `lb`; length `cm` or `in`.
-3. **Equipment**: walk through the categories `machine`, `cable`, `free_weight`,
-   `accessory`, `cardio`. For each, list the known ids from the `equipment` list of
-   the plugin catalog `catalog/exercises.yaml` (grouped there by comment: free weights such as `barbell`, `ez_bar`,
-   `dumbbells`, `kettlebell`, `weight_plates`; accessories such as `adjustable_bench`,
-   `flat_bench`, `squat_rack`, `pull_up_bar`, `dip_station`, `resistance_bands`) and ask
+3. **Equipment**: equipment ids come from the `equipment` list of the plugin catalog
+   `catalog/exercises.yaml`, grouped there by comment (machines and cable, free weights,
+   accessories, cardio). Walk the groups one by one, listing the ids of each group from the
+   catalog, and ask
    which the gym has. Accept free entries:
    - map each to the closest known id;
    - if nothing fits, keep it out of `equipment` and tell the user it is missing from
      the catalog. The user can add it to `exercises.custom.yaml` in the workspace (same format as
-     the catalog, new ids only); never edit the plugin catalog. Then use the new id.
+     the catalog); never edit the plugin catalog. Then use the new id. A custom id equal to a
+     catalog id is ignored with a warning.
    Also ask which common gear is absent (for example free weights) to confirm the list.
 
 ## Write `profile.yaml`

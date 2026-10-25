@@ -89,8 +89,6 @@ These exercises work the quadriceps but are inferior to the hack squat:
 
 ## Sources
 
-Title translated from the French original.
-
 - Video: "QUADRICEPS EXERCISES: from BEST to WORST" (Nassim Sahili)
 - Video: "Pourquoi j'ai arrêté de faire ces 7 exercices (et ce que je fais à la place)" (Nassim Sahili) — "Why I stopped doing these 7 exercises (and what I do instead)" https://www.youtube.com/watch?v=ifMcCg9Gsac
 - Video: "Ce format d'entraînement est parfait (Programme complet)" (Nassim Sahili) — "This training format is perfect (full program)" https://www.youtube.com/watch?v=XFsbtGB1TXQ

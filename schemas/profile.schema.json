@@ -40,7 +40,7 @@
   },
   "$defs": {
     "muscle_group": {
-      "enum": ["chest", "back", "shoulders", "biceps", "triceps", "quadriceps", "hamstrings", "glutes", "calves", "abs", "core", "rear_delts"]
+      "enum": ["chest", "back", "shoulders", "biceps", "triceps", "quadriceps", "hamstrings", "glutes", "lats", "traps", "obliques", "forearms", "adductors", "calves", "abs", "core", "rear_delts"]
     }
   }
 }
