@@ -197,6 +197,10 @@ With these 2 exercises (3-4 sets each), the lats are worked through the full ran
 - You could virtually do only this exercise and get exceptional results for the lats.
 - Seated stability → muscle fibers produce even more force → better recruitment.
 
+## Trapezius work (source's view)
+- Horizontal pull for the traps / upper back, elbows well out, ~4 × 12: machine, low cable, or bent-over barbell/dumbbell row (this video lists it as an option). Reinforces the one-arm dumbbell row note (elbow flared for the trapezius).
+- Shrug 3 × 15: not his favourite, but useful for the upper trapezius; responds to longer rep ranges.
+
 ## Unilateral work: superior for the back
 
 Unilateral work (one arm at a time) is recommended for most back exercises.
@@ -267,6 +271,8 @@ Grips are not strictly equivalent depending on the exercise:
 | Pronated-grip pull-ups | Adduction, bodyweight | 3-4 |
 | Supinated-grip lat pulldown (optional) | Retropulsion, high stretch tension | 3-4 |
 
+- Exercise order within a session: see `training-programming`, "Exercise order within a session (source's view)".
+
 ## Sources
 
 Titles translated from the French originals.
@@ -275,3 +281,4 @@ Titles translated from the French originals.
 - Video: "BACK EXERCISES: from BEST to WORST" (Nassim Sahili)
 - Video: "6 KEY STEPS to (finally) feel your BACK working" (Nassim Sahili)
 - Video: "Pourquoi j'ai arrêté de faire ces 7 exercices (et ce que je fais à la place)" (Nassim Sahili) — "Why I stopped doing these 7 exercises (and what I do instead)" https://www.youtube.com/watch?v=ifMcCg9Gsac
+- Video: "Ce format d'entraînement est parfait (Programme complet)" (Nassim Sahili) — "This training format is perfect (full program)" https://www.youtube.com/watch?v=XFsbtGB1TXQ

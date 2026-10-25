@@ -81,6 +81,8 @@ For complete stimulation, an exercise that combines these two actions will be su
 - Versatile: short or long sets, metabolic or mechanical stress.
 - **Tip**: start with light dumbbells to get familiar with the path (2 distinct phases), then increase gradually.
 
+- Supersets (arm pairings): see `training-principles`, "Supersets and alternation (source's view)".
+
 ## Minimal triceps program
 
 | Exercise | Type | Sets |

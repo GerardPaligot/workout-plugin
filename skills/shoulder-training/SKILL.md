@@ -87,10 +87,13 @@ Note: according to some sources, the deltoid could be made up of 7 or even 9 spe
 - Loads the anterior deltoid well and the middle a bit.
 - Less complete than the overhead press but allows better isolation.
 - If several exercises are possible → military press + cable raises (bent-over reverse fly for the rear delt).
+- Source's view: a guided-machine military press (4 × 8, short rep range, first exercise of the shoulder day) is "exceptional" for the anterior deltoid; he wants a compound press first.
 
 ### Summary: importance of vertical presses
 
 Vertical presses (pressing overhead) are **fundamental**. Never train without this type of movement, because not pressing overhead can have a negative influence on other muscle groups (the chest in particular).
+
+- Exercise order within a session: see `training-programming`, "Exercise order within a session (source's view)".
 
 ## Minimal shoulder program
 
@@ -140,6 +143,7 @@ Do 3 sets with each angle and keep the one that works best. This same angle will
 - **Half range of motion** only (stretched phase): don't open all the way, otherwise the cable rubs against the body.
 - This is the exercise that can be the hardest to master → place it 3rd, after pre-fatiguing and pumping the rear delt.
 - Potentially the most effective exercise for making a lagging rear delt "explode".
+- Source's view: a high-cable reverse fly is the best rear-delt choice for him ("nothing better"), very adaptable (sets/reps not stated).
 
 ### Complementary exercise (anterior + middle)
 
@@ -182,3 +186,4 @@ Titles translated from the French originals.
 - EMG study (2015): reverse pec deck vs seated row vs lat pulldown for the rear delt
 - Study: neutral grip vs pronation for the rear delt
 - Video: "Pourquoi j'ai arrêté de faire ces 7 exercices (et ce que je fais à la place)" (Nassim Sahili) — "Why I stopped doing these 7 exercises (and what I do instead)" https://www.youtube.com/watch?v=ifMcCg9Gsac
+- Video: "Ce format d'entraînement est parfait (Programme complet)" (Nassim Sahili) — "This training format is perfect (full program)" https://www.youtube.com/watch?v=XFsbtGB1TXQ

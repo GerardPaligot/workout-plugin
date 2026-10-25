@@ -89,6 +89,7 @@ The biceps is a **very weak muscle when contracted**. That is why exercises with
 - Source's replacement for the drag curl, alongside the incline curl.
 - Same arm position as the drag curl, but the cable redirects the resistance → better range of motion and stretch than the free-weight version.
 - Not ranked by the source against the exercises above.
+- Supersets (arm pairings): see `training-principles`, "Supersets and alternation (source's view)".
 
 ## Minimal biceps program
 

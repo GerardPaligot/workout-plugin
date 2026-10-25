@@ -24,6 +24,7 @@ Otherwise read the active program's `status.yaml` if the question is about the p
 | Nutrition, calories, protein, fat loss, cardio | the `training-principles` skill |
 | Technique, training to failure, beginners, program variables | the `training-principles` skill / the `training-programming` skill |
 | Cycles, mesocycles, microcycles | the `training-programming` skill |
+| Training format / split, session rotation, supersets, exercise order | the `training-programming` skill (format, rotation, exercise order) / the `training-principles` skill (supersets) |
 | Equipment, feasibility | `profile.equipment` (`profile.yaml`) |
 | Current program, loads | `status.yaml` then the files in `programs/` |
 

@@ -65,6 +65,7 @@ An exercise's effectiveness for the chest depends heavily on individual morpholo
 - **Adaptable**: change the hand position (upward = upper pecs, downward = lower pecs) to target virtually all the fibers.
 - **Execution**: shoulder blades squeezed together from start to finish, elbows locked (single-joint movement).
 - The pec deck (butterfly) is a decent alternative but the cable is preferable (more flexibility, no fixed axes of rotation).
+- Source's view (video on a 3-day chest-back format): the pec deck (~12 reps, single-joint, simple technique) provides a stimulation not found with dumbbell flyes (different resistance curve, continuous tension on the machine). Compared with dumbbell flyes, not with the cable fly.
 
 ### Very good exercise
 
@@ -252,6 +253,8 @@ The exercise does **not automatically** dictate which fibers are loaded — it i
 | 3 | Dumbbell flyes | 3-4 | 60% top range, elbows closed, 10-20s isometric stretch |
 | 4 | Cable crossover (clavicular) | 3-4 | Smooth movement, pump, cable/fiber alignment |
 
+- Exercise order within a session: see `training-programming`, "Exercise order within a session (source's view)".
+
 ## Sources
 
 Titles translated from the French originals.
@@ -262,3 +265,4 @@ Titles translated from the French originals.
 - EMG study (2010): activation of the pectoral heads at different inclines
 - EMG study (2020): 30° as the optimal incline for the clavicular head
 - Video: "7 TIPS that helped me build BIG PECS" (Nassim Sahili)
+- Video: "Ce format d'entraînement est parfait (Programme complet)" (Nassim Sahili) — "This training format is perfect (full program)" https://www.youtube.com/watch?v=XFsbtGB1TXQ

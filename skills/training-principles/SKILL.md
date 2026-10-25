@@ -1,6 +1,6 @@
 ---
 name: training-principles
-description: "General principles of strength training for hypertrophy: progressive overload, ego lifting, exercise economy, recovery, nutrition, protein, calorie counting, fat loss, technique and training to failure. Use when: the user asks about programming, progression, training volume, weekly volume, sets per muscle, nutrition, protein, fat loss, technique, training to failure, calorie deficit, or the general approach to strength training."
+description: "General principles of strength training for hypertrophy: progressive overload, ego lifting, exercise economy, recovery, nutrition, protein, calorie counting, fat loss, supersets, technique and training to failure. Use when: the user asks about programming, progression, training volume, weekly volume, sets per muscle, supersets, nutrition, protein, fat loss, technique, training to failure, calorie deficit, or the general approach to strength training."
 ---
 
 > **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none).
@@ -142,7 +142,7 @@ Volume = working sets per muscle per week.
 - Source's view: the volume a lifter can use is limited by sleep, nutrition and stress; if these aren't in order, the useful maximum is probably not high. If they are, it is a pity not to test more volume.
 - Source's view (anecdote, ~16 years of coaching): never saw high volume fail when recovery and the other variables were right; failures came from insufficient intensity, poor exercise choice, unsuited format or neglected recovery.
 - Source's view: bodybuilding legends' volume (Arnold, Cutler) and the low-volume theories of Yates are confounded by steroids, which allowed 2 h sessions 6 days/week without worrying about recovery. Their recommendations are hard to follow.
-- Source's view (tension, flagged, not resolved): this source asks for maximum effort on every set before adding sets, whereas "Order of progression: frequency → volume → intensity" puts intensity last. Likely effort level vs load/techniques, but the sequencing reads as opposed. Second tension (flagged, not resolved): "Order of progression" warns against increasing volume too early without enough frequency; the source's protocol ramps weekly sets without stating a frequency condition.
+- Two views: this source asks for maximum effort on every set before adding sets, whereas "Order of progression: frequency → volume → intensity" puts intensity last. Likely effort level vs load/techniques, but the sequencing reads as opposed. Note: "Order of progression" warns against increasing volume too early without enough frequency; the source's protocol ramps weekly sets without stating a frequency condition.
 - For weekly progression of volume within a cycle, see `training-programming`, "Weekly sets per muscle: progression (source's view)". For triceps counting, see `triceps-training`.
 
 ## Intensification technique: isometric stretch at the end of a set
@@ -204,6 +204,16 @@ Clusters consist of **splitting a set** into several groups of reps (clusters) w
 - Particularly suited to muscles with a majority of **fast-twitch fibers** (e.g. chest) which perform better on short efforts.
 - Reserve for the **first 1-2 sets** of the main exercise, when you are freshest.
 - Not on every set of every exercise → an occasional tool to optimize mechanical tension.
+
+## Supersets and alternation (source's view)
+
+- Study as reported by the source (unverified; not named): supersets let lifters move more weight in less time. Caveat (source): the studied supersets do not exactly match what he programs. Treat with caution.
+- Source's view: alternating antagonist exercises (e.g. chest then back) lets the first muscle recover instead of chaining all its sets, which would tire it sooner and leave less energy for the other. Alternation is not a true superset; a true superset (no rest between the two) is possible if experienced and if the gym layout (machines close together) allows.
+- Source's view, pairings: dips + vertical pull (push down / pull down: complementary pump, no strength loss on either per his experience, very demanding on cardio); dips + pull-ups harder still; incline press + vertical pull also possible.
+- Source's view, arms: superset two stretch exercises (low-cable curl back to the pulley + triceps extension taken far behind the head), then two contraction exercises (rope pushdown + low-cable curl, ~12 reps). He thinks chaining is better than separate sets and never saw performance drop (anecdote). Without suitable machines: lying triceps extension with two dumbbells (slightly less stretch). See `biceps-training`, `triceps-training`.
+- Source's view, legs: leg extension + stiff-leg deadlift, then leg curl + hack squat (single-joint + compound). Hack squat + stiff-leg deadlift (agonist-antagonist) is very cardio-demanding.
+- Program files support a `superset:` label on exercises (see `program-structure`).
+- Requires impeccable technique when used for fat loss; see `training-programming`, "Fat loss" and "Choosing a format (source's view)".
 
 ## Slow-twitch vs fast-twitch fibers: impact on recovery
 
@@ -490,3 +500,4 @@ Source's view, expert opinion; no study named.
 - Video: "Pourquoi j'ai arrêté de faire ces 7 exercices (et ce que je fais à la place)" (Nassim Sahili) — "Why I stopped doing these 7 exercises (and what I do instead)" https://www.youtube.com/watch?v=ifMcCg9Gsac
 - Video: "À quel niveau de musculation êtes-vous vraiment ? (les 5 stades décryptés)" (Nassim Sahili) — "What training level are you really at? (the 5 stages explained)" https://www.youtube.com/watch?v=05WPpiDdC78
 - Video: "Pourquoi tout le monde se met à faire 2 séries en MUSCULATION?" (Nassim Sahili) — "Why is everyone switching to 2 sets in strength training?" https://www.youtube.com/watch?v=1OsDiVvQT7k
+- Video: "Ce format d'entraînement est parfait (Programme complet)" (Nassim Sahili) — "This training format is perfect (full program)" https://www.youtube.com/watch?v=XFsbtGB1TXQ

@@ -1,6 +1,6 @@
 ---
 name: training-programming
-description: "Methodology for building a strength-training program: macrocycle, mesocycles, microcycles, overreaching, supercompensation, deload. Use when: the user wants to build a program, asks about weekly volume or sets per muscle, organize their training cycles, plan their progression over several weeks/months, understand periodization, or asks about beginners, program variables or personalization."
+description: "Methodology for building a strength-training program: macrocycle, training format/split, session rotation, exercise order, mesocycles, microcycles, overreaching, supercompensation, deload. Use when: the user wants to build a program, choose a training format or split (PPL, upper/lower, full body), rotate sessions, order exercises within a session, asks about weekly volume or sets per muscle, organize their training cycles, plan their progression over several weeks/months, understand periodization, or asks about beginners, program variables or personalization."
 ---
 
 > **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none).
@@ -127,6 +127,7 @@ The training format (distribution of muscle groups per session) must be **consis
 - Goal: maximize volume per targeted muscle group.
 - Recommended format (5 sessions/week): **sessions by muscle group** (e.g. chest/back, shoulders/arms, legs) organized in a **cycle** so each muscle is trained several times per week.
 - Example to develop arms + chest + thighs: 3 different sessions rotating over 5 days → each group trained several times per week.
+- Source's view (expert opinion): chest-back / shoulders-arms / legs is an agonist-antagonist format (shoulders have little antagonist here), run over 3 sessions; the source's preferred format after 20 years (best results and enjoyment for him). He does not claim it is more effective than PPL, upper/lower, full body or a split: progress is possible on all of them and the difference is mainly enjoyment. Not a study.
 - Exercise selection must reflect the targeted measurements (don't hammer the deltoids if the goal is arm circumference).
 
 ### Fat loss
@@ -134,6 +135,7 @@ The training format (distribution of muscle groups per session) must be **consis
 - Goal: maximize caloric expenditure while preserving muscle.
 - Recommended format: **upper/lower** → more muscle groups per session → more energy expenditure.
 - Organize in **supersets** (chaining 2 or more exercises) to increase work density.
+- Source's view: full body and upper/lower mix muscle groups, so general fatigue is higher and maximal intensity per session is harder to reach, but for the same reason they suit fat loss (more sustained intensity, higher energy expenditure). Supersets for fat loss (e.g. hack squat + stiff-leg deadlift) need impeccable technique: fatigue leaves no room for error (see `training-principles`, "Supersets and alternation (source's view)").
 - Progression within the mesocycle: gradually reduce the **rest times** → same amount of work in less time = **increased work density**.
 - Energy deficit comes mainly from diet, not from extra cardio; keep strength training as the main activity to preserve muscle (see skill `training-principles`, "Nutrition: fat loss").
 
@@ -143,6 +145,36 @@ The training format (distribution of muscle groups per session) must be **consis
 - **Low** rep ranges throughout the mesocycle.
 - Progression: increase of the **working loads**.
 - No need for long sets here.
+
+### Choosing a format (source's view)
+
+Source's view (expert opinion): no perfect format exists on paper; three criteria:
+1. Maximum training volume on all muscle groups (see `training-principles`, "Weekly volume per muscle (source's view + studies as reported)").
+2. Maximum intensity in each session.
+3. Enjoyment (the most important for him).
+
+PPL, full body, upper/lower, split or chest-back / shoulders-arms / legs can all meet them depending on sensitivity, experience and testing.
+
+- Fatigue objection (back fatigue lowers chest technique): the source disagrees; the same holds for PPL (bench press fatigues the pressing muscles, then dips), more clearly than in the 3-day format.
+- Anecdote (non-scientific survey of the author's followers): PPL is the most used format, especially by advanced lifters (> 3 years) and those training > 4 times/week. Popularity is not evidence of effectiveness.
+- Two views: the source says not to keep one format for life and does a 9-week hybrid (PPL + arm session) with less enjoyment to "desensitize" before returning to the preferred format. This sits against "Exercises don't change within a mesocycle", "Program variables and personalization" (changing programs only for variety is a sign of inexperience) and `training-principles`, "Patience and commitment to your program". A planned format change at a mesocycle boundary is not variety-driven, but the source gives no evidence either way. Both expert opinion.
+
+### Session rotation instead of weekdays (source's view)
+
+Source's view (expert opinion, stated as "without any possible discussion" the best way):
+- The format works from 3 sessions/week at any frequency; no need for 6 days/week.
+- Program as a cycle: a session is not attached to a weekday; sessions follow in order. 4 days/week example: week 1 chest-back, shoulders-arms, legs, chest-back; week 2 starts with shoulders-arms, legs, chest-back, shoulders-arms. At 5 days/week two sessions are done twice.
+- Claimed advantages: more interesting volume, weeks never identical, no dependence on equipment availability on a given day (e.g. chest-back always Monday evening in a crowded gym).
+- His "sweet spot": 5 sessions/week as 3 days on, 1 off, 2 on, 1 off (effort/recovery ratio "nickel"); the frequency he would recommend.
+- Note: the program files currently schedule sessions by weekday (`program-structure`: `weekly_split` `day`, sessions `days`); a rotation is not represented.
+
+### Exercise order within a session (source's view)
+
+Source's view (expert opinion, with anecdote):
+- First exercise: low rep range (fresh, heavier load, more benefit); e.g. 4 × 6-8 incline dumbbell press, 4 × 8 machine military press.
+- Legs: start with a single-joint exercise (leg extension, longer reps ≥ 12) to warm up the knee joint; the hack squat comes later (anecdote: better feel and results for him later in the session than first; he recommends testing). See `quadriceps-training`.
+- See `training-principles`, "Intensification technique: clusters" (freshest sets for the heaviest work). `shoulder-training` describes pre-fatigue (isolation first) as a local exception.
+- Within the source, the leg day starts with high reps on a single-joint exercise while the other days start with low reps on a compound: not reconciled.
 
 ### Recommended order of the mesocycles
 
@@ -197,9 +229,9 @@ Muscle gain is possible with sets of 5 reps as well as sets of 20 reps. Since yo
   2. Do all these sets at maximum intensity. When achieved, add 1-2 sets the next week.
   3. If not achieved, hold the same number of sets until maximum intensity is reached ("hyper important").
   4. If sessions tire more than usual, don't increase; hold the current volume.
-- A cycle can start at low volume and end at 2-3x (e.g. 6-8 → 18-24 sets per muscle per week; the source said "per exercise" in the audio, likely a slip).
+- A cycle can start at low volume and end at 2-3x (e.g. 6-8 → 18-24 sets per muscle per week, i.e. 2-3 × the 6-8 start).
 - Source's view over a longer horizon: to maximize muscle over ~6 months, high volume; over ~6 years, true periodization (phases of high volume, low volume, strength cycles). Muscle gain is a long process; no single method explains a lifetime of progress.
-- Tension (flagged, not resolved): this source ramps volume weekly (+1-2 sets) over ≥ 3 months, gated by fatigue, whereas "Every mesocycle ends with overreaching" raises volume in a 2-week overreaching block followed by a deload. Two different progression models, same author, both expert opinion.
+- Two views: this source ramps volume weekly (+1-2 sets) over ≥ 3 months, gated by fatigue, whereas "Every mesocycle ends with overreaching" raises volume in a 2-week overreaching block followed by a deload. Two different progression models, same author, both expert opinion.
 - See `training-principles`, "Weekly volume per muscle" for the categories (< 12 / 12-20 / > 20), diminishing returns and recovery limits.
 
 ## Summary of the typical structure
@@ -229,3 +261,4 @@ MACROCYCLE (6 months)
 - Video: "Les 5 niveaux de la PERTE DE GRAS expliqués (débutants à pro)" (Nassim Sahili) — "The 5 levels of fat loss explained (beginner to pro)" https://www.youtube.com/watch?v=Pi7j7C0aW1c
 - Video: "À quel niveau de musculation êtes-vous vraiment ? (les 5 stades décryptés)" (Nassim Sahili) — "What training level are you really at? (the 5 stages explained)" https://www.youtube.com/watch?v=05WPpiDdC78
 - Video: "Pourquoi tout le monde se met à faire 2 séries en MUSCULATION?" (Nassim Sahili) — "Why is everyone switching to 2 sets in strength training?" https://www.youtube.com/watch?v=1OsDiVvQT7k
+- Video: "Ce format d'entraînement est parfait (Programme complet)" (Nassim Sahili) — "This training format is perfect (full program)" https://www.youtube.com/watch?v=XFsbtGB1TXQ

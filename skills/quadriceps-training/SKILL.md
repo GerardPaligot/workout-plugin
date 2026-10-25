@@ -46,6 +46,7 @@ To target the quadriceps effectively, you need to maximize **knee flexion** in t
 - **Warning**: not all machines are equal. The resistance curve and the range of knee flexion vary by brand.
 - The best machines have **variable resistance** (adapted cam), which changes everything about the stimulation.
 - With the right machine, you could do a complete quadriceps session on it alone.
+- Source's view: first exercise of a leg session, 4 × ≥ 12: a single-joint movement to warm up the knee joint; short sets are not coherent on this exercise. He often does 15 reps on leg extension.
 
 #### Walking lunges (dumbbells in hands)
 - **Easier** to master than the squat: no bar on the back, better grasp of the movement.
@@ -66,11 +67,13 @@ To target the quadriceps effectively, you need to maximize **knee flexion** in t
 - **Warning**: don't confuse it with the **circular** hack squat (to be avoided) or with the **pendulum squat** (good exercise but progressive overload is harder because of the machine's architecture).
 - Widely used by professional bodybuilders (Ronnie Coleman, Chris Bumstead...).
 - Machine availability varies by gym; it is more common in some regions and still spreading in others.
+- Source's view (anecdote): he sometimes does it first, but gets better feel and results later in the session (after leg extension and leg curl); he recommends testing. He calls it the most intense quadriceps compound. Alternatives he lists: pendulum squat, Smith machine squat, free squat; not the leg press (consistent with "Avoid" above). See `training-programming`, "Exercise order within a session (source's view)".
 
 ## Exercises not covered above but valid
 
 These exercises work the quadriceps but are inferior to the hack squat:
 - **Zercher squat**, **sissy squat**, **Bulgarian split squats**: valid in certain contexts, but clearly inferior to the hack squat for targeting the quadriceps.
+- Source's view: Bulgarian split squat (3 × 12-15) is "maybe the best" exercise for the glutes with unilateral work, and the most painful. Different target from the quadriceps ranking above, so no contradiction with "inferior" for the quadriceps.
 - **Front squat**: lower priority than the hack squat for the quadriceps (source's view).
   - Lever arm between the line of force and the knee is not especially large unless you have great joint mobility or raise the heels; a back squat with raised heels does the same, which removes the expected advantage (see the `lifting-biomechanics` skill).
   - Neither squat is automatically "quadriceps" (front) or "posterior chain" (back): emphasis depends on execution.
@@ -90,3 +93,4 @@ Title translated from the French original.
 
 - Video: "QUADRICEPS EXERCISES: from BEST to WORST" (Nassim Sahili)
 - Video: "Pourquoi j'ai arrêté de faire ces 7 exercices (et ce que je fais à la place)" (Nassim Sahili) — "Why I stopped doing these 7 exercises (and what I do instead)" https://www.youtube.com/watch?v=ifMcCg9Gsac
+- Video: "Ce format d'entraînement est parfait (Programme complet)" (Nassim Sahili) — "This training format is perfect (full program)" https://www.youtube.com/watch?v=XFsbtGB1TXQ
