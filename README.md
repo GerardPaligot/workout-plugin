@@ -1,6 +1,6 @@
 # workout
 
-A strength-training coach plugin for **Claude Code** and **OpenAI Codex**. It ships 18 skills (workflow + exercise knowledge), a shared exercise catalog, YAML schemas and templates, and two zero-dependency Node scripts (`state.mjs`, `validate.mjs`) that gate which skill may run and validate your data files.
+A strength-training coach plugin for **Claude Code** and **OpenAI Codex**. It ships 19 skills (workflow + exercise knowledge), a shared exercise catalog, YAML schemas and templates, and two zero-dependency Node scripts (`state.mjs`, `validate.mjs`) that gate which skill may run and validate your data files.
 
 ## Skills
 
@@ -14,13 +14,14 @@ Workflow (read/write files in your workspace):
 | `track` | Update real-time status, log loads and measurements. |
 | `review-mesocycle` | Review a finished mesocycle and plan adjustments. |
 | `archive-program` | Close a completed program and archive it. |
+| `upgrade-workspace` | Bring a 0.1.0 workspace up to 0.2.0: validate and review custom entries now in the catalog. Works without `profile.yaml`. |
 | `coach` | Read-only answers to training questions. |
 
 Knowledge (consulted by the others): `program-structure`, `training-programming`, `training-principles`, `lifting-biomechanics`, `biceps-training`, `back-training`, `shoulder-training`, `obliques-training`, `chest-training`, `quadriceps-training`, `triceps-training`.
 
 ## Onboarding-first flow
 
-Every skill except `onboarding` requires `profile.yaml` at the workspace root. If it is missing, the skill stops and runs `onboarding`; the state script reports `needs_onboarding` and blocks every other skill (including `coach`). After onboarding, `state.mjs` computes which workflow skills are allowed (for example `create-program` only when no program is active, `archive-program` only when a program is completed).
+Every skill except `onboarding` and `upgrade-workspace` requires `profile.yaml` at the workspace root. If it is missing, the skill stops and runs `onboarding`; the state script reports `needs_onboarding` and blocks every other skill (including `coach`). After onboarding, `state.mjs` computes which workflow skills are allowed (for example `create-program` only when no program is active, `archive-program` only when a program is completed).
 
 ## Workspace layout
 
@@ -40,6 +41,8 @@ Templates, schemas and the exercise catalog live in the plugin and are never edi
 ## Scheduling
 
 Sessions are scheduled on fixed weekdays by default. At `create-program` you can instead opt into a session rotation (sessions follow one another in a fixed order, with no weekday attached). The choice is fixed per program. Workspaces containing a rotation program need plugin 0.2.0 or later: plugins older than 0.2.0 give no warning, they simply reject the files at validation.
+
+Upgrading a workspace created with 0.1.0? Run the `upgrade-workspace` skill.
 
 ## Install
 

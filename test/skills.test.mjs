@@ -12,7 +12,9 @@ const REFERENCE_SKILLS = [
   'chest-training', 'quadriceps-training', 'triceps-training',
 ];
 const GATED_SKILLS = ['coach', ...WORKFLOW_SKILLS, ...REFERENCE_SKILLS]; // everything except onboarding
-const EXPECTED_SKILLS = ['onboarding', ...GATED_SKILLS];
+// Ungated utility skills: no profile.yaml prerequisite and no state.mjs gate (they must work on older workspaces).
+const UNGATED_SKILLS = ['upgrade-workspace'];
+const EXPECTED_SKILLS = ['onboarding', ...GATED_SKILLS, ...UNGATED_SKILLS];
 const GATE_SENTENCE = 'stop and run the `onboarding` skill first';
 
 const readSkill = (name) => {
@@ -26,7 +28,7 @@ function assertFrontmatter(txt, name) {
   assert.match(txt, /\ndescription: /, `${name}: description field missing`);
 }
 
-test('skills: exactly the 18 expected skill directories', () => {
+test('skills: exactly the 19 expected skill directories', () => {
   const dirs = readdirSync(SKILLS_DIR, { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name).sort();
   assert.deepEqual(dirs, [...EXPECTED_SKILLS].sort());
 });
@@ -74,6 +76,18 @@ for (const name of [...WORKFLOW_SKILLS, 'onboarding']) {
     if (name === 'archive-program' || name === 'onboarding' || WORKFLOW_SKILLS.includes(name)) {
       assert.ok(readSkill(name).includes('node "${CLAUDE_PLUGIN_ROOT}/scripts/validate.mjs" .'));
     }
+  });
+}
+
+for (const name of UNGATED_SKILLS) {
+  test(`skill ${name}: ungated, validates and has the Codex fallback`, () => {
+    const txt = readSkill(name);
+    assert.ok(!txt.includes(GATE_SENTENCE), `${name}: must not carry the onboarding gate`);
+    assert.ok(!txt.includes('scripts/state.mjs'), `${name}: must not call state.mjs`);
+    assert.ok(txt.includes('node "${CLAUDE_PLUGIN_ROOT}/scripts/validate.mjs" .'));
+    assert.match(txt, /plugin root is the directory two levels above this SKILL\.md/);
+    assert.match(txt, /## What you do NOT do/);
+    assert.match(txt, /`onboarding`/);
   });
 }
 
