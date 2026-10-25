@@ -9,7 +9,7 @@ You are a fresh reviewer of the workout plugin at the repo root. Do NOT edit fil
 4. Cross-references: plain backticked skill names, all pointing to existing skills. Check both directions: when skill A cites or builds on topic B (e.g. stretch-position content in a muscle skill vs `lifting-biomechanics`), B should reference A where pertinent. Flag missing and dangling refs.
 5. Coach table: `skills/coach/SKILL.md` `## Skills to consult by topic` covers every knowledge skill and topic.
 6. Duplication and contradiction: same claim stated in several skills, or skills giving conflicting numbers/advice (sets, reps, RIR, rest, frequency, volume). Name the skills and quote both.
-7. Style: telegraphic, no filler, no URLs outside Sources, no `/Users/`, `tools/`, `.claude/skills/`, no French outside `- Video:` lines.
+7. Style: telegraphic, no filler, no URLs outside Sources, no `/Users/`, `tools/`, `.claude/skills/`, no French outside `- Video:` lines; no maintainer/process meta-text in shipped skills (e.g. "flagged", "not resolved", "for the maintainer", "transcript", "proposal"); tensions phrased for end users ("Two views: ...").
 8. Docs consistency: README skill count, skills table, knowledge-skills line match the `skills/` directories; `test/skills.test.mjs` lists match them.
 9. Run `npm test`; include the summary and any failure output.
 
