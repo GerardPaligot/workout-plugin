@@ -1,0 +1,287 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sessions.schema.json",
+  "title": "Sessions of a mesocycle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "meta",
+    "sessions"
+  ],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "version",
+        "mesocycle",
+        "last_modified"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "mesocycle": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "period": {
+          "$ref": "#/$defs/dateRange"
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "last_modified": {
+          "type": "string",
+          "format": "date"
+        },
+        "revisions": {
+          "$ref": "#/$defs/revisions"
+        }
+      }
+    },
+    "sessions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "days",
+          "format",
+          "exercises"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "days": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/day"
+            }
+          },
+          "format": {
+            "enum": [
+              "standard",
+              "circuit"
+            ]
+          },
+          "circuit": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "rounds",
+              "rest_between_exercises_s",
+              "rest_between_rounds_s"
+            ],
+            "properties": {
+              "rounds": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "rest_between_exercises_s": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "rest_between_rounds_s": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          },
+          "exercises": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "order",
+                "exercise",
+                "sets",
+                "reps"
+              ],
+              "properties": {
+                "order": {
+                  "type": [
+                    "string",
+                    "integer"
+                  ]
+                },
+                "superset": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "exercise": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9_]+$"
+                },
+                "sets": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "reps": {
+                  "type": "string"
+                },
+                "rest_s": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 0
+                },
+                "target_load": {
+                  "type": [
+                    "number",
+                    "string",
+                    "null"
+                  ]
+                },
+                "notes": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "format": {
+                  "const": "circuit"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "circuit"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "format": {
+                  "const": "standard"
+                }
+              }
+            },
+            "then": {
+              "not": {
+                "required": [
+                  "circuit"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "cardio": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "duration_min"
+        ],
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "duration_min": {
+            "type": "string"
+          },
+          "intensity": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "day": {
+      "enum": [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday"
+      ]
+    },
+    "dateRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start",
+        "end"
+      ],
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date"
+        },
+        "end": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "revisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ref",
+          "date",
+          "summary"
+        ],
+        "properties": {
+          "ref": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "summary": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

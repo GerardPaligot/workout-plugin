@@ -1,0 +1,53 @@
+meta:
+  schema_version: 1
+equipment:
+  - chest_press
+  - pec_deck
+  - shoulder_press
+  - lat_machine
+  - low_row
+  - leg_press
+  - leg_extension
+  - arm_curl
+  - dual_adjustable_pulley
+  - bench
+  - captains_chair
+  # free weights (declared only: no exercises yet; a gym picks what it has in onboarding)
+  - barbell
+  - ez_bar
+  - dumbbells
+  - kettlebell
+  - weight_plates
+  # accessories
+  - adjustable_bench
+  - flat_bench
+  - squat_rack
+  - pull_up_bar
+  - dip_station
+  - resistance_bands
+  # cardio
+  - bike
+  - treadmill
+  - elliptical
+  - rowing_machine
+exercises:
+  - { slug: chest_press_machine, name: "Chest Press machine", equipment: chest_press, muscle_groups: [chest] }
+  - { slug: lat_pulldown, name: "Lat pulldown (Lat Machine)", equipment: lat_machine, muscle_groups: [back] }
+  - { slug: seated_row, name: "Seated row (Low Row)", equipment: low_row, muscle_groups: [back] }
+  - { slug: shoulder_press_machine, name: "Shoulder press machine", equipment: shoulder_press, muscle_groups: [shoulders] }
+  - { slug: cable_biceps_curl, name: "Cable biceps curl", equipment: dual_adjustable_pulley, muscle_groups: [biceps] }
+  - { slug: cable_triceps_pushdown, name: "Cable triceps pushdown", equipment: dual_adjustable_pulley, muscle_groups: [triceps] }
+  - { slug: dumbbell_squat, name: "Squat (dumbbell)", equipment: dumbbells, muscle_groups: [quadriceps, glutes] }  # legacy — not available at the original gym, referenced by programs/archives/2026-01_upper-lower-recomposition/
+  - { slug: cable_squat, name: "Cable squat", equipment: dual_adjustable_pulley, muscle_groups: [quadriceps, glutes] }
+  - { slug: leg_press, name: "Leg press", equipment: leg_press, muscle_groups: [quadriceps, glutes] }
+  - { slug: single_leg_press, name: "Single-leg press", equipment: leg_press, muscle_groups: [quadriceps, glutes] }
+  - { slug: leg_extension, name: "Quadriceps machine (Leg Extension)", equipment: leg_extension, muscle_groups: [quadriceps] }
+  - { slug: cable_crunch, name: "Cable crunch", equipment: dual_adjustable_pulley, muscle_groups: [abs] }
+  - { slug: plank, name: "Plank", equipment: null, muscle_groups: [core] }
+  - { slug: cable_fly, name: "Cable fly (seated)", equipment: dual_adjustable_pulley, muscle_groups: [chest] }
+  - { slug: chest_dips, name: "Chest dips (captain's chair)", equipment: captains_chair, muscle_groups: [chest, triceps] }
+  - { slug: cable_overhead_triceps_extension, name: "Cable overhead triceps extension", equipment: dual_adjustable_pulley, muscle_groups: [triceps] }
+  - { slug: arm_curl_machine, name: "Curl machine (Arm Curl)", equipment: arm_curl, muscle_groups: [biceps] }
+  - { slug: pallof_press, name: "Pallof press (anti-rotation)", equipment: dual_adjustable_pulley, muscle_groups: [abs, core] }
+  - { slug: hanging_knee_raise, name: "Hanging knee raise", equipment: captains_chair, muscle_groups: [abs] }
+  - { slug: bike_sprints, name: "Bike sprints (15 s)", equipment: bike, muscle_groups: [abs, core] }

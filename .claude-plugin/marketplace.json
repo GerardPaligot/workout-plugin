@@ -1,0 +1,12 @@
+{
+  "name": "workout-plugin",
+  "description": "Marketplace hosting the workout strength-training plugin",
+  "owner": { "name": "workout-plugin contributors" },
+  "plugins": [
+    {
+      "name": "workout",
+      "source": "./",
+      "description": "Strength-training coach: onboarding, program planning, tracking and exercise knowledge skills."
+    }
+  ]
+}

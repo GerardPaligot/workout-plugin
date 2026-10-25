@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "goals.schema.json",
+  "title": "Goals and measurements",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "meta",
+    "goals",
+    "measurements"
+  ],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": [
+        "schema_version"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": 1
+        }
+      }
+    },
+    "goals": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "priority",
+          "description",
+          "tracked_measures"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "priority": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "tracked_measures": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/measureKey"
+            }
+          },
+          "deadline": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          }
+        }
+      }
+    },
+    "measurements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "date",
+          "values"
+        ],
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "context": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "values": {
+            "type": "object",
+            "minProperties": 1,
+            "propertyNames": {
+              "$ref": "#/$defs/measureKey"
+            },
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "reference_loads": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "date",
+          "exercise",
+          "load",
+          "reps"
+        ],
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "exercise": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "load": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "reps": {
+            "type": [
+              "integer",
+              "string"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "measureKey": {
+      "enum": [
+        "arm_right_relaxed",
+        "arm_left_relaxed",
+        "arm_right_flexed",
+        "arm_left_flexed",
+        "chest",
+        "waist",
+        "hips",
+        "neck",
+        "shoulders",
+        "thigh_right",
+        "thigh_left",
+        "calf_right",
+        "calf_left",
+        "body_weight"
+      ]
+    }
+  }
+}

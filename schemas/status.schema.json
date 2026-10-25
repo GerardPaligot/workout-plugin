@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "status.schema.json",
+  "title": "Program status",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "meta",
+    "program",
+    "status",
+    "start_date"
+  ],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": [
+        "schema_version"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": 1
+        }
+      }
+    },
+    "program": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "paused",
+        "archived",
+        "completed"
+      ]
+    },
+    "current_mesocycle": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "current_week": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "end_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "last_session": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "next_session": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "pauses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "start",
+          "end"
+        ],
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date"
+          },
+          "end": {
+            "type": "string",
+            "format": "date"
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

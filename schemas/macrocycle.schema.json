@@ -1,0 +1,274 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "macrocycle.schema.json",
+  "title": "Macrocycle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "meta",
+    "name",
+    "start_date",
+    "end_date",
+    "frequency",
+    "split",
+    "mesocycles",
+    "weekly_split"
+  ],
+  "properties": {
+    "meta": {
+      "$ref": "#/$defs/versionedMeta"
+    },
+    "name": {
+      "type": "string"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "frequency": {
+      "type": "string"
+    },
+    "split": {
+      "enum": [
+        "upper_lower",
+        "full_body",
+        "ppl",
+        "other"
+      ]
+    },
+    "mesocycles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "number",
+          "name",
+          "weeks",
+          "dates",
+          "goal",
+          "parameters"
+        ],
+        "properties": {
+          "number": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "name": {
+            "type": "string"
+          },
+          "weeks": {
+            "$ref": "#/$defs/intRange"
+          },
+          "dates": {
+            "$ref": "#/$defs/dateRange"
+          },
+          "goal": {
+            "type": "string"
+          },
+          "parameters": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "sets",
+              "reps",
+              "rest_s",
+              "intensity_pct_1rm",
+              "technique"
+            ],
+            "properties": {
+              "sets": {
+                "type": "string"
+              },
+              "reps": {
+                "type": "string"
+              },
+              "rest_s": {
+                "type": "string"
+              },
+              "intensity_pct_1rm": {
+                "type": "string"
+              },
+              "technique": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "weekly_split": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "day",
+          "session"
+        ],
+        "properties": {
+          "day": {
+            "$ref": "#/$defs/day"
+          },
+          "session": {
+            "type": "string"
+          },
+          "muscle_groups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/muscle_group"
+            }
+          }
+        }
+      }
+    },
+    "cardio": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "type",
+          "duration_min"
+        ],
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "duration_min": {
+            "type": "string"
+          },
+          "frequency": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "versionedMeta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "version",
+        "last_modified"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": 1
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "last_modified": {
+          "type": "string",
+          "format": "date"
+        },
+        "revisions": {
+          "$ref": "#/$defs/revisions"
+        }
+      }
+    },
+    "revisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ref",
+          "date",
+          "summary"
+        ],
+        "properties": {
+          "ref": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "summary": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "intRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start",
+        "end"
+      ],
+      "properties": {
+        "start": {
+          "type": "integer"
+        },
+        "end": {
+          "type": "integer"
+        }
+      }
+    },
+    "dateRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start",
+        "end"
+      ],
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date"
+        },
+        "end": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "day": {
+      "enum": [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday"
+      ]
+    },
+    "muscle_group": {
+      "enum": [
+        "chest",
+        "back",
+        "shoulders",
+        "biceps",
+        "triceps",
+        "quadriceps",
+        "hamstrings",
+        "glutes",
+        "calves",
+        "abs",
+        "core",
+        "rear_delts"
+      ]
+    }
+  }
+}

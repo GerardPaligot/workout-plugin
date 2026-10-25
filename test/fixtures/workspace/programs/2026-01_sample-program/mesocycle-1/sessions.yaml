@@ -1,0 +1,28 @@
+# Sessions template — copy to programs/<program>/mesocycle-N/sessions.yaml
+# format: standard (rest_s per exercise) | circuit (circuit object required, no rest_s)
+# exercise: slug must exist in the plugin catalog or in the workspace exercises.custom.yaml
+meta:
+  schema_version: 1
+  version: 1
+  mesocycle: 1
+  period: { start: 2026-01-01, end: 2026-01-28 }
+  source: null
+  last_modified: 2026-01-01
+  revisions: []
+sessions:
+  - id: A
+    name: "Upper body"
+    days: [monday, thursday]
+    format: standard
+    exercises:
+      - { order: "A1", superset: "chest-back", exercise: chest_press_machine, sets: 4, reps: "8", rest_s: null, target_load: 55, notes: "Tempo 2-1-1-0" }
+      - { order: "A2", superset: "chest-back", exercise: seated_row, sets: 4, reps: "8", rest_s: 90, target_load: 60, notes: null }
+  - id: C
+    name: "Circuit (optional)"
+    days: [saturday]
+    format: circuit
+    circuit: { rounds: 3, rest_between_exercises_s: 0, rest_between_rounds_s: 120 }
+    exercises:
+      - { order: 1, exercise: cable_squat, sets: 3, reps: "15", target_load: null, notes: "Light" }
+cardio:
+  - { type: bike, duration_min: "20", intensity: "intervals", notes: null }

@@ -1,0 +1,6 @@
+meta:
+  schema_version: 1
+equipment:
+  - my_sled
+exercises:
+  - { slug: sled_push, name: "Sled push", equipment: my_sled, muscle_groups: [quadriceps] }

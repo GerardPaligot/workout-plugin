@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "exercises.schema.json",
+  "title": "Exercise catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "meta",
+    "equipment",
+    "exercises"
+  ],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": [
+        "schema_version"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": 1
+        }
+      }
+    },
+    "equipment": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "exercises": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "slug",
+          "name",
+          "muscle_groups"
+        ],
+        "properties": {
+          "slug": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "equipment": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "muscle_groups": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/muscle_group"
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "muscle_group": {
+      "enum": [
+        "chest",
+        "back",
+        "shoulders",
+        "biceps",
+        "triceps",
+        "quadriceps",
+        "hamstrings",
+        "glutes",
+        "calves",
+        "abs",
+        "core",
+        "rear_delts"
+      ]
+    }
+  }
+}

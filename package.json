@@ -1,0 +1,19 @@
+{
+  "name": "workout-plugin",
+  "version": "0.1.0",
+  "description": "Strength-training coach plugin (skills + state/validate scripts) for Claude Code and OpenAI Codex",
+  "type": "module",
+  "private": true,
+  "engines": { "node": ">=20.11" },
+  "scripts": {
+    "build": "esbuild src/state.mjs src/validate.mjs --bundle --platform=node --format=esm --target=node20 --outdir=scripts --out-extension:.js=.mjs",
+    "test": "node --test test/*.test.mjs",
+    "validate": "node scripts/validate.mjs ."
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "esbuild": "^0.25.0",
+    "js-yaml": "^4.1.0"
+  }
+}
