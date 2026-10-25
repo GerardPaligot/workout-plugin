@@ -4,6 +4,7 @@
   "description": "Strength-training coach plugin (skills + state/validate scripts) for Claude Code and OpenAI Codex",
   "type": "module",
   "private": true,
+  "license": "Apache-2.0",
   "engines": { "node": ">=20.11" },
   "scripts": {
     "build": "esbuild src/state.mjs src/validate.mjs --bundle --platform=node --format=esm --target=node20 --outdir=scripts --out-extension:.js=.mjs",

@@ -102,4 +102,4 @@ The skills' **Sources** sections cite third-party material (YouTube videos and E
 
 ## License
 
-TBD (placeholder — choose a license before publishing).
+Licensed under the [Apache License 2.0](LICENSE).

@@ -3,6 +3,6 @@
   "version": "0.1.0",
   "description": "Strength-training coach: onboarding, program/mesocycle planning, tracking and exercise knowledge skills.",
   "author": { "name": "workout-plugin contributors" },
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "keywords": ["strength-training", "workout", "coach", "hypertrophy"]
 }
