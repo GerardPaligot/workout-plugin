@@ -32,7 +32,7 @@ Wait for explicit approval. Apply only the approved subset.
 
 ## 5. Apply
 - English content. French only on `- Video:` lines: keep original title, add `— "<English>"` (as in `training-programming`).
-- Sources formats: `- Video: "<title>" (<author>) <url>` (URL when available); `- EMG study (<year>): <description>`.
+- Sources formats: `- Video: "<original title>" (<author>) — "<English title>" <url>` (English part only when original isn't English; URL when available); `- EMG study (<year>): <description>`.
 - Match surrounding style: telegraphic, same section layout.
 - Keep the `> **Prerequisite:**` blockquote intact.
 - New skill: frontmatter exactly `name` (== dir name) + double-quoted `description` ("<summary>. Use when: <triggers>."); `# Title`, topic sections, final `## Sources`; gated blockquote copied from a sibling knowledge skill; add to the lists in `test/skills.test.mjs`.

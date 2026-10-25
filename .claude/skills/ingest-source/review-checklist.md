@@ -4,8 +4,8 @@ You are a fresh reviewer of the workout plugin at the repo root. Do NOT edit fil
 
 ## Checks
 1. Frontmatter: exactly `name` and `description`; `name` == directory name; description is a double-quoted string "<summary>. Use when: <triggers>."; telegraphic.
-2. Sources: final `## Sources` section in knowledge skills; entries match `- Video: "<title>" (<author>) <url?>` or `- EMG study (<year>): <description>`; French titles only on `- Video:` lines, with `— "<English>"`; no duplicate entries across skills for the same source unless each really uses it.
-3. Prerequisite: every skill except `onboarding` starts with the intact `> **Prerequisite:**` blockquote.
+2. Sources: final `## Sources` section in knowledge skills; entries match `- Video: "<original title>" (<author>) — "<English title>" <url>` (English part only when the original isn't English; URL optional, older entries have none) or `- EMG study (<year>): <description>`; French titles only on `- Video:` lines, with `— "<English>"`; no duplicate entries across skills for the same source unless each really uses it.
+3. Prerequisite: knowledge skills start with the intact `> **Prerequisite:**` blockquote; workflow skills (archive-program, create-mesocycle, create-program, review-mesocycle, track, coach) use a `## Prerequisite` section instead; both are valid; `onboarding` has none.
 4. Cross-references: plain backticked skill names, all pointing to existing skills. Check both directions: when skill A cites or builds on topic B (e.g. stretch-position content in a muscle skill vs `lifting-biomechanics`), B should reference A where pertinent. Flag missing and dangling refs.
 5. Coach table: `skills/coach/SKILL.md` `## Skills to consult by topic` covers every knowledge skill and topic.
 6. Duplication and contradiction: same claim stated in several skills, or skills giving conflicting numbers/advice (sets, reps, RIR, rest, frequency, volume). Name the skills and quote both.
