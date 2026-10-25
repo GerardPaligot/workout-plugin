@@ -1,6 +1,6 @@
 ---
 name: back-training
-description: "Complete guide to back training for strength training: anatomy, exercise selection, unilateral work, pull-ups, programming. Use when: the user wants to build a back session, choose back exercises, understand back anatomy, or optimize their lat development."
+description: "Complete guide to back training for strength training: anatomy, exercise selection, unilateral work, pull-ups, programming. Use when: the user wants to build a back session, choose back exercises, understand back anatomy, optimize their lat development, or train the erector spinae (hyperextensions)."
 ---
 
 > **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none).
@@ -157,6 +157,12 @@ With these 2 exercises (3-4 sets each), the lats are worked through the full ran
 - Can be relevant for the trapezius (different execution, elbow flared).
 - **Disclaimer**: can be a good exercise for the trapezius (upper/middle) with an adapted execution.
 
+#### Barbell bent-over row (incl. Yates row)
+- Source's view (he says the debate remains open): not the most relevant exercise for the lats; horizontal pulls and lat-pulldown-type pulls are more coherent for them.
+- Rows stay very effective for trapezius, upper back and rear delts; the source prefers other exercises for those.
+- **Alternative**: unilateral cable row, small rotation of the upper body → very intense lat contraction. Or a unilateral divergent machine (Hammer Strength) where torso position can be adjusted (see "Unilateral work" below).
+- Trade-off accepted by the source: loses erector (and possibly trapezius) work.
+
 ### Good exercise
 
 #### Supinated-grip lat pulldown
@@ -246,6 +252,13 @@ Grips are not strictly equivalent depending on the exercise:
 - A back can develop very well without the classic deadlift.
 - Useful variations: stiff-leg deadlift (hamstrings), trap bar deadlift (glutes).
 
+## Erector spinae
+
+- Deadlift and bent-over rows already work the erector spinae.
+- To target them specifically: hyperextensions, modified for spinal erectors (spine flexion then extension). Source's view: very effective and pleasant, feels like decompression, usually at the end of the back session.
+- Rack pull: lower priority (source's view). Heavy loads compress the spine and ego pushes the load up (see the `training-principles` skill); more effective and safer options exist for the erectors.
+- Hyperextensions also work glutes/hamstrings (no dedicated skill in the plugin).
+
 ## Minimal lat program
 
 | Exercise | Action | Sets |
@@ -261,3 +274,4 @@ Titles translated from the French originals.
 - Video: "7 tips that helped me build a BIG BACK" (Nassim Sahili)
 - Video: "BACK EXERCISES: from BEST to WORST" (Nassim Sahili)
 - Video: "6 KEY STEPS to (finally) feel your BACK working" (Nassim Sahili)
+- Video: "Pourquoi j'ai arrêté de faire ces 7 exercices (et ce que je fais à la place)" (Nassim Sahili) — "Why I stopped doing these 7 exercises (and what I do instead)" https://www.youtube.com/watch?v=ifMcCg9Gsac

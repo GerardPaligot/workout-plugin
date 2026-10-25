@@ -63,6 +63,11 @@ Multiplying exercises for the same muscle does not mean better results.
 4. Don't get emotionally attached to an exercise (e.g. deadlift) if it doesn't serve the hypertrophy goal.
 5. Check that each component of the movement truly corresponds to an action of the target muscle (see muscle fibers in skill `lifting-biomechanics`).
 
+### Compound is not automatically superior
+
+- Source's view: an exercise being multi-joint does not make it superior; judge it by whether it loads the target muscle (examples dropped: close-grip bench for triceps, barbell bent-over row for lats).
+- Some compounds remain recommended in the knowledge skills (dips, chin-ups, pull-ups, overhead press).
+
 ### Humerus rotations: useless during exercises
 
 Humerus rotations (internal or external rotation) during an exercise add **no extra stimulation**, whatever the muscle group (chest, deltoids, back...).
@@ -88,7 +93,7 @@ Some popular exercises are **not essential** for hypertrophy and can be replaced
 
 - An exercise can be dropped if it brings nothing more than the other exercises in the program.
 - If an exercise causes joint pain in most lifters, it is better to avoid it.
-- Examples: conventional deadlift (for the lats), Arnold press (for the shoulders), upright row (for the shoulders), dumbbell kickback (for the triceps), close-grip bench press (for the triceps), drag curl (for the biceps), EZ-bar curl (for the biceps), squeeze press (for the chest), standing cable crossover (for the chest), circular leg press (for the quadriceps), linear leg press (for the quadriceps), T-bar row (for the lats).
+- Examples: conventional deadlift (for the lats), Arnold press (for the shoulders), upright row (for the shoulders), dumbbell kickback (for the triceps), close-grip bench press (for the triceps), drag curl (for the biceps), EZ-bar curl (for the biceps), squeeze press (for the chest), standing cable crossover (for the chest), circular leg press (for the quadriceps), linear leg press (for the quadriceps), T-bar row (for the lats), front squat (for the quadriceps), barbell bent-over row (for the lats), rack pull (for the erector spinae; see the `back-training` skill).
 
 ### Criteria for evaluating an exercise
 
@@ -437,3 +442,4 @@ Laboratory tests on common foods (chips, basmati rice, skyr, ready meals) show t
 - Video: "6 ÉTAPES CLÉS pour réussir (enfin) à sentir son DOS" (Nassim Sahili)
 - Video: "Comment créer son programme de musculation (débutants)" (Nassim Sahili)
 - Video: "Les 5 niveaux de la PERTE DE GRAS expliqués (débutants à pro)" (Nassim Sahili) — "The 5 levels of fat loss explained (beginner to pro)" https://www.youtube.com/watch?v=Pi7j7C0aW1c
+- Video: "Pourquoi j'ai arrêté de faire ces 7 exercices (et ce que je fais à la place)" (Nassim Sahili) — "Why I stopped doing these 7 exercises (and what I do instead)" https://www.youtube.com/watch?v=ifMcCg9Gsac

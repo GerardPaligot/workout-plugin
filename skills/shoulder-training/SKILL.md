@@ -42,6 +42,7 @@ Note: according to some sources, the deltoid could be made up of 7 or even 9 spe
 - The internal rotation added during the movement is **artificial** and does not improve muscle recruitment.
 - The fibers of the middle deltoid are not responsible for internal rotation → this component is useless.
 - No advantage over other presses.
+- Source's view: execution standard is unclear (some press linearly, others open the arms before pushing), stimulation is not the best for the setup effort, and humerus rotation creates a stability issue. Classic military or overhead press: easier progressive overload.
 
 #### Upright row
 - Causes **shoulder joint pain** in the majority of lifters.
@@ -49,6 +50,7 @@ Note: according to some sources, the deltoid could be made up of 7 or even 9 spe
 - Requires internal rotation at the start of the movement → useless for stimulation.
 - Brings nothing essential compared with the higher-ranked exercises.
 - **Exception**: if you have done it for years without pain, you can continue.
+- Source's view (separate video): stopped even though it caused no pain (good feel in deltoids and some trapezius), because it brings nothing clearly better than safer exercises that are as effective or more.
 
 ### Good exercises
 
@@ -63,6 +65,13 @@ Note: according to some sources, the deltoid could be made up of 7 or even 9 spe
 - The cable lets you synchronize the resistance curve with the muscle's force curve (see the `lifting-biomechanics` skill).
 - **Execution tip**: stand **upright** (not leaning to the side) and position your body so the cable is perpendicular to the arm at the middle of the movement.
 - Leaning to the side on the cable = removes the benefit of using the cable.
+
+#### Full lateral raise
+- Single-joint, relatively light load. Source's view: replaces the upright row.
+- Not ranked by the source against the exercises above.
+- Hands finish above the shoulders → works the upper trapezius beyond a simple shrug (source: this is why light loads are enough).
+- Source credits it with the anterior and middle deltoid early in the movement and the trapezius at the end.
+- Suggested placement: first shoulder session.
 
 ### Best exercises
 
@@ -172,3 +181,4 @@ Titles translated from the French originals.
 - Video: "How to (finally) build the back of your shoulders" (Nassim Sahili)
 - EMG study (2015): reverse pec deck vs seated row vs lat pulldown for the rear delt
 - Study: neutral grip vs pronation for the rear delt
+- Video: "Pourquoi j'ai arrêté de faire ces 7 exercices (et ce que je fais à la place)" (Nassim Sahili) — "Why I stopped doing these 7 exercises (and what I do instead)" https://www.youtube.com/watch?v=ifMcCg9Gsac

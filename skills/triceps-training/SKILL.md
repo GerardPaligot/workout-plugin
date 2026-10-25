@@ -32,6 +32,8 @@ For complete stimulation, an exercise that combines these two actions will be su
 - Hard to emphasize elbow extension → the emphasis is on shoulder flexion (role of the anterior deltoid).
 - Compound exercise but poorly aligned with the triceps' primary action.
 - Modifying it by lowering the bar toward the throat (California press) can improve it, but as such: replace it with dips.
+- Source's view: no workable setup. Elbows close → anterior deltoid and pecs dominate; elbows out → wrist pain and pecs still dominate. Triceps only felt with a heavy load; stimulation per load worse than simple cable extensions.
+- Compound does not make it superior (see the `training-principles` skill).
 
 #### Supinated extensions
 - The triceps is **not responsible** for supination (unlike the biceps).
@@ -49,6 +51,12 @@ For complete stimulation, an exercise that combines these two actions will be su
 - Weak point: **setup and stability** can be complicated, especially without an adjustable cable.
 - A seat can improve stability but makes the setup even more complex.
 - **Advanced variation**: dual cable, both hands crossed behind the head ("samurai") → perfect path, optimal stimulation (but the setup is even more complex).
+
+#### California press
+- Source's replacement for the close-grip bench: same start position, bar lowered to the neck instead of the chest → very large lever arm at the elbow (see the `lifting-biomechanics` skill).
+- Mix of close-grip bench and skullcrusher. Load never very heavy.
+- Dips and cable extensions are the other options in the source.
+- Not ranked by the source against the exercises above.
 
 ### Best exercises
 
@@ -88,3 +96,4 @@ With these 3 exercises: complete work from stretch to contraction, good stabilit
 Title translated from the French original.
 
 - Video: "TRICEPS EXERCISES: from BEST to WORST" (Nassim Sahili)
+- Video: "Pourquoi j'ai arrêté de faire ces 7 exercices (et ce que je fais à la place)" (Nassim Sahili) — "Why I stopped doing these 7 exercises (and what I do instead)" https://www.youtube.com/watch?v=ifMcCg9Gsac

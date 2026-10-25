@@ -31,6 +31,8 @@ The biceps is a **very weak muscle when contracted**. That is why exercises with
 - Unstable position → tendency to compensate with the trapezius.
 - Turns the movement into a poorly controlled compound exercise.
 - In theory exploits the length-tension relationship, but execution conditions are too poor to benefit from it.
+- Source's view: with a heavier load it turns into a shrug (the shoulders do the second half of the rep).
+- Range never allows a full stretch of both heads → no strong stretch tension. Free weight resists along the vertical line of force (see the `lifting-biomechanics` skill).
 
 #### EZ-bar curl
 - The EZ bar encourages **narrowing the hands** and **flaring the elbows** → humerus on a diagonal instead of aligned with gravity.
@@ -83,6 +85,11 @@ The biceps is a **very weak muscle when contracted**. That is why exercises with
 - Can be done **unilaterally** but you lose some stability (resisting the rotation of the weight → obliques engaged). If possible, prefer the bilateral version.
 - The cable is the most optimal equipment for the arms (biceps and triceps).
 
+#### Variant: low-cable curl with back to the pulley
+- Source's replacement for the drag curl, alongside the incline curl.
+- Same arm position as the drag curl, but the cable redirects the resistance → better range of motion and stretch than the free-weight version.
+- Not ranked by the source against the exercises above.
+
 ## Minimal biceps program
 
 | Exercise | Type | Sets |
@@ -98,3 +105,4 @@ Mid-ranking variants (use as needed): spider curl, preacher curl, RX curl, cruci
 Title translated from the French original.
 
 - Video: "BICEPS EXERCISES: from BEST to WORST" (Nassim Sahili)
+- Video: "Pourquoi j'ai arrêté de faire ces 7 exercices (et ce que je fais à la place)" (Nassim Sahili) — "Why I stopped doing these 7 exercises (and what I do instead)" https://www.youtube.com/watch?v=ifMcCg9Gsac

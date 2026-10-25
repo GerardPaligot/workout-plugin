@@ -45,6 +45,10 @@ Same exercise, same sets, same reps, same rest times — but execution changes e
 
 **Lever arm and forearm position**: on a lat pulldown, the **forearm should stay perpendicular to the floor**. If the arm is too flexed (handle very close to the shoulder), the lever arm at the shoulder is **shortened** → the latissimus dorsi works less. Keeping the handle slightly away from the shoulder increases the lever arm and maximizes the stimulus.
 
+**Other lever-arm examples (source's view)**:
+- California press: bar lowered to the neck instead of the chest → very large lever arm at the elbow, vs the close-grip bench (see the `triceps-training` skill).
+- Front squat: lever arm between line of force and knee is not especially large unless mobility is great or heels are raised; a back squat with raised heels does the same (see the `quadriceps-training` skill).
+
 ## Stretch tension vs contraction tension
 
 Each exercise has a resistance profile that creates peak tension at a different point in the range of motion:
@@ -76,6 +80,7 @@ Example for the quadriceps:
 - **Long femurs** → the squat and leg press favor hip flexion (glutes/posterior chain) rather than knee flexion (quadriceps).
 - **Short femurs** + good hip mobility → the squat and press can target the quadriceps better.
 - When in doubt, prefer exercises where knee flexion is maximized (linear hack squat, leg extension, walking lunges with short steps).
+- Front vs back squat: emphasis depends on execution, neither is automatically quadriceps or posterior chain (see the `quadriceps-training` skill).
 
 General rule: check that the fibers of the targeted muscle are **perpendicular to the line of force** in the exercise position. Otherwise, other muscles are doing the primary work.
 
@@ -130,6 +135,7 @@ Examples:
 - Cable lateral raises > dumbbell lateral raises (better curve).
 - Bent-over cable reverse fly > dumbbell version.
 - Cable front raises > dumbbell version.
+- Curl with back to the low pulley vs drag curl: the free weight resists along gravity (vertical), the cable redirects the line of force → more range and stretch (see the `biceps-training` skill).
 
 ## Constant tension
 
@@ -270,3 +276,4 @@ Titles translated from the French originals.
 - Video: "Here's what real muscular failure looks like (chest session)" (Nassim Sahili)
 - Video: "7 TIPS that helped me build BIG PECS" (Nassim Sahili)
 - Video: "6 KEY STEPS to (finally) feel your BACK working" (Nassim Sahili)
+- Video: "Pourquoi j'ai arrêté de faire ces 7 exercices (et ce que je fais à la place)" (Nassim Sahili) — "Why I stopped doing these 7 exercises (and what I do instead)" https://www.youtube.com/watch?v=ifMcCg9Gsac

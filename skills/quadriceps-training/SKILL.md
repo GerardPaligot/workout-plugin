@@ -71,6 +71,10 @@ To target the quadriceps effectively, you need to maximize **knee flexion** in t
 
 These exercises work the quadriceps but are inferior to the hack squat:
 - **Zercher squat**, **sissy squat**, **Bulgarian split squats**: valid in certain contexts, but clearly inferior to the hack squat for targeting the quadriceps.
+- **Front squat**: lower priority than the hack squat for the quadriceps (source's view).
+  - Lever arm between the line of force and the knee is not especially large unless you have great joint mobility or raise the heels; a back squat with raised heels does the same, which removes the expected advantage (see the `lifting-biomechanics` skill).
+  - Neither squat is automatically "quadriceps" (front) or "posterior chain" (back): emphasis depends on execution.
+  - Source also cites clavicle damage as a downside.
 
 ## Minimal quadriceps program
 
@@ -85,3 +89,4 @@ These exercises work the quadriceps but are inferior to the hack squat:
 Title translated from the French original.
 
 - Video: "QUADRICEPS EXERCISES: from BEST to WORST" (Nassim Sahili)
+- Video: "Pourquoi j'ai arrêté de faire ces 7 exercices (et ce que je fais à la place)" (Nassim Sahili) — "Why I stopped doing these 7 exercises (and what I do instead)" https://www.youtube.com/watch?v=ifMcCg9Gsac
