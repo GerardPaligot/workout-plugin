@@ -27,8 +27,9 @@ decided at the review.
 1. Determine the next block number `N+1` (= `current_mesocycle` from the JSON, +1).
 2. Read the current block's review and the goal of block N+1 in `macrocycle.yaml`.
 3. Select/adjust the exercises (`*-training` skills, slugs ∈ the catalog: plugin `catalog/exercises.yaml` + workspace `exercises.custom.yaml`).
-4. Create `mesocycle-{N+1}/sessions.yaml` from `${CLAUDE_PLUGIN_ROOT}/templates/sessions.yaml`.
-5. Update `status.yaml`: `current_mesocycle: N+1`, `current_week: 1`.
+4. Read `scheduling` in `macrocycle.yaml`; keep the mode. Rotation: no `days`, distinct session ids, file order = rotation order (default: same as previous block).
+5. Create `mesocycle-{N+1}/sessions.yaml` from `${CLAUDE_PLUGIN_ROOT}/templates/sessions.yaml` (write it first).
+6. Update `status.yaml`: `current_mesocycle: N+1`, `current_week: 1`. Rotation: `next_session_id` = first session of the new `sessions.yaml`.
 
 ## Final validation
 Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/validate.mjs" .`. On error, fix before confirming.

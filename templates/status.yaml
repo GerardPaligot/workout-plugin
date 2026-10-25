@@ -9,5 +9,6 @@ start_date: 2026-01-01
 end_date: null                          # null until completed
 last_session: null
 next_session: null
+# next_session_id: A   # rotation only: id of the next session; leave next_session null
 pauses: []                              # e.g.: [{ start: 2026-01-10, end: 2026-01-12, reason: "..." }]
 notes: []

@@ -12,6 +12,7 @@ meta:
 sessions:
   - id: A
     name: "Upper body"
+    # days: only for weekday scheduling; omit when macrocycle scheduling is rotation (sessions then run in file order)
     days: [monday, thursday]
     format: standard
     exercises:

@@ -61,6 +61,8 @@ workflow state and decide which skills are usable:
 **Rule**: every workflow skill runs `node "${CLAUDE_PLUGIN_ROOT}/scripts/state.mjs" .` as its first action
 and refuses if it is not allowed.
 
+**Scheduling**: `scheduling` in `macrocycle.yaml` is `weekdays` (default, omit) or `rotation`, fixed per program. Weekdays mode (`scheduling` omitted): sessions require `days`. Rotation: session order is `sessions.yaml` file order, ids distinct, no `days`. `status.yaml` `next_session_id` = id of the next session (current mesocycle; absent/null = first), `next_session` stays null; `track` advances it after each logged session (wraps to first), `create-mesocycle` resets it to the first session of the new block. `next_session_id` is an error in weekdays mode.
+
 ---
 
 ## Templates
@@ -119,6 +121,7 @@ start_date: YYYY-MM-DD
 end_date: YYYY-MM-DD
 frequency: "4 sessions/week"
 split: upper_lower                      # upper_lower | full_body | ppl | other
+scheduling: rotation                    # optional: weekdays (default, omit) | rotation
 mesocycles:
   - number: 1
     name: "Mechanical phase"
@@ -138,7 +141,17 @@ cardio:
   - { type: bike, duration_min: "20", frequency: "post-session", notes: null }
 ```
 
+Rotation mode (`scheduling: rotation`): `weekly_split` entries have no `day`, listed in rotation order:
+
+```yaml
+weekly_split:
+  - { session: "Upper A", muscle_groups: [chest, back] }
+  - { session: "Lower A", muscle_groups: [quadriceps, glutes] }
+```
+
 ### `mesocycle-N/sessions.yaml` — Session details
+
+`days` is required in weekdays mode and must NOT be set in rotation mode.
 
 One file per mesocycle containing **all the sessions** with their variants per microcycle.
 
@@ -168,6 +181,22 @@ sessions:
       - { order: 1, exercise: cable_squat, sets: 3, reps: "15", target_load: null, notes: "Light" }
 cardio:
   - { type: bike, duration_min: "20", intensity: "intervals", notes: null }
+```
+
+Rotation sessions (no `days`; file order = rotation order, ids distinct):
+
+```yaml
+sessions:
+  - id: A
+    name: "Upper body"
+    format: standard
+    exercises:
+      - { order: "A1", exercise: chest_press_machine, sets: 4, reps: "8", rest_s: null, target_load: 55, notes: null }
+  - id: B
+    name: "Lower body"
+    format: standard
+    exercises:
+      - { order: "B1", exercise: cable_squat, sets: 3, reps: "12", rest_s: 90, target_load: null, notes: null }
 ```
 
 ### `mesocycle-N/review.md` — Review in progress or at end of cycle

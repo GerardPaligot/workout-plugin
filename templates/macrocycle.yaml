@@ -9,6 +9,7 @@ start_date: 2026-01-01
 end_date: 2026-03-31
 frequency: "4 sessions/week"
 split: upper_lower                      # upper_lower | full_body | ppl | other
+# scheduling: weekdays            # weekdays (default) | rotation (no day on weekly_split, no days on sessions)
 mesocycles:
   - number: 1
     name: "Mechanical phase"

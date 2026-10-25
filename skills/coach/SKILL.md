@@ -27,6 +27,7 @@ Otherwise read the active program's `status.yaml` if the question is about the p
 | Training format / split, session rotation, supersets, exercise order | the `training-programming` skill (format, rotation, exercise order) / the `training-principles` skill (supersets) |
 | Equipment, feasibility | `profile.equipment` (`profile.yaml`) |
 | Current program, loads | `status.yaml` then the files in `programs/` |
+| Next session (rotation programs) | `next_session_id` in `status.yaml` (absent/null = first session) |
 
 ## How to answer
 1. Read the relevant skill(s) before answering.

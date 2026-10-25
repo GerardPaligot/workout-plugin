@@ -29,13 +29,15 @@ knowledge skills, and save it in `programs/`.
 ## Workflow
 ### Phase 1 — Information gathering
 Ask these questions before any proposal: measurable goals, priorities,
-macrocycle duration, frequency/days, load history, weak points/pain.
+macrocycle duration, scheduling mode (weekdays: fixed training days; rotation: no fixed days, ask only sessions per week; choice is final for the program), frequency/days, load history, weak points/pain.
 
 ### Phase 2 — Macrocycle architecture
 Build the breakdown into mesocycles (one goal per mesocycle), the microcycle
 structure (mechanical → metabolic → overreaching), the deloads.
 Create `programs/YYYY-MM_short-name/` with `status.yaml` (status: active), `goals.yaml`,
 `macrocycle.yaml`. Replace all dates with the real dates.
+Rotation mode only: write `scheduling: rotation` in `macrocycle.yaml`, `weekly_split` entries
+`{ session, muscle_groups }` without `day`. Weekdays mode: omit `scheduling`.
 
 ### Phase 3 — Exercise selection
 2-3 exercises max per muscle group (`*-training` skills), feasible with
@@ -46,6 +48,8 @@ If an exercise or piece of equipment is missing, have the user add it to `exerci
 ### Phase 4 — Building the sessions
 Create `mesocycle-1/sessions.yaml` (order, sets × reps per microcycle, rest, target
 loads or RPE, cardio). Do NOT create the following mesocycles (skill `create-mesocycle`).
+Rotation mode: no `days` on sessions, file order = rotation order, distinct ids; set `status.yaml`
+`next_session_id` to the first session id, keep `next_session: null`.
 
 ## Final validation
 Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/validate.mjs" .`. On error, fix before confirming.

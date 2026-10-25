@@ -23,6 +23,12 @@ Ask the user what changed, then update the relevant files.
 
 ### status.yaml (active program)
 - `current_week`, `last_session`, `next_session`.
+- Scheduling mode = `scheduling` in the program's `macrocycle.yaml` (absent = weekdays); never inferred from `status.yaml`.
+- Rotation mode (`scheduling: rotation`): after a logged session set `last_session` to the logged session's date and
+  `next_session_id` to the id following the one just done in the current `sessions.yaml` (wrap to the first
+  after the last; a single session wraps to itself); keep `next_session: null`. Out of order: follow the session
+  actually done. Absent/null `next_session_id` = next session is the first in `sessions.yaml` order. If the session just done is not in `sessions.yaml` (or the pointer's id is unknown), set the pointer to the first session. Keeps rotating across
+  weeks and deloads (no weekly reset). Never edit `sessions.yaml`. Weekdays mode: unchanged.
 - Pause: add an entry to `pauses` (`{ start, end, reason }`) and set `status: paused`.
 - Resume: set `status: active`.
 - End of program: if the last planned mesocycle (see `macrocycle.yaml`) is reviewed,

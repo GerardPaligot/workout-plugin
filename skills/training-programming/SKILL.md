@@ -166,7 +166,7 @@ Source's view (expert opinion, stated as "without any possible discussion" the b
 - Program as a cycle: a session is not attached to a weekday; sessions follow in order. 4 days/week example: week 1 chest-back, shoulders-arms, legs, chest-back; week 2 starts with shoulders-arms, legs, chest-back, shoulders-arms. At 5 days/week two sessions are done twice.
 - Claimed advantages: more interesting volume, weeks never identical, no dependence on equipment availability on a given day (e.g. chest-back always Monday evening in a crowded gym).
 - His "sweet spot": 5 sessions/week as 3 days on, 1 off, 2 on, 1 off (effort/recovery ratio "nickel"); the frequency he would recommend.
-- Note: the program files currently schedule sessions by weekday (`program-structure`: `weekly_split` `day`, sessions `days`); a rotation is not represented.
+- Note: program files schedule sessions by weekday by default (`program-structure`: `weekly_split` `day`, sessions `days`); rotation is supported via `scheduling: rotation` (see `program-structure`).
 
 ### Exercise order within a session (source's view)
 

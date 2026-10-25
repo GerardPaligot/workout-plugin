@@ -37,6 +37,10 @@ Run the plugin from your own workspace directory (any folder; it is the CLI argu
 
 Templates, schemas and the exercise catalog live in the plugin and are never edited. Add missing exercises or equipment in `exercises.custom.yaml` (same format as `catalog/exercises.yaml`). New ids only: a slug or equipment id that already exists in the catalog is rejected by the validator.
 
+## Scheduling
+
+Sessions are scheduled on fixed weekdays by default. At `create-program` you can instead opt into a session rotation (sessions follow one another in a fixed order, with no weekday attached). The choice is fixed per program. Workspaces containing a rotation program need plugin 0.2.0 or later: plugins older than 0.2.0 give no warning, they simply reject the files at validation.
+
 ## Install
 
 One command, installs into every CLI found on `PATH` (Claude Code, Codex), straight from GitHub:
