@@ -90,3 +90,16 @@ test('skills: custom exercises go to exercises.custom.yaml, never the catalog', 
   assert.match(readSkill('create-program'), /exercises\.custom\.yaml/);
   assert.match(readSkill('program-structure'), /exercises\.custom\.yaml/);
 });
+
+test('skills: rotation scheduling is documented', () => {
+  for (const name of ['program-structure', 'create-program', 'create-mesocycle', 'track']) {
+    assert.ok(readSkill(name).includes('rotation'), `${name} mentions rotation`);
+  }
+  for (const name of ['create-program', 'program-structure']) {
+    assert.ok(readSkill(name).includes('scheduling'), `${name} mentions scheduling`);
+  }
+  for (const name of ['track', 'create-mesocycle', 'program-structure', 'coach']) {
+    assert.ok(readSkill(name).includes('next_session_id'), `${name} mentions next_session_id`);
+  }
+  assert.ok(!readSkill('training-programming').includes('a rotation is not represented'));
+});

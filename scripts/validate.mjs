@@ -10209,6 +10209,37 @@ function crossValidate(docs, root, catalogDoc) {
         }
       }
     }
+    if (d.fileName === "sessions.yaml" || d.fileName === "status.yaml") {
+      const programDir = d.fileName === "sessions.yaml" ? dirname2(dirname2(d.path)) : dirname2(d.path);
+      const macro = docs.find((m) => m.fileName === "macrocycle.yaml" && dirname2(m.path) === programDir);
+      const rotation = (macro?.data?.scheduling ?? "weekdays") === "rotation";
+      if (d.fileName === "sessions.yaml") {
+        const seen = /* @__PURE__ */ new Set();
+        for (const s of d.data.sessions || []) {
+          if (rotation) {
+            if (s.days !== void 0) errors.push(`${loc}: session ${s.id} must not set "days" (program uses rotation scheduling)`);
+            if (s.id != null) {
+              if (seen.has(s.id)) errors.push(`${loc}: duplicate session id "${s.id}" (rotation needs distinct sessions)`);
+              seen.add(s.id);
+            }
+          } else if (s.days === void 0) {
+            errors.push(`${loc}: session ${s.id} has no "days" (program is scheduled by weekdays)`);
+          }
+        }
+      } else if (d.data?.next_session_id != null) {
+        const id = d.data.next_session_id;
+        if (!rotation) {
+          errors.push(`${loc}: next_session_id "${id}" is only valid when the macrocycle sets scheduling: rotation`);
+        } else {
+          const n = d.data.current_mesocycle;
+          const target = join2(programDir, `mesocycle-${n}`, "sessions.yaml");
+          const sess = docs.find((m) => m.fileName === "sessions.yaml" && m.path === target);
+          if (sess && !(sess.data.sessions || []).some((s) => s.id === id)) {
+            errors.push(`${loc}: next_session_id "${id}" not found in mesocycle-${n}/sessions.yaml`);
+          }
+        }
+      }
+    }
   }
   return errors;
 }

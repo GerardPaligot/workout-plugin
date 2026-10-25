@@ -72,6 +72,13 @@
       ],
       "format": "date"
     },
+    "next_session_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
     "pauses": {
       "type": "array",
       "items": {

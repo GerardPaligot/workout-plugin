@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, writeFileSync, mkdirSync, cpSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, mkdirSync, cpSync, readFileSync, appendFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { loadYaml, collectYamlFiles, validateDoc, crossValidate, main, loadCatalog } from '../src/validate.mjs';
@@ -84,6 +84,57 @@ test('crossValidate: profile unknown equipment id rejected', () => {
   assert.ok(errs[0].includes('unknown_machine'));
 });
 
+const macroDoc = (scheduling) => ({ path: '/ws/p/macrocycle.yaml', fileName: 'macrocycle.yaml',
+  data: { meta: { schema_version: 1, version: 1, last_modified: '2026-04-11' }, ...(scheduling ? { scheduling } : {}) } });
+const sessDoc = (sessions) => ({ path: '/ws/p/mesocycle-1/sessions.yaml', fileName: 'sessions.yaml',
+  data: { meta: { schema_version: 1, version: 1, mesocycle: 1, last_modified: '2026-01-19' }, sessions } });
+const statusDoc = (data) => ({ path: '/ws/p/status.yaml', fileName: 'status.yaml',
+  data: { meta: { schema_version: 1 }, current_mesocycle: 1, ...data } });
+const rs = (id, extra = {}) => ({ id, name: id, format: 'standard',
+  exercises: [{ order: 1, exercise: 'leg_press', sets: 3, reps: '12' }], ...extra });
+
+test('crossValidate rotation: sessions without days accepted', () => {
+  assert.deepEqual(crossValidate([cat, macroDoc('rotation'), sessDoc([rs('A'), rs('B')])]), []);
+});
+
+test('crossValidate rotation: session with days rejected', () => {
+  const errs = crossValidate([cat, macroDoc('rotation'), sessDoc([rs('A', { days: ['monday'] })])]);
+  assert.ok(errs.some((e) => e.includes('must not set "days"')));
+});
+
+test('crossValidate rotation: duplicate session ids rejected', () => {
+  const errs = crossValidate([cat, macroDoc('rotation'), sessDoc([rs('A'), rs('A')])]);
+  assert.ok(errs.some((e) => e.includes('duplicate session id')));
+});
+
+test('crossValidate rotation: single session accepted', () => {
+  assert.deepEqual(crossValidate([cat, macroDoc('rotation'), sessDoc([rs('A')])]), []);
+});
+
+test('crossValidate weekdays: session without days rejected', () => {
+  for (const docs of [[macroDoc('weekdays')], [macroDoc()], []]) {
+    const errs = crossValidate([cat, ...docs, sessDoc([rs('A')])]);
+    assert.ok(errs.some((e) => e.includes('has no "days"')));
+  }
+});
+
+test('crossValidate rotation: next_session_id unknown rejected', () => {
+  const errs = crossValidate([cat, macroDoc('rotation'), sessDoc([rs('A')]), statusDoc({ next_session_id: 'Z' })]);
+  assert.ok(errs.some((e) => e.includes('not found in mesocycle-1/sessions.yaml')));
+});
+
+test('crossValidate rotation: next_session_id known, null, or other mesocycle accepted', () => {
+  const base = [cat, macroDoc('rotation'), sessDoc([rs('A'), rs('B')])];
+  assert.deepEqual(crossValidate([...base, statusDoc({ next_session_id: 'B' })]), []);
+  assert.deepEqual(crossValidate([...base, statusDoc({ next_session_id: null })]), []);
+  assert.deepEqual(crossValidate([...base, statusDoc({ current_mesocycle: 2, next_session_id: 'Z' })]), []);
+});
+
+test('crossValidate weekdays: next_session_id rejected', () => {
+  const errs = crossValidate([cat, macroDoc(), statusDoc({ next_session_id: 'A' })]);
+  assert.ok(errs.some((e) => e.includes('only valid when')));
+});
+
 const ROOT = join(import.meta.dirname, '..');
 const FIXTURE = join(import.meta.dirname, 'fixtures');
 
@@ -141,4 +192,36 @@ test('custom catalog: invalid custom file fails schema validation', () => {
   const root = fixtureWorkspace();
   writeFileSync(join(root, 'exercises.custom.yaml'), 'meta: { schema_version: 1 }\nequipment: []\nexercises:\n  - { slug: x }\n');
   assert.equal(main(root), 1);
+});
+
+function rotationWorkspace() {
+  const root = mkdtempSync(join(tmpdir(), 'workout-validate-'));
+  cpSync(join(FIXTURE, 'workspace-rotation'), root, { recursive: true });
+  return root;
+}
+
+test('main: rotation fixture workspace is valid', () => {
+  assert.equal(main(rotationWorkspace()), 0);
+});
+
+test('main: rotation fixture with days added to a session fails', () => {
+  const root = rotationWorkspace();
+  const f = join(root, 'programs', '2026-01_rotation-program', 'mesocycle-1', 'sessions.yaml');
+  const text = readFileSync(f, 'utf8');
+  assert.ok(/^(\s*)- id: A\b/m.test(text));
+  writeFileSync(f, text.replace(/^(\s*)- id: A\b.*$/m, (m, ind) => `${m}\n${ind}  days: [monday]`));
+  assert.equal(main(root), 1);
+});
+
+test('main: next_session_id without scheduling fails', () => {
+  const root = fixtureWorkspace();
+  const f = collectYamlFiles(root).find((p) => p.endsWith('status.yaml'));
+  appendFileSync(f, '\nnext_session_id: A\n');
+  const orig = console.error;
+  const out = [];
+  console.error = (...a) => out.push(a.join(' '));
+  let code;
+  try { code = main(root); } finally { console.error = orig; }
+  assert.equal(code, 1);
+  assert.ok(out.some((l) => l.includes('only valid when')));
 });

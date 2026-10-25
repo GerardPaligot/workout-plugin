@@ -1,0 +1,13 @@
+meta:
+  schema_version: 1
+program: 2026-01_rotation-program
+status: active
+current_mesocycle: 1
+current_week: 1
+start_date: 2026-01-01
+end_date: null
+last_session: 2026-01-12
+next_session: null
+next_session_id: B
+pauses: []
+notes: []

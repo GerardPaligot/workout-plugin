@@ -1,0 +1,26 @@
+meta:
+  schema_version: 1
+  version: 1
+  mesocycle: 1
+  period: { start: 2026-01-01, end: 2026-01-28 }
+  source: null
+  last_modified: 2026-01-01
+  revisions: []
+sessions:
+  - id: A
+    name: "Upper body"
+    format: standard
+    exercises:
+      - { order: "A1", exercise: chest_press_machine, sets: 4, reps: "8", rest_s: 90, target_load: 55, notes: null }
+      - { order: "A2", exercise: seated_row, sets: 4, reps: "8", rest_s: 90, target_load: 60, notes: null }
+  - id: B
+    name: "Lower body"
+    format: standard
+    exercises:
+      - { order: "A1", exercise: cable_squat, sets: 4, reps: "10", rest_s: 90, target_load: null, notes: null }
+  - id: C
+    name: "Circuit"
+    format: circuit
+    circuit: { rounds: 3, rest_between_exercises_s: 0, rest_between_rounds_s: 120 }
+    exercises:
+      - { order: 1, exercise: cable_squat, sets: 3, reps: "15", target_load: null, notes: "Light" }

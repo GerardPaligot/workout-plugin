@@ -57,7 +57,6 @@
         "required": [
           "id",
           "name",
-          "days",
           "format",
           "exercises"
         ],

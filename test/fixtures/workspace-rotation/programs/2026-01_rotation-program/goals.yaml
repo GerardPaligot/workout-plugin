@@ -1,0 +1,21 @@
+# Goals template — copy to programs/<program>/goals.yaml
+# Allowed measurement keys: arm_right_relaxed, arm_left_relaxed,
+#   arm_right_flexed, arm_left_flexed, chest, waist,
+#   hips, neck, shoulders, thigh_right, thigh_left,
+#   calf_right, calf_left, body_weight
+# Units come from profile.yaml: units.length for circumferences, units.load for body_weight and loads
+meta:
+  schema_version: 1
+goals:
+  - id: example-goal
+    priority: 1
+    description: "Describe the measurable goal"
+    tracked_measures: [arm_right_relaxed]
+    deadline: 2026-06-30
+measurements:
+  - date: 2026-01-01
+    context: "baseline"
+    values: { arm_right_relaxed: 32, body_weight: 72 }
+    notes: null
+reference_loads:
+  - { date: 2026-01-01, exercise: chest_press_machine, load: 50, reps: 12 }

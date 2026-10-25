@@ -152,6 +152,58 @@ for (const t of ['status', 'goals', 'macrocycle', 'sessions', 'profile']) {
   });
 }
 
+const rot = () => { const m = MACROCYCLE(); m.scheduling = 'rotation'; delete m.weekly_split[0].day; return m; };
+const okDoc = (f, d) => validateDoc(validators, f, d).length === 0;
+test('macrocycle: rotation without day valid', () => assert.ok(okDoc('macrocycle.yaml', rot())));
+test('macrocycle: rotation with day rejected', () => {
+  const m = rot(); m.weekly_split[0].day = 'monday';
+  assert.ok(!okDoc('macrocycle.yaml', m));
+});
+test('macrocycle: rotation with weekly_split not an array rejected', () => {
+  const a = rot(); a.weekly_split = 'x';
+  assert.ok(!okDoc('macrocycle.yaml', a));
+  const b = rot(); b.weekly_split = {};
+  assert.ok(!okDoc('macrocycle.yaml', b));
+});
+test('macrocycle: weekdays without day rejected', () => {
+  const m = rot(); m.scheduling = 'weekdays';
+  assert.ok(!okDoc('macrocycle.yaml', m));
+});
+test('macrocycle: absent scheduling without day rejected', () => {
+  const m = rot(); delete m.scheduling;
+  assert.ok(!okDoc('macrocycle.yaml', m));
+});
+test('macrocycle: absent scheduling with day valid', () => assert.ok(okDoc('macrocycle.yaml', MACROCYCLE())));
+test('macrocycle: scheduling weekdays with day valid', () => {
+  const m = MACROCYCLE(); m.scheduling = 'weekdays';
+  assert.ok(okDoc('macrocycle.yaml', m));
+});
+test('macrocycle: unknown scheduling value rejected', () => {
+  const m = MACROCYCLE(); m.scheduling = 'bogus';
+  assert.ok(!okDoc('macrocycle.yaml', m));
+});
+test('sessions: session without days valid at schema level', () => {
+  const d = SESSIONS(); delete d.sessions[0].days;
+  assert.ok(okDoc('sessions.yaml', d));
+});
+const STATUS = () => loadYaml(join(ROOT, 'templates', 'status.yaml'));
+test('status: next_session_id string valid', () => {
+  const d = STATUS(); d.next_session_id = 'B';
+  assert.ok(okDoc('status.yaml', d));
+});
+test('status: next_session_id null valid', () => {
+  const d = STATUS(); d.next_session_id = null;
+  assert.ok(okDoc('status.yaml', d));
+});
+test('status: next_session_id empty string rejected', () => {
+  const d = STATUS(); d.next_session_id = '';
+  assert.ok(!okDoc('status.yaml', d));
+});
+test('status: unknown extra property still rejected', () => {
+  const d = STATUS(); d.bogus = 1;
+  assert.ok(!okDoc('status.yaml', d));
+});
+
 const PROG = join(FIX, 'workspace', 'programs', '2026-01_sample-program');
 for (const f of ['status', 'goals', 'macrocycle']) {
   test(`fixture program: ${f}.yaml valid`, () => {
@@ -163,4 +215,14 @@ test('fixture program: mesocycle-1 sessions.yaml valid', () => {
 });
 test('exercises.custom.yaml uses the catalog schema', () => {
   assert.deepEqual(validateDoc(validators, 'exercises.custom.yaml', loadYaml(join(FIX, 'exercises.custom.yaml'))), []);
+});
+
+const ROT_PROG = join(FIX, 'workspace-rotation', 'programs', '2026-01_rotation-program');
+for (const f of ['status', 'goals', 'macrocycle']) {
+  test(`rotation fixture program: ${f}.yaml valid`, () => {
+    assert.deepEqual(validateDoc(validators, `${f}.yaml`, loadYaml(join(ROT_PROG, `${f}.yaml`))), []);
+  });
+}
+test('rotation fixture program: mesocycle-1 sessions.yaml valid', () => {
+  assert.deepEqual(validateDoc(validators, 'sessions.yaml', loadYaml(join(ROT_PROG, 'mesocycle-1', 'sessions.yaml'))), []);
 });

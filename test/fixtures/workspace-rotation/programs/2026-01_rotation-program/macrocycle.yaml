@@ -1,0 +1,30 @@
+# Macrocycle template — copy to programs/<program>/macrocycle.yaml
+meta:
+  schema_version: 1
+  version: 1
+  last_modified: 2026-01-01
+  revisions: []                         # e.g.: [{ ref: "mesocycle-1/review.md", date: ..., summary: "..." }]
+name: "Macrocycle name"
+start_date: 2026-01-01
+end_date: 2026-03-31
+frequency: "3 sessions/week"
+scheduling: rotation
+split: upper_lower                      # upper_lower | full_body | ppl | other
+mesocycles:
+  - number: 1
+    name: "Mechanical phase"
+    weeks: { start: 1, end: 3 }
+    dates: { start: 2026-01-01, end: 2026-01-21 }
+    goal: "Heavy loads, low sets, long rests"
+    parameters:
+      sets: "3-4"
+      reps: "5-8"
+      rest_s: "120-180"
+      intensity_pct_1rm: "80-90"
+      technique: "Controlled execution"
+weekly_split:
+  - { session: "A", muscle_groups: [chest, back] }
+  - { session: "B", muscle_groups: [quadriceps, glutes] }
+  - { session: "C", muscle_groups: [chest, back, quadriceps] }
+cardio:
+  - { type: bike, duration_min: "20", frequency: "post-session", notes: null }

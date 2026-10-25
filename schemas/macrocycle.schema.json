@@ -32,6 +32,12 @@
     "frequency": {
       "type": "string"
     },
+    "scheduling": {
+      "enum": [
+        "weekdays",
+        "rotation"
+      ]
+    },
     "split": {
       "enum": [
         "upper_lower",
@@ -108,7 +114,6 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "day",
           "session"
         ],
         "properties": {
@@ -270,5 +275,43 @@
         "rear_delts"
       ]
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "scheduling"
+        ],
+        "properties": {
+          "scheduling": {
+            "const": "rotation"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "weekly_split": {
+            "items": {
+              "not": {
+                "required": [
+                  "day"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "weekly_split": {
+            "items": {
+              "required": [
+                "day"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
 }
