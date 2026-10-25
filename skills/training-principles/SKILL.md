@@ -480,22 +480,22 @@ Source's view, expert opinion; no study named.
 
 ## Sources
 
-- Video: "7 conseils qui m'ont aidé à avoir un GROS DOS" (Nassim Sahili)
-- Video: "EXERCICES ÉPAULES : du MEILLEUR au PIRE exercice" (Nassim Sahili)
-- Video: "EXERCICES TRICEPS : du MEILLEUR au PIRE" (Nassim Sahili)
-- Video: "EXERCICES BICEPS : du MEILLEUR au PIRE" (Nassim Sahili)
-- Video: "EXERCICES PECS : du MEILLEUR au PIRE" (Nassim Sahili)
-- Video: "EXERCICES QUADRICEPS : du MEILLEUR au PIRE" (Nassim Sahili)
-- Video: "EXERCICES DOS : du MEILLEUR au PIRE" (Nassim Sahili)
-- Video: "Le CARDIO a complètement changé mon physique en 8 mois" (Nassim Sahili)
-- Video: "On s'est tous trompé sur le dosage de la créatine" (Nassim Sahili)
-- Video: "Vous pensiez manger assez de protéines ? J'enquête sur les étiquettes nutritionnelles" (Nassim Sahili)
-- Video: "Voilà à quoi ressemble le vrai échec musculaire (séance pecs)" (Nassim Sahili)
-- Video: "Pourquoi vous devez faire de la musculation ET du cardio" (Nassim Sahili)
-- Video: "Comment développer (enfin) l'arrière d'épaule" (Nassim Sahili)
-- Video: "7 CONSEILS qui m'ont aidé à avoir des GROS PECTORAUX" (Nassim Sahili)
-- Video: "6 ÉTAPES CLÉS pour réussir (enfin) à sentir son DOS" (Nassim Sahili)
-- Video: "Comment créer son programme de musculation (débutants)" (Nassim Sahili)
+- Video: "7 conseils qui m'ont aidé à avoir un GROS DOS" (Nassim Sahili) — "7 tips that helped me build a BIG BACK"
+- Video: "EXERCICES ÉPAULES : du MEILLEUR au PIRE exercice" (Nassim Sahili) — "SHOULDER EXERCISES: from BEST to WORST exercise"
+- Video: "EXERCICES TRICEPS : du MEILLEUR au PIRE" (Nassim Sahili) — "TRICEPS EXERCISES: from BEST to WORST"
+- Video: "EXERCICES BICEPS : du MEILLEUR au PIRE" (Nassim Sahili) — "BICEPS EXERCISES: from BEST to WORST"
+- Video: "EXERCICES PECS : du MEILLEUR au PIRE" (Nassim Sahili) — "CHEST EXERCISES: from BEST to WORST"
+- Video: "EXERCICES QUADRICEPS : du MEILLEUR au PIRE" (Nassim Sahili) — "QUADRICEPS EXERCISES: from BEST to WORST"
+- Video: "EXERCICES DOS : du MEILLEUR au PIRE" (Nassim Sahili) — "BACK EXERCISES: from BEST to WORST"
+- Video: "Le CARDIO a complètement changé mon physique en 8 mois" (Nassim Sahili) — "CARDIO completely changed my physique in 8 months"
+- Video: "On s'est tous trompé sur le dosage de la créatine" (Nassim Sahili) — "We were all wrong about creatine dosing"
+- Video: "Vous pensiez manger assez de protéines ? J'enquête sur les étiquettes nutritionnelles" (Nassim Sahili) — "Did you think you were eating enough protein? I investigate nutrition labels"
+- Video: "Voilà à quoi ressemble le vrai échec musculaire (séance pecs)" (Nassim Sahili) — "Here's what real muscular failure looks like (chest session)"
+- Video: "Pourquoi vous devez faire de la musculation ET du cardio" (Nassim Sahili) — "Why you need to do strength training AND cardio"
+- Video: "Comment développer (enfin) l'arrière d'épaule" (Nassim Sahili) — "How to (finally) build the back of your shoulders"
+- Video: "7 CONSEILS qui m'ont aidé à avoir des GROS PECTORAUX" (Nassim Sahili) — "7 TIPS that helped me build BIG PECS"
+- Video: "6 ÉTAPES CLÉS pour réussir (enfin) à sentir son DOS" (Nassim Sahili) — "6 KEY STEPS to (finally) feel your BACK working"
+- Video: "Comment créer son programme de musculation (débutants)" (Nassim Sahili) — "How to create your strength training program (beginners)"
 - Video: "Les 5 niveaux de la PERTE DE GRAS expliqués (débutants à pro)" (Nassim Sahili) — "The 5 levels of fat loss explained (beginner to pro)" https://www.youtube.com/watch?v=Pi7j7C0aW1c
 - Video: "Pourquoi j'ai arrêté de faire ces 7 exercices (et ce que je fais à la place)" (Nassim Sahili) — "Why I stopped doing these 7 exercises (and what I do instead)" https://www.youtube.com/watch?v=ifMcCg9Gsac
 - Video: "À quel niveau de musculation êtes-vous vraiment ? (les 5 stades décryptés)" (Nassim Sahili) — "What training level are you really at? (the 5 stages explained)" https://www.youtube.com/watch?v=05WPpiDdC78

@@ -123,4 +123,4 @@ Developing the obliques is not enough to make them visible. Visibility depends d
 Titles translated from the French originals.
 
 - Video: "How to build your OBLIQUES (while keeping a slim waist)" (Nassim Sahili)
-- EMG study (2009) referenced in the video on abdominal muscle activation
+- EMG study (2009): abdominal muscle activation (cited in the video "How to build your OBLIQUES (while keeping a slim waist)")

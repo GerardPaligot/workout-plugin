@@ -36,7 +36,7 @@ The **lever arm** is the perpendicular distance between the joint involved and t
 3. **Optimize** your execution to keep a large lever arm throughout the rep.
 4. With an optimal lever arm, you get better activation of the target muscle and less compensation.
 
-### Example: lat pulldown
+### Example: lat pulldown (see the `back-training` skill)
 
 - **Good execution** (long lever arm) → excellent lat stimulation, little biceps/forearm compensation.
 - **Poor execution** (short lever arm) → weak lat stimulation, heavy biceps/forearm compensation.
@@ -55,7 +55,7 @@ Each exercise has a resistance profile that creates peak tension at a different 
 
 - **High stretch tension**: resistance is greatest when the muscle is lengthened (e.g. lat pulldown for the lats).
 - **High contraction tension**: resistance is greatest when the muscle is shortened (e.g. seated row for the lats).
-- Other examples (source's view): hip thrust → high contraction tension; one-arm dumbbell row → contraction; stiff-leg deadlift → rather stretch; machine dips for the triceps → neither extreme (uses the length-tension relationship, see below).
+- Other examples (source's view): hip thrust → high contraction tension; one-arm dumbbell row → contraction; stiff-leg deadlift → rather stretch; machine dips for the triceps → neither extreme (uses the length-tension relationship, see below) (see the `triceps-training` skill).
 
 For complete development of a muscle, you need to cover both types of tension. This lets you train the muscle through its **full range of motion**.
 
@@ -73,13 +73,13 @@ To determine whether an exercise is effective, look at the fiber direction of th
 
 An exercise's effectiveness also depends on **individual morphology**, in particular the orientation of the fibers relative to the line of force.
 
-Example for the chest:
+Example for the chest (see the `chest-training` skill):
 - **45° incline press**: the fibers directly opposing gravity are mostly those of the anterior deltoid, not the clavicular fibers of the pectorals.
 - The **flatter** the rib cage and the more **vertical** the sternum, the less the clavicular fibers will be loaded on an incline.
 - The **thicker** the rib cage and the more **inclined** the sternum, the more relevant the incline press can be.
 - A flat or slightly decline bench press puts **more pectoral fibers** in direct opposition to gravity for most morphologies.
 
-Example for the quadriceps:
+Example for the quadriceps (see the `quadriceps-training` skill):
 - **Long femurs** → the squat and leg press favor hip flexion (glutes/posterior chain) rather than knee flexion (quadriceps).
 - **Short femurs** + good hip mobility → the squat and press can target the quadriceps better.
 - When in doubt, prefer exercises where knee flexion is maximized (linear hack squat, leg extension, walking lunges with short steps).
@@ -141,7 +141,7 @@ The cable lets you **redirect the line of force** (along the cable instead of gr
 **Execution tip**: position your body so the cable is **perpendicular to the bone segment** (humerus, femur...) at about the **middle of the movement**. This creates an optimal resistance curve synchronized with the force curve.
 
 Examples:
-- Cable lateral raises > dumbbell lateral raises (better curve).
+- Cable lateral raises > dumbbell lateral raises (better curve) (see the `shoulder-training` skill).
 - Bent-over cable reverse fly > dumbbell version.
 - Cable front raises > dumbbell version.
 - Curl with back to the low pulley vs drag curl: the free weight resists along gravity (vertical), the cable redirects the line of force → more range and stretch (see the `biceps-training` skill).
@@ -166,7 +166,7 @@ Example: cable curl facing the pulley (dual-pulley / crossover station) → neit
 **Converging machines** (where the machine's arms move closer together at the end of the movement) can offer true constant tension, sometimes better than the cable.
 
 - The machine's architecture makes the weight **move away from the axis of rotation** at the end of the movement → harder at the top than at the bottom.
-- This reduces the involvement of other muscle groups (e.g. anterior deltoid on a chest press).
+- This reduces the involvement of other muscle groups (e.g. anterior deltoid on a chest press) (see the `chest-training` skill).
 - **Warning**: not all brands are equal. The quality of the convergence and of the resistance curve varies by manufacturer.
 
 **Important**: the cable does **not automatically** guarantee constant tension. It depends on body position and on the exercise. The term "constant tension" is often misused.
@@ -185,7 +185,7 @@ A machine's path directly affects which muscles and which joints are loaded.
 
 - The platform pivots around a **fixed axis of rotation**.
 - The path imposes a **hip flexion / knee flexion** ratio that can barely be changed.
-- Common problem: too much hip flexion, not enough knee flexion → works the glutes/posterior chain instead of the target muscle (e.g. quadriceps).
+- Common problem: too much hip flexion, not enough knee flexion → works the glutes/posterior chain instead of the target muscle (e.g. quadriceps) (see the `quadriceps-training` skill).
 - Examples: circular leg press, V-squat, pendulum squat.
 
 ### Rule
@@ -196,7 +196,7 @@ To target a specific muscle (e.g. quadriceps via knee flexion), prefer **linear-
 
 For free-weight curl exercises (dumbbells, barbells), the **humerus must stay perpendicular to the floor** (parallel to gravity) throughout the movement.
 
-- If the elbows flare out (humerus on a diagonal) → misalignment with gravity → suboptimal work + risk of elbow pain.
+- If the elbows flare out (humerus on a diagonal) → misalignment with gravity → suboptimal work + risk of elbow pain (see the `biceps-training` skill).
 - Special case: the EZ bar encourages flaring the elbows → recurring alignment problem.
 - The unilateral dumbbell curl lets you compensate for an elbow valgus by leaning slightly to the side.
 
@@ -210,8 +210,8 @@ Some **compound** exercises exploit this property by shortening the muscle on on
 
 | Exercise | Target muscle | Mechanism |
 |---|---|---|
-| Dips (bench/machine) | Triceps | Shortens at the elbow (extension) while lengthening at the shoulder |
-| Supinated-grip pull-ups (chin-ups) | Biceps | Shortens at the elbow (flexion) while lengthening at the shoulder |
+| Dips (bench/machine) | Triceps (see the `triceps-training` skill) | Shortens at the elbow (extension) while lengthening at the shoulder |
+| Supinated-grip pull-ups (chin-ups) | Biceps (see the `biceps-training` skill) | Shortens at the elbow (flexion) while lengthening at the shoulder |
 
 These exercises allow excellent **progressive overload** because you can always produce a lot of force → you can use heavy loads → high mechanical tension.
 
