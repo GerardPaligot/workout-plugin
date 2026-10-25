@@ -1,6 +1,6 @@
 ---
 name: training-principles
-description: "General principles of strength training for hypertrophy: progressive overload, ego lifting, exercise economy, recovery, nutrition and calorie counting. Use when: the user asks about programming, progression, training volume, nutrition, or the general approach to strength training."
+description: "General principles of strength training for hypertrophy: progressive overload, ego lifting, exercise economy, recovery, nutrition, calorie counting and fat loss. Use when: the user asks about programming, progression, training volume, nutrition, fat loss, calorie deficit, or the general approach to strength training."
 ---
 
 > **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none).
@@ -389,6 +389,35 @@ Laboratory tests on common foods (chips, basmati rice, skyr, ready meals) show t
 - **A temporary tool, not a prison**: calorie counting is useful during a learning period to get familiar with the energy value of foods. The goal is to gradually detach from it and eat intuitively in an informed way.
 - **Don't reduce eating to calories**: food is nutrients (micro and macro), balance, and pleasure — not just fuel or bricks for muscle mass.
 
+## Nutrition: fat loss
+
+### Calorie deficit is the only driver
+
+- Fat loss requires a **calorie deficit** (intake < expenditure). No exception: no fat loss = not in deficit.
+- Everything else (macros, food type, timing, sleep) only makes the deficit easier to hold, it does not replace it.
+- Fat can drop while scale weight stays flat (muscle gained offsets fat lost) → judge by measurements and appearance, not weight alone (see skill `training-programming`, measurable goals such as waist circumference).
+- Cardio is not required to lose fat; no food is "forbidden" if the deficit is there.
+- Slimming creams, detox teas, fat burners: no deficit created → useless.
+
+### Crash approach (eat less + train more): why it fails
+
+- "Eat less + train more" (skipped meals + endless cardio) can work short term but: stalls after ~4-5 weeks, hard to live with, weight comes back once stopped.
+- Prefer a livable deficit; fat loss need not be extremely restrictive (diet or training).
+- Strict weekday restriction + big weekend binge → frustration/overeating cycle. Avoid.
+
+### Training during a deficit
+
+- If only one activity is kept: **strength training over cardio** (deficit + good strength program gives better body composition than deficit + cardio). Source's claim, expert opinion.
+- Cardio stays valuable for endurance and health (see "Combining cardio and strength training").
+- For fat-loss session format and progression, see skill `training-programming`, "Fat loss".
+
+### Macronutrients and habits
+
+- Macros (protein, carbohydrates, fat) affect performance, mood, appetite, body composition.
+- Example only, not a recommendation: one coach reports easiest cuts at 1.8-2 g protein/kg and 4-6 g carbs/kg, rest as fat. Personal experience, not a studied target; individual needs vary.
+- Highly processed foods and very late meals may hurt satiety and sleep → can make the deficit harder to hold. Unquantified.
+- Sleep: probably the most powerful lifestyle lever for hormone function during a cut.
+
 ## Sources
 
 - Video: "7 conseils qui m'ont aidé à avoir un GROS DOS" (Nassim Sahili)
@@ -407,3 +436,4 @@ Laboratory tests on common foods (chips, basmati rice, skyr, ready meals) show t
 - Video: "7 CONSEILS qui m'ont aidé à avoir des GROS PECTORAUX" (Nassim Sahili)
 - Video: "6 ÉTAPES CLÉS pour réussir (enfin) à sentir son DOS" (Nassim Sahili)
 - Video: "Comment créer son programme de musculation (débutants)" (Nassim Sahili)
+- Video: "Les 5 niveaux de la PERTE DE GRAS expliqués (débutants à pro)" (Nassim Sahili) — "The 5 levels of fat loss explained (beginner to pro)" https://www.youtube.com/watch?v=Pi7j7C0aW1c

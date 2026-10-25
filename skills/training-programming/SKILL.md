@@ -135,6 +135,7 @@ The training format (distribution of muscle groups per session) must be **consis
 - Recommended format: **upper/lower** → more muscle groups per session → more energy expenditure.
 - Organize in **supersets** (chaining 2 or more exercises) to increase work density.
 - Progression within the mesocycle: gradually reduce the **rest times** → same amount of work in less time = **increased work density**.
+- Energy deficit comes mainly from diet, not from extra cardio; keep strength training as the main activity to preserve muscle (see skill `training-principles`, "Nutrition: fat loss").
 
 ### Strength gain
 
@@ -195,3 +196,4 @@ MACROCYCLE (6 months)
 ## Sources
 
 - Video: "Comment créer son programme de musculation (débutants)" (Nassim Sahili) — "How to create your strength-training program (beginners)"
+- Video: "Les 5 niveaux de la PERTE DE GRAS expliqués (débutants à pro)" (Nassim Sahili) — "The 5 levels of fat loss explained (beginner to pro)" https://www.youtube.com/watch?v=Pi7j7C0aW1c

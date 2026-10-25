@@ -92,7 +92,7 @@ Beyond 15 seconds (30s, 1 min...), you can no longer maintain maximum speed → 
 
 ## Body fat level: the condition for visibility
 
-Developing the obliques is not enough to make them visible. Visibility depends directly on **body fat level**. A suitable nutrition plan (see the `training-principles` skill → nutrition) is essential to reveal the obliques.
+Developing the obliques is not enough to make them visible. Visibility depends directly on **body fat level**. A suitable nutrition plan (see the `training-principles` skill → "Nutrition: fat loss") is essential to reveal the obliques.
 
 ## Obliques program
 
