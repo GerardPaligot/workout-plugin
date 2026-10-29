@@ -3,7 +3,7 @@ name: training-programming
 description: "Methodology for building a strength-training program: macrocycle, training format/split, session rotation, exercise order, mesocycles, microcycles, overreaching, supercompensation, deload. Use when: the user wants to build a program, choose a training format or split (PPL, upper/lower, full body), rotate sessions, order exercises within a session, asks about weekly volume or sets per muscle, organize their training cycles, plan their progression over several weeks/months, understand periodization, or asks about beginners, program variables or personalization."
 ---
 
-> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none).
+> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none). If `profile.coach_style` is `nassim`, follow `${CLAUDE_PLUGIN_ROOT}/persona/nassim.md` for tone.
 
 # Training programming: complete methodology
 

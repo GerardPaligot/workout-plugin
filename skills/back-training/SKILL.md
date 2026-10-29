@@ -3,7 +3,7 @@ name: back-training
 description: "Complete guide to back training for strength training: anatomy, exercise selection, unilateral work, pull-ups, programming. Use when: the user wants to build a back session, choose back exercises, understand back anatomy, optimize their lat development, or train the erector spinae (hyperextensions)."
 ---
 
-> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none).
+> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none). If `profile.coach_style` is `nassim`, follow `${CLAUDE_PLUGIN_ROOT}/persona/nassim.md` for tone.
 
 # Back training
 

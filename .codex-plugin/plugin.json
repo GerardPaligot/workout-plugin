@@ -1,6 +1,6 @@
 {
   "name": "workout",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Strength-training coach: onboarding, program/mesocycle planning, tracking and exercise knowledge skills.",
   "skills": "./skills/"
 }

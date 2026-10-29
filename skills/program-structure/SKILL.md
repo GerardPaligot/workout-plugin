@@ -3,7 +3,7 @@ name: program-structure
 description: "File structure for saving a strength-training program: goals, macrocycle, sessions per mesocycle, reviews. Use when: the user wants to create a new program, organize their training files, or save a generated program."
 ---
 
-> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none).
+> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none). If `profile.coach_style` is `nassim`, follow `${CLAUDE_PLUGIN_ROOT}/persona/nassim.md` for tone.
 
 # Project structure for a strength-training program
 

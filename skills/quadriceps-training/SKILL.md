@@ -3,7 +3,7 @@ name: quadriceps-training
 description: "Guide to quadriceps training for strength training: anatomy, hack squat, walking lunges, leg extension, squat, leg press. Use when: the user wants to build a quadriceps session, choose quadriceps exercises, or optimize their thigh development."
 ---
 
-> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none).
+> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none). If `profile.coach_style` is `nassim`, follow `${CLAUDE_PLUGIN_ROOT}/persona/nassim.md` for tone.
 
 # Quadriceps training
 

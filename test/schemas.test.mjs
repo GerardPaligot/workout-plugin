@@ -155,6 +155,21 @@ test('profile: valid file', () => {
   assert.deepEqual(validateDoc(validators, 'profile.yaml', PROFILE()), []);
 });
 
+test('profile: coach_style nassim, neutral and absent accepted', () => {
+  assert.deepEqual(validateDoc(validators, 'profile.yaml', PROFILE()), []);
+  for (const style of ['nassim', 'neutral']) {
+    const ok = PROFILE();
+    ok.coach_style = style;
+    assert.deepEqual(validateDoc(validators, 'profile.yaml', ok), []);
+  }
+});
+
+test('profile: unknown coach_style rejected', () => {
+  const bad = PROFILE();
+  bad.coach_style = 'arnold';
+  assert.ok(validateDoc(validators, 'profile.yaml', bad).length > 0);
+});
+
 test('profile: unknown unit rejected', () => {
   const bad = PROFILE();
   bad.units.load = 'stone';

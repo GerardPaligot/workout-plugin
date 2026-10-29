@@ -3,7 +3,7 @@ name: training-principles
 description: "General principles of strength training for hypertrophy: progressive overload, ego lifting, exercise economy, recovery, nutrition, protein, calorie counting, fat loss, supersets, technique and training to failure. Use when: the user asks about programming, progression, training volume, weekly volume, sets per muscle, supersets, nutrition, protein, fat loss, technique, training to failure, calorie deficit, or the general approach to strength training."
 ---
 
-> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none).
+> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none). If `profile.coach_style` is `nassim`, follow `${CLAUDE_PLUGIN_ROOT}/persona/nassim.md` for tone.
 > Example loads below are given in kg; express them in `profile.units.load`.
 
 # General principles of strength training

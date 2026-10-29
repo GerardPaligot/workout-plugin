@@ -8,7 +8,7 @@ Workflow (read/write files in your workspace):
 
 | Skill | Purpose |
 |---|---|
-| `onboarding` | Record language, units and available equipment in `profile.yaml`. **Always run first.** |
+| `onboarding` | Record language, optional coach style, units and available equipment in `profile.yaml`. **Always run first.** |
 | `create-program` | Build a new program (macrocycle, goals, first mesocycle). |
 | `create-mesocycle` | Build the next mesocycle's sessions. |
 | `track` | Update real-time status, log loads and measurements. |
@@ -35,6 +35,10 @@ Run the plugin from your own workspace directory (any folder; it is the CLI argu
     ├── archives/
     └── YYYY-MM_program-name/ (status.yaml, goals.yaml, macrocycle.yaml, mesocycle-N/sessions.yaml, review.md)
 ```
+
+### Coach style
+
+`profile.yaml` accepts an optional `coach_style`: `neutral` (default when absent) or `nassim`. With `nassim`, every skill follows `persona/nassim.md`: a tone inspired by Nassim Sahili's pedagogy (myth vs better option, mechanics-based reasons, caveats, tier lists, staged progressions). The coach does not impersonate him, and training content still comes only from the knowledge skills. The tone applies to chat replies only; generated workspace files stay factual. Set it during `onboarding` (or ask to change it later).
 
 Templates, schemas and the exercise catalog live in the plugin and are never edited. Add missing exercises or equipment in `exercises.custom.yaml` (same format as `catalog/exercises.yaml`). An exercise's `equipment` may be a single id or a list; ALL listed ids must be in `profile.equipment`. A custom exercise slug equal to a catalog slug overrides the catalog entry; a custom equipment id equal to a catalog id is ignored. Both give a validator warning. An exercise may also carry an optional `type` (`strength` | `calisthenics` | `cardio` | `plyometric` | `mobility`); `equipment` is an id, `null` (none) or a list. The file needs `meta`, an `equipment:` key (may be `[]`) and a non-empty `exercises:` list. A slug or equipment id defined twice inside `exercises.custom.yaml` is an error. Allowed `muscle_groups`: `chest`, `back`, `shoulders`, `biceps`, `triceps`, `quadriceps`, `hamstrings`, `lats`, `traps`, `obliques`, `forearms`, `adductors`, `glutes`, `calves`, `abs`, `core`, `rear_delts`.
 

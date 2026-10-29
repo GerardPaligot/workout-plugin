@@ -3,7 +3,7 @@ name: obliques-training
 description: "Guide to obliques training for strength training: external/internal oblique anatomy, Pallof press, suitcase deadlift, hanging knee raises, sprints. Use when: the user wants to build an obliques/abs session, choose exercises for the obliques, or optimize the visibility of their abdominal wall."
 ---
 
-> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none).
+> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none). If `profile.coach_style` is `nassim`, follow `${CLAUDE_PLUGIN_ROOT}/persona/nassim.md` for tone.
 > Example loads below are given in kg; express them in `profile.units.load`.
 
 # Obliques training

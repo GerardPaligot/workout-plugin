@@ -3,7 +3,7 @@ name: lifting-biomechanics
 description: "Biomechanical principles applied to strength training: line of force, lever arm, stretch tension and contraction tension. Use when: the user asks about how to perform an exercise, how to optimize a movement, or why an exercise stimulates a given muscle."
 ---
 
-> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none).
+> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none). If `profile.coach_style` is `nassim`, follow `${CLAUDE_PLUGIN_ROOT}/persona/nassim.md` for tone.
 
 # Biomechanics applied to strength training
 

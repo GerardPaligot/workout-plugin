@@ -3,7 +3,7 @@ name: shoulder-training
 description: "Guide to shoulder training for strength training: anatomy of the 3 heads of the deltoid, exercise ranking, vertical presses, raises, rear delts. Use when: the user wants to build a shoulder session, choose exercises for the deltoids, or optimize their shoulder development."
 ---
 
-> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none).
+> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none). If `profile.coach_style` is `nassim`, follow `${CLAUDE_PLUGIN_ROOT}/persona/nassim.md` for tone.
 > Example loads below are given in kg; express them in `profile.units.load`.
 
 # Shoulder training

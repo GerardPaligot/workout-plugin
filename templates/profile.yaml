@@ -1,5 +1,6 @@
 # Profile template — copy to profile.yaml at the workspace root (written by the onboarding skill)
 # language: code of the language used for all user-facing text (e.g.: fr, en, pt-BR)
+# coach_style (optional): neutral | nassim — tone of the coach; absent = neutral
 # units.load: kg | lb — units.length: cm | in
 # equipment[].id must exist in the equipment list of the plugin catalog or of exercises.custom.yaml
 # equipment[].category: machine | cable | free_weight | accessory | cardio

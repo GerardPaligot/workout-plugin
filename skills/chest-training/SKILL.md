@@ -3,7 +3,7 @@ name: chest-training
 description: "Guide to chest training for strength training: anatomy, clavicular vs sternal fibers, exercise ranking, dips, decline press, converging machines. Use when: the user wants to build a chest session, choose exercises for the pecs, or optimize their pectoral development."
 ---
 
-> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none).
+> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none). If `profile.coach_style` is `nassim`, follow `${CLAUDE_PLUGIN_ROOT}/persona/nassim.md` for tone.
 
 # Chest training
 

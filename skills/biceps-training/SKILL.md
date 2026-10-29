@@ -3,7 +3,7 @@ name: biceps-training
 description: "Guide to biceps training for strength training: anatomy, exercise ranking, cable curl, supinated-grip pull-ups (chin-ups), incline curl, programming. Use when: the user wants to build a biceps session, choose biceps exercises, or optimize their biceps development."
 ---
 
-> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none).
+> **Prerequisite:** if `profile.yaml` is missing at the workspace root, stop and run the `onboarding` skill first. Answer in `profile.language`, express loads and measurements in `profile.units`, and only propose exercises whose equipment is listed in `profile.equipment` (or needs none). If `profile.coach_style` is `nassim`, follow `${CLAUDE_PLUGIN_ROOT}/persona/nassim.md` for tone.
 
 # Biceps training
 

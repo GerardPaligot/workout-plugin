@@ -91,6 +91,21 @@ for (const name of UNGATED_SKILLS) {
   });
 }
 
+const PERSONA_SENTENCE = 'If `profile.coach_style` is `nassim`, follow `${CLAUDE_PLUGIN_ROOT}/persona/nassim.md` for tone.';
+for (const name of EXPECTED_SKILLS) {
+  test(`skill ${name}: persona sentence present`, () => {
+    assert.ok(readSkill(name).includes(name === 'upgrade-workspace' ? 'If `profile.yaml` exists and `profile.coach_style` is `nassim`, follow `${CLAUDE_PLUGIN_ROOT}/persona/nassim.md` for tone.' : PERSONA_SENTENCE), `${name}: persona sentence missing`);
+  });
+}
+
+test('persona/nassim.md exists with guardrails', () => {
+  const p = join(import.meta.dirname, '..', 'persona', 'nassim.md');
+  assert.ok(existsSync(p));
+  const txt = readFileSync(p, 'utf8');
+  assert.match(txt, /never claims to be him/);
+  assert.match(txt, /never override safety or accuracy|never overrides safety or accuracy/);
+});
+
 test('skill coach: read-only', () => assert.match(readSkill('coach'), /read-only/i));
 
 test('skill onboarding: no gate (it is the entry point) and writes profile.yaml', () => {

@@ -12,6 +12,7 @@
       "properties": { "schema_version": { "const": 1 } }
     },
     "language": { "type": "string", "pattern": "^[a-z]{2}(-[A-Z]{2})?$" },
+    "coach_style": { "enum": ["neutral", "nassim"] },
     "units": {
       "type": "object",
       "additionalProperties": false,

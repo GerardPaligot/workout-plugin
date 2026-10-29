@@ -4,7 +4,7 @@ description: "Bring a workspace created with plugin 0.1.0 up to 0.2.0: validate 
 ---
 
 ## Prerequisite
-None: this skill must work on older or unusual workspaces, so it has no `profile.yaml` prerequisite and no `state.mjs` gate. If neither `profile.yaml` nor `programs/` exists at the workspace root, say there is nothing to upgrade, point to the `onboarding` skill, and stop. Write every user-facing text in `profile.language` when `profile.yaml` exists (otherwise in the user's language).
+None: this skill must work on older or unusual workspaces, so it has no `profile.yaml` prerequisite and no `state.mjs` gate. If neither `profile.yaml` nor `programs/` exists at the workspace root, say there is nothing to upgrade, point to the `onboarding` skill, and stop. Write every user-facing text in `profile.language` when `profile.yaml` exists (otherwise in the user's language). If `profile.yaml` exists and `profile.coach_style` is `nassim`, follow `${CLAUDE_PLUGIN_ROOT}/persona/nassim.md` for tone.
 
 You audit a 0.1.0 workspace against plugin 0.2.0 and offer optional cleanups.
 0.1.0 files stay valid under 0.2.0 unchanged and the data carries no version marker
