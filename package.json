@@ -5,11 +5,17 @@
   "type": "module",
   "private": true,
   "license": "Apache-2.0",
-  "engines": { "node": ">=20.11" },
+  "engines": {
+    "node": ">=20.11"
+  },
   "scripts": {
-    "build": "esbuild src/state.mjs src/validate.mjs --bundle --platform=node --format=esm --target=node20 --outdir=scripts --out-extension:.js=.mjs",
+    "build": "esbuild src/state.mjs src/validate.mjs --bundle --platform=node --format=esm --target=node20 --outdir=scripts --out-extension:.js=.mjs && esbuild src/workout-data/cli.mjs --bundle --platform=node --format=esm --target=node20 '--banner:js=import { createRequire as __createRequire } from \"node:module\"; const require = __createRequire(import.meta.url);' --outfile=scripts/workout-data.mjs",
     "test": "node --test test/*.test.mjs",
-    "validate": "node scripts/validate.mjs ."
+    "validate": "node scripts/validate.mjs .",
+    "workout-data": "node scripts/workout-data.mjs"
+  },
+  "dependencies": {
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
     "ajv": "^8.17.1",

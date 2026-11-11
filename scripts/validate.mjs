@@ -7705,8 +7705,8 @@ var require_dist = __commonJS({
 });
 
 // src/validate.mjs
-import { readFileSync as readFileSync2, readdirSync, statSync, existsSync } from "node:fs";
-import { join as join2, basename, dirname as dirname2, relative, resolve } from "node:path";
+import { readFileSync as readFileSync2, readdirSync, statSync, lstatSync, existsSync } from "node:fs";
+import { join as join2, basename, dirname as dirname2, relative, resolve, isAbsolute } from "node:path";
 import { fileURLToPath as fileURLToPath2 } from "node:url";
 
 // src/common.mjs
@@ -10169,6 +10169,20 @@ function collectYamlFiles(rootDir) {
   })(rootDir);
   return out;
 }
+function collectYamlFilesWithoutSymlinks(rootDir) {
+  const out = [];
+  (function walk(dir) {
+    for (const entry of readdirSync(dir)) {
+      if (entry === "node_modules" || entry === "schemas" || entry.startsWith(".")) continue;
+      const full = join2(dir, entry);
+      const stat = lstatSync(full);
+      if (stat.isSymbolicLink()) continue;
+      if (stat.isDirectory()) walk(full);
+      else if (entry.endsWith(".yaml") || entry.endsWith(".yml")) out.push(full);
+    }
+  })(rootDir);
+  return out;
+}
 function validateDoc(validators, fileName, doc) {
   const validate = validators[fileName];
   if (!validate) return [];
@@ -10257,53 +10271,122 @@ function crossValidate(docs, root, catalogDoc) {
   }
   return errors;
 }
-function main(root) {
+function loadWorkspaceDocument(path, root, validators, errors, docs, replacement) {
+  const fileName = basename(path);
+  const location = relative(root, path);
+  let data;
+  if (replacement && resolve(replacement.path) === resolve(path)) {
+    data = replacement.data;
+  } else {
+    try {
+      data = loadYaml(path);
+    } catch (error) {
+      errors.push(`${location}: YAML parse error \u2014 ${error.message}`);
+      return;
+    }
+  }
+  for (const error of validateDoc(validators, fileName, data)) {
+    errors.push(`${location}: ${error}`);
+  }
+  if (SCHEMA_BY_FILENAME[fileName]) docs.push({ path, fileName, data });
+}
+function validateCustomCatalog(root, validators, errors) {
+  const path = join2(root, CUSTOM_CATALOG);
+  if (!existsSync(path)) return 0;
+  try {
+    const data = loadYaml(path);
+    for (const error of validateDoc(validators, CUSTOM_CATALOG, data)) {
+      errors.push(`${CUSTOM_CATALOG}: ${error}`);
+    }
+    return 1;
+  } catch {
+    return 1;
+  }
+}
+function validateDocuments(root, paths, replacement, { includeCustomCatalog = false, legacyWarnings = false } = {}) {
   const validators = buildValidators();
-  const files = collectYamlFiles(root);
   const docs = [];
-  let errorCount = 0;
-  const fail = (msg) => {
-    console.error(`\u2717 ${msg}`);
-    errorCount++;
-  };
+  const errors = [];
+  const warnings = [];
   let catalog;
   try {
     const loaded = loadCatalog(root);
     catalog = loaded.doc;
-    loaded.errors.forEach(fail);
-    loaded.warnings.forEach((w) => console.error(`! ${w}`));
-    for (const e of validateDoc(validators, "exercises.yaml", loadYaml(CATALOG_PATH))) fail(`catalog/exercises.yaml: ${e}`);
+    errors.push(...loaded.errors);
+    warnings.push(...loaded.warnings);
+    for (const error of validateDoc(validators, "exercises.yaml", loadYaml(CATALOG_PATH))) {
+      errors.push(`catalog/exercises.yaml: ${error}`);
+    }
   } catch (e) {
-    fail(`plugin catalog unreadable (${CATALOG_PATH}): ${e.message}`);
+    errors.push(`plugin catalog unreadable (${CATALOG_PATH}): ${e.message}`);
   }
-  for (const f of files) {
-    const name = basename(f);
-    const rel = relative(root, f);
-    if (rel === "exercises.yaml") {
-      console.error(`! ${rel}: legacy file ignored \u2014 the catalog now ships with the plugin; put your own entries in ${CUSTOM_CATALOG}`);
+  for (const path of paths) {
+    const fileName = basename(path);
+    const location = relative(root, path);
+    if (location === "exercises.yaml") {
+      if (legacyWarnings) {
+        warnings.push(`${location}: legacy file ignored \u2014 the catalog now ships with the plugin; put your own entries in ${CUSTOM_CATALOG}`);
+      }
       continue;
     }
-    let data;
-    try {
-      data = loadYaml(f);
-    } catch (e) {
-      fail(`${rel}: YAML parse error \u2014 ${e.message}`);
-      continue;
-    }
-    for (const e of validateDoc(validators, name, data)) fail(`${rel}: ${e}`);
-    if (SCHEMA_BY_FILENAME[name]) docs.push({ path: f, fileName: name, data });
+    if (fileName === CUSTOM_CATALOG && includeCustomCatalog) continue;
+    loadWorkspaceDocument(path, root, validators, errors, docs, replacement);
   }
+  const customDocumentCount = includeCustomCatalog ? validateCustomCatalog(root, validators, errors) : 0;
   const crossDocs = docs.filter((d) => d.fileName !== CUSTOM_CATALOG);
-  for (const e of crossValidate(crossDocs, root, catalog)) fail(e);
-  if (errorCount === 0) {
-    console.log(`\u2713 ${docs.length} valid file(s)`);
+  errors.push(...crossValidate(crossDocs, root, catalog));
+  return { errors, warnings, documentCount: docs.length + customDocumentCount };
+}
+function isWithin(parent, child) {
+  const path = relative(resolve(parent), resolve(child));
+  return path === "" || !path.startsWith("..") && !isAbsolute(path);
+}
+function validateWorkspace(root) {
+  return validateDocuments(root, collectYamlFiles(root), void 0, {
+    includeCustomCatalog: true,
+    legacyWarnings: true
+  });
+}
+function validateProgramClosure(root, programId, replacement) {
+  if (programId === "archives") throw new TypeError('programId "archives" is reserved');
+  const paths = [];
+  const profilePath = join2(root, "profile.yaml");
+  if (existsSync(profilePath)) paths.push(profilePath);
+  const programDir = join2(root, "programs", programId);
+  if (existsSync(programDir)) {
+    for (const path of collectYamlFilesWithoutSymlinks(programDir)) {
+      if (SCHEMA_BY_FILENAME[basename(path)]) paths.push(path);
+    }
+  }
+  if (replacement) {
+    const replacementPath = resolve(replacement.path);
+    if (isWithin(programDir, replacementPath) && SCHEMA_BY_FILENAME[basename(replacementPath)] && !paths.some((path) => resolve(path) === replacementPath)) {
+      paths.push(replacementPath);
+    }
+  }
+  return validateDocuments(root, paths, replacement, { includeCustomCatalog: true });
+}
+function validateProfileClosure(root, replacement) {
+  const profilePath = join2(root, "profile.yaml");
+  const paths = existsSync(profilePath) ? [profilePath] : [];
+  if (replacement && resolve(replacement.path) === resolve(profilePath) && !paths.length) paths.push(profilePath);
+  return validateDocuments(root, paths, replacement, {
+    includeCustomCatalog: true
+  });
+}
+function main(root) {
+  const result = validateWorkspace(root);
+  for (const warning of result.warnings) console.error(`! ${warning}`);
+  for (const error of result.errors) console.error(`\u2717 ${error}`);
+  if (result.errors.length === 0) {
+    console.log(`\u2713 ${result.documentCount} valid file(s)`);
     return 0;
   }
   console.error(`
-${errorCount} error(s)`);
+${result.errors.length} error(s)`);
   return 1;
 }
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath2(import.meta.url)) {
+if (process.argv[1] && basename(process.argv[1]) === "validate.mjs" && resolve(process.argv[1]) === fileURLToPath2(import.meta.url)) {
   process.exit(main(resolve(process.argv[2] || ".")));
 }
 export {
@@ -10316,7 +10399,10 @@ export {
   loadCatalog,
   loadYaml,
   main,
-  validateDoc
+  validateDoc,
+  validateProfileClosure,
+  validateProgramClosure,
+  validateWorkspace
 };
 /*! Bundled license information:
 

@@ -11,8 +11,17 @@ workspace root. Every other skill depends on it. If `profile.coach_style` is `na
    If `${CLAUDE_PLUGIN_ROOT}` is not set (e.g. in Codex), the plugin root is the directory two levels above this SKILL.md: use that path instead.
 2. `needs_onboarding` (no `profile.yaml`) → **full interview** below.
 3. Profile exists and the user asked for a change → **update mode**: ask only about the
-   requested section (language, coach style, units or equipment), edit only that part of
-   `profile.yaml`, and preserve everything else untouched.
+   requested section (language, coach style, units or equipment), and change only that
+   resource through the CLI below.
+
+## Resource CLI
+Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs"` from the workspace root.
+If `${CLAUDE_PLUGIN_ROOT}` is not set, the plugin root is the directory two levels above
+this SKILL.md; use that path instead. Pass writes as one JSON object with `--data` or
+`--data-file`. The CLI validates each accepted profile write. Never hand-edit `profile.yaml`,
+`status.yaml`, `goals.yaml`, `macrocycle.yaml`, or `sessions.yaml`. Use `workout-data` for
+every supported write. If the operation is unsupported, stop and explain that the CLI does not
+support it; do not fall back to a manual edit.
 
 ## Interview (in this order)
 1. **Language**: ask first, in English, which language everything shown to them should
@@ -31,16 +40,27 @@ workspace root. Every other skill depends on it. If `profile.coach_style` is `na
      catalog id is ignored with a warning.
    Also ask which common gear is absent (for example free weights) to confirm the list.
 
-## Write `profile.yaml`
-Follow `${CLAUDE_PLUGIN_ROOT}/schemas/profile.schema.json` and `${CLAUDE_PLUGIN_ROOT}/templates/profile.yaml`:
-- `meta.schema_version: 1`, `language`, `coach_style` (only when `nassim`; absent = `neutral`), `units.load`, `units.length`.
+## Record the profile
+Use the interview results to build these CLI payloads:
+- `language`, `coach_style` (only when `nassim`; absent = `neutral`), `units.load`, `units.length`.
+  The CLI derives `meta.schema_version: 1`; never include `meta` in a payload.
 - `equipment[]`: `{ id, name, category, muscles?, notes }`. `id` must exist in
   the catalog (plugin or `exercises.custom.yaml`); `category` ∈ `machine | cable | free_weight | accessory | cardio`.
 - Keys are always English. Free-text values (`name`, `notes`) use the user's language.
 - No unit suffix on keys; units live only in `units`.
 
-## Final validation
-Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/validate.mjs" .`. Fix every error in `profile.yaml` before confirming.
+For a first profile, call `create profile` once with `language`, `units`, and the complete
+`equipment` array; include `coach_style` only for `nassim`:
+
+```sh
+node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs" create profile --data-file profile.json
+```
+
+For existing profile fields, call `update profile` with only the changing `language`,
+`coach_style`, or `units` fields. For equipment, use `add profile-equipment`,
+`update profile-equipment --id <equipment-id>`, or `remove profile-equipment --id <equipment-id>`.
+Do not put equipment in an `update profile` payload.
+
 Summarize to the user the language, coach style, units and equipment recorded.
 
 ## What other skills do with it

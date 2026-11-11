@@ -18,6 +18,16 @@ decided at the review.
    - Do not create or modify any file.
 3. Otherwise, continue.
 
+## Resource CLI
+Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs"` from the workspace root.
+If `${CLAUDE_PLUGIN_ROOT}` is not set, the plugin root is the directory two levels above
+this SKILL.md; use that path instead. Use the program id from the state JSON as
+`--program <program-id>`. Pass writes as one JSON object through `--data` or `--data-file`.
+The CLI creates and validates the sessions document and validates the status update. Never
+hand-edit `profile.yaml`, `status.yaml`, `goals.yaml`, `macrocycle.yaml`, or `sessions.yaml`.
+Use `workout-data` for every supported write. If the operation is unsupported, stop and explain
+that the CLI does not support it; do not fall back to a manual edit.
+
 ## Absolute constraints
 - Same constraints as `create-program` (equipment, biomechanics, principles, templates).
 - Read `mesocycle-{current}/review.md`: apply the adjustments described there.
@@ -28,11 +38,12 @@ decided at the review.
 2. Read the current block's review and the goal of block N+1 in `macrocycle.yaml`.
 3. Select/adjust the exercises (`*-training` skills, slugs ∈ the catalog: plugin `catalog/exercises.yaml` + workspace `exercises.custom.yaml`).
 4. Read `scheduling` in `macrocycle.yaml`; keep the mode. Rotation: no `days`, distinct session ids, file order = rotation order (default: same as previous block).
-5. Create `mesocycle-{N+1}/sessions.yaml` from `${CLAUDE_PLUGIN_ROOT}/templates/sessions.yaml` (write it first).
-6. Update `status.yaml`: `current_mesocycle: N+1`, `current_week: 1`. Rotation: `next_session_id` = first session of the new `sessions.yaml`.
+5. Read `${CLAUDE_PLUGIN_ROOT}/templates/sessions.yaml` to plan the complete body, then call
+   `create sessions --program <program-id> --mesocycle <N+1>` first. Never overwrite an existing document.
+6. Call `update program-status --program <program-id>` with `current_mesocycle: N+1` and
+   `current_week: 1`. Rotation: include `next_session_id` as the first id in the new sessions
+   document and keep `next_session: null`.
 
-## Final validation
-Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/validate.mjs" .`. On error, fix before confirming.
 Confirm to the user the files created/modified.
 
 ## What you do NOT do

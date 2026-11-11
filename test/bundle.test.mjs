@@ -8,15 +8,69 @@ import { execFileSync } from 'node:child_process';
 const ROOT = join(import.meta.dirname, '..');
 const FIXTURE = join(ROOT, 'test', 'fixtures', 'workspace');
 
-test('bundle freshness: committed scripts/*.mjs match a fresh `npm run build`', () => {
+test('bundle freshness: committed public scripts match fresh esbuild output', () => {
   const out = mkdtempSync(join(tmpdir(), 'workout-bundle-'));
-  const build = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).scripts.build;
-  const args = build.replace(/^esbuild /, '').split(' ').map((a) => (a.startsWith('--outdir=') ? `--outdir=${out}` : a));
-  execFileSync(join(ROOT, 'node_modules', '.bin', 'esbuild'), args, { cwd: ROOT, stdio: 'pipe' });
-  for (const f of ['state.mjs', 'validate.mjs']) {
+  const esbuild = join(ROOT, 'node_modules', '.bin', 'esbuild');
+  const shared = ['--bundle', '--platform=node', '--format=esm', '--target=node20', '--out-extension:.js=.mjs'];
+  execFileSync(esbuild, ['src/state.mjs', 'src/validate.mjs', ...shared, `--outdir=${out}`], { cwd: ROOT, stdio: 'pipe' });
+  const nodeRequireBanner = '--banner:js=import { createRequire as __createRequire } from "node:module"; const require = __createRequire(import.meta.url);';
+  execFileSync(esbuild, ['src/workout-data/cli.mjs', ...shared, nodeRequireBanner, `--outfile=${join(out, 'workout-data.mjs')}`], { cwd: ROOT, stdio: 'pipe' });
+  for (const f of ['state.mjs', 'validate.mjs', 'workout-data.mjs']) {
     assert.equal(readFileSync(join(out, f), 'utf8'), readFileSync(join(ROOT, 'scripts', f), 'utf8'),
       `scripts/${f} is stale: run npm run build`);
   }
+});
+
+function invokeWorkoutData(args, workspace = FIXTURE) {
+  const cwd = mkdtempSync(join(tmpdir(), 'workout-cwd-'));
+  try {
+    return {
+      status: 0,
+      stdout: execFileSync('node', [join(ROOT, 'scripts', 'workout-data.mjs'), '--workspace', workspace, ...args], { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }),
+      stderr: '',
+    };
+  } catch (error) {
+    return {
+      status: error.status,
+      stdout: error.stdout.toString(),
+      stderr: error.stderr.toString(),
+    };
+  }
+}
+
+test('smoke: bundled workout-data CLI handles public commands from another cwd', () => {
+  const program = '2026-01_sample-program';
+  const status = invokeWorkoutData(['get', 'program-status', '--program', program]);
+  assert.equal(status.status, 0);
+  assert.equal(JSON.parse(status.stdout).data.status, 'active');
+
+  const sessions = invokeWorkoutData(['list', 'session', '--program', program, '--mesocycle', '1', '--fields', 'id,name']);
+  assert.equal(sessions.status, 0);
+  assert.deepEqual(JSON.parse(sessions.stdout).items, [
+    { id: 'A', name: 'Upper body' },
+    { id: 'C', name: 'Circuit (optional)' },
+  ]);
+
+  const invalidWrite = invokeWorkoutData(['update', 'program-status', '--program', program, '--data', '{"unknown":true}']);
+  assert.equal(invalidWrite.status, 1);
+  assert.equal(JSON.parse(invalidWrite.stderr).code, 'invalid_payload');
+
+  const validation = invokeWorkoutData(['validate', '--program', program]);
+  assert.equal(validation.status, 0);
+  assert.equal(JSON.parse(validation.stdout).ok, true);
+});
+
+test('smoke: bundled workout-data CLI creates and validates a profile from another cwd', () => {
+  const workspace = mkdtempSync(join(tmpdir(), 'workout-bundle-create-'));
+  const payload = '{"language":"en","units":{"load":"kg","length":"cm"},"equipment":[{"id":"chest_press","name":"Chest Press","category":"machine"}]}';
+  const create = invokeWorkoutData(['create', 'profile', '--data', payload], workspace);
+  assert.equal(create.status, 0, create.stderr);
+  assert.equal(JSON.parse(create.stdout).ok, true);
+  assert.match(readFileSync(join(workspace, 'profile.yaml'), 'utf8'), /language: en/);
+
+  const validation = invokeWorkoutData(['validate', '--scope', 'workspace'], workspace);
+  assert.equal(validation.status, 0, validation.stderr);
+  assert.equal(JSON.parse(validation.stdout).validation.passed, true);
 });
 
 test('smoke: bundled state.mjs runs from another cwd against a fixture workspace', () => {

@@ -18,6 +18,15 @@ into the archives, after confirmation.
    - Do not create or modify any file.
 3. Otherwise, continue.
 
+## Resource CLI
+Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs"` from the workspace root.
+If `${CLAUDE_PLUGIN_ROOT}` is not set, the plugin root is the directory two levels above
+this SKILL.md; use that path instead. Use the program id from the state JSON as
+`--program <program-id>`. Pass the status write as one JSON object with `--data`. Never
+hand-edit `profile.yaml`, `status.yaml`, `goals.yaml`, `macrocycle.yaml`, or `sessions.yaml`.
+Use `workout-data` for every supported write. If the operation is unsupported, stop and explain
+that the CLI does not support it; do not fall back to a manual edit.
+
 ## Absolute constraints
 - NEVER delete a file. Only move after explicit confirmation.
 - Read `${CLAUDE_PLUGIN_ROOT}/templates/summary.md` before creating the summary.
@@ -30,7 +39,7 @@ into the archives, after confirmation.
 2. Create `summary.md` at the root of the program directory from `${CLAUDE_PLUGIN_ROOT}/templates/summary.md`
    (measurements start→end vs goals, load progression, lessons, exercises
    to keep/replace).
-3. Set `status: archived` in `status.yaml`, fill in `end_date`.
+3. Call `update program-status --program <program-id>` with `{ "status": "archived", "end_date": "YYYY-MM-DD" }`.
 4. **Ask for confirmation**, then move the directory to `programs/archives/`
    with `mv` (Bash). Relative review refs stay valid (the whole directory is moved).
 

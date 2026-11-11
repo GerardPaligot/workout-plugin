@@ -1,6 +1,6 @@
 # workout
 
-A strength-training coach plugin for **Claude Code** and **OpenAI Codex**. It ships 19 skills (workflow + exercise knowledge), a shared exercise catalog, YAML schemas and templates, and two zero-dependency Node scripts (`state.mjs`, `validate.mjs`) that gate which skill may run and validate your data files.
+A strength-training coach plugin for **Claude Code** and **OpenAI Codex**. It ships 20 skills (workflow, CLI mechanics, and exercise knowledge), a shared exercise catalog, YAML schemas and templates, and two zero-dependency Node scripts (`state.mjs`, `validate.mjs`) that gate which skill may run and validate your data files.
 
 ## Skills
 
@@ -16,6 +16,7 @@ Workflow (read/write files in your workspace):
 | `archive-program` | Close a completed program and archive it. |
 | `upgrade-workspace` | Bring a 0.1.0 workspace up to 0.2.0: validate and review custom entries now in the catalog. Works without `profile.yaml`. |
 | `coach` | Read-only answers to training questions. |
+| `workout-data` | Inspect or change supported workout YAML through the resource CLI; workflow skills retain coaching and state decisions. |
 
 Knowledge (consulted by the others): `program-structure`, `training-programming`, `training-principles`, `lifting-biomechanics`, `biceps-training`, `back-training`, `shoulder-training`, `obliques-training`, `chest-training`, `quadriceps-training`, `triceps-training`.
 
@@ -96,10 +97,52 @@ codex plugin remove workout@workout-plugin
 
 Skills call the scripts as `node "${CLAUDE_PLUGIN_ROOT}/scripts/state.mjs" .`. Claude Code substitutes `${CLAUDE_PLUGIN_ROOT}`; Codex documents no such variable. Each skill therefore states the fallback: *the plugin root is the directory two levels above that SKILL.md*. Always run the scripts from the workspace root.
 
+## `workout-data` CLI
+
+The installed resource CLI reads and changes the five template-backed workspace YAML documents. Invoke it from any directory:
+
+```bash
+node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs" [--workspace .] <verb> <resource> [options]
+node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs" help [resource] [--format json|text]
+node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs" [--workspace .] validate (--scope workspace | --program <id>)
+```
+
+Use `help` to see available resources and verbs. When unsure about a resource's selectors or payload fields, use `help <resource>`; add `--format text` for a compact guide.
+
+In Codex, use the plugin-root fallback above in place of `${CLAUDE_PLUGIN_ROOT}`. The command defaults `--workspace` to the current directory. Program resources always require a safe immediate program-directory name through `--program`; `archives`, paths, and traversal values are rejected. `sessions`, `session`, `session-exercise`, and `session-cardio` also require a positive integer `--mesocycle`.
+
+Every `create`, `add`, and `update` accepts exactly one JSON object with `--data '<json>'` or `--data-file <utf8-json-file>`. `remove` and `move` likewise require `--data '{}'`; a session move also requires exactly one of `--before <session-id>` or `--after <session-id>`. The command accepts only the editable fields for that resource and derives its metadata. `list` accepts `--fields id,name` to project its response. Use `--as-of YYYY-MM-DD` to record a macrocycle or sessions write date. There is no generic YAML path or patch command.
+
+Successful `get` responses contain `{ ok, resource, location, selector, data }`; `list` responses use `items` in place of `data`. Successful writes contain `{ ok, operation, resource, location, selector, changed, validation }`. Errors are one JSON object on stderr with a stable code such as `invalid_payload`, `invalid_target`, `schema_invalid`, or `cross_validation`; writes return a nonzero status on error. Add `--format text` for a human-readable response, or `--quiet` to suppress a successful write receipt.
+
+Examples:
+
+```bash
+# Inspect and update the active program status.
+node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs" get program-status --program 2026-01_sample-program
+node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs" update program-status --program 2026-01_sample-program \
+  --data '{"current_week":2,"last_session":"2026-01-08"}'
+
+# Add a program goal and list only session identifiers and names.
+node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs" add goal --program 2026-01_sample-program \
+  --data '{"id":"upper-body-hypertrophy","priority":1,"description":"Build upper-body muscle.","tracked_measures":["body_weight"]}'
+node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs" list session --program 2026-01_sample-program --mesocycle 1 --fields id,name
+
+# Add an exercise to a selected session, then validate one program or the whole workspace.
+node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs" add session-exercise --program 2026-01_sample-program --mesocycle 1 --id A \
+  --data '{"order":"A3","exercise":"lat_pulldown","sets":3,"reps":"10","rest_s":90,"target_load":null,"notes":null}'
+# Move session C before session A. Moves require an empty JSON object.
+node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs" move session --program 2026-01_sample-program --mesocycle 1 --id C --before A --data '{}'
+node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs" validate --program 2026-01_sample-program
+node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs" validate --scope workspace
+```
+
+The CLI owns target resolution, JSON input, YAML preservation, validation, locking, and atomic replacement of one YAML file. Use it for every supported write to `profile.yaml`, `status.yaml`, `goals.yaml`, `macrocycle.yaml`, and `sessions.yaml`; do not hand-edit those files. If an operation is unsupported, stop rather than falling back to a manual edit. `exercises.custom.yaml` remains outside CLI v1; create or update it manually as a custom-catalog workflow, and use `upgrade-workspace` for confirmed catalog migrations. Skills continue to own state gates, user interaction, coaching decisions, summaries, and archive moves.
+
 ## Development
 
 ```bash
-npm install     # dev dependencies only (esbuild, ajv, js-yaml)
+npm install     # development dependencies plus the yaml runtime dependency
 npm run build   # bundle src/*.mjs -> scripts/*.mjs (self-contained, committed)
 npm test        # unit tests, skill checks, bundle freshness, smoke tests
 claude plugin validate .

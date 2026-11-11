@@ -1,9 +1,19 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, writeFileSync, mkdirSync, cpSync, readFileSync, appendFileSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, mkdirSync, cpSync, readFileSync, appendFileSync, rmSync, symlinkSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { loadYaml, collectYamlFiles, validateDoc, crossValidate, main, loadCatalog } from '../src/validate.mjs';
+import {
+  loadYaml,
+  collectYamlFiles,
+  validateDoc,
+  crossValidate,
+  main,
+  loadCatalog,
+  validateWorkspace,
+  validateProgramClosure,
+  validateProfileClosure,
+} from '../src/validate.mjs';
 
 test('loadYaml parses a YAML document', () => {
   const dir = mkdtempSync(join(tmpdir(), 'workout-validate-'));
@@ -271,4 +281,101 @@ test('main: next_session_id without scheduling fails', () => {
   try { code = main(root); } finally { console.error = orig; }
   assert.equal(code, 1);
   assert.ok(out.some((l) => l.includes('only valid when')));
+});
+
+test('validateWorkspace returns diagnostics without printing', () => {
+  const result = validateWorkspace(fixtureWorkspace());
+  assert.deepEqual(result.errors, []);
+  assert.deepEqual(result.warnings, []);
+  assert.equal(result.documentCount, 5);
+});
+
+test('validateProgramClosure only loads the selected live program and profile', () => {
+  const root = fixtureWorkspace();
+  const archives = join(root, 'programs', 'archives');
+  mkdirSync(archives);
+  cpSync(join(root, 'programs', '2026-01_sample-program'), join(archives, 'invalid-program'), { recursive: true });
+  writeFileSync(join(archives, 'invalid-program', 'goals.yaml'), 'not: a valid goals document\n');
+
+  const result = validateProgramClosure(root, '2026-01_sample-program');
+  assert.deepEqual(result.errors, []);
+  assert.equal(result.documentCount, 5);
+});
+
+test('validateProgramClosure uses the supplied replacement instead of rereading its target', () => {
+  const root = fixtureWorkspace();
+  const sessionsPath = join(root, 'programs', '2026-01_sample-program', 'mesocycle-1', 'sessions.yaml');
+  const replacement = loadYaml(sessionsPath);
+  replacement.sessions[0].exercises[0].exercise = 'ghost_exercise';
+
+  const result = validateProgramClosure(root, '2026-01_sample-program', {
+    path: sessionsPath,
+    fileName: 'sessions.yaml',
+    data: replacement,
+  });
+  assert.ok(result.errors.some((error) => error.includes('ghost_exercise')));
+});
+
+test('validateProfileClosure includes the merged custom catalog', () => {
+  const root = fixtureWorkspace();
+  cpSync(join(FIXTURE, 'exercises.custom.yaml'), join(root, 'exercises.custom.yaml'));
+  const result = validateProfileClosure(root);
+  assert.deepEqual(result.errors, []);
+  assert.equal(result.documentCount, 2);
+});
+
+test('validateProfileClosure validates a replacement for a document that does not exist yet', () => {
+  const root = fixtureWorkspace();
+  const profilePath = join(root, 'profile.yaml');
+  const replacement = loadYaml(profilePath);
+  rmSync(profilePath);
+  delete replacement.language;
+
+  const result = validateProfileClosure(root, {
+    path: profilePath,
+    fileName: 'profile.yaml',
+    data: replacement,
+  });
+  assert.ok(result.errors.some((error) => error.includes("must have required property 'language'")));
+});
+
+test('validateWorkspace preserves catalog warnings and errors in its result', () => {
+  const root = fixtureWorkspace();
+  writeFileSync(join(root, 'exercises.custom.yaml'),
+    'meta: { schema_version: 1 }\nequipment: [leg_press, my_sled, my_sled]\nexercises: []\n');
+
+  const result = validateWorkspace(root);
+  assert.ok(result.warnings.some((warning) => warning.includes('equipment "leg_press" already exists')));
+  assert.ok(result.errors.some((error) => error.includes('equipment "my_sled" is defined twice')));
+});
+
+test('validateProfileClosure uses a replacement over an existing profile document', () => {
+  const root = fixtureWorkspace();
+  const profilePath = join(root, 'profile.yaml');
+  const replacement = loadYaml(profilePath);
+  delete replacement.language;
+
+  const result = validateProfileClosure(root, {
+    path: profilePath,
+    fileName: 'profile.yaml',
+    data: replacement,
+  });
+  assert.ok(result.errors.some((error) => error.includes("must have required property 'language'")));
+});
+
+test('validateProgramClosure skips symlinked descendants outside the selected program', () => {
+  const root = fixtureWorkspace();
+  const programDir = join(root, 'programs', '2026-01_sample-program');
+  const outside = mkdtempSync(join(tmpdir(), 'workout-validate-outside-'));
+  mkdirSync(join(outside, 'mesocycle-99'));
+  writeFileSync(join(outside, 'mesocycle-99', 'sessions.yaml'), 'this: is invalid\n');
+  symlinkSync(outside, join(programDir, 'linked-outside'), 'dir');
+
+  const result = validateProgramClosure(root, '2026-01_sample-program');
+  assert.deepEqual(result.errors, []);
+});
+
+test('validateProgramClosure rejects archives as a program id', () => {
+  const root = fixtureWorkspace();
+  assert.throws(() => validateProgramClosure(root, 'archives'), /archives/);
 });

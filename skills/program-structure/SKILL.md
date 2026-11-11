@@ -78,7 +78,11 @@ If `${CLAUDE_PLUGIN_ROOT}` is not set (e.g. in Codex), the plugin root is the di
 | `${CLAUDE_PLUGIN_ROOT}/templates/review.md` | Review of a mesocycle | skill `review-mesocycle` |
 | `${CLAUDE_PLUGIN_ROOT}/templates/summary.md` | End-of-program summary (archiving) | skill `archive-program` |
 
-**Rule**: skills must read the matching template (`${CLAUDE_PLUGIN_ROOT}/templates/`) before creating a file, then replace the `{...}` and `YYYY-MM-DD` placeholders with real values.
+**Rule**: YAML templates inform the CLI create payloads; the CLI applies its matching
+template and derives metadata. Never hand-edit `profile.yaml`, `status.yaml`,
+`goals.yaml`, `macrocycle.yaml`, or `sessions.yaml`. Only Markdown templates are manually
+rendered: replace their `{...}` and `YYYY-MM-DD` placeholders when creating `review.md` or
+`summary.md`.
 
 ---
 
@@ -240,10 +244,10 @@ Created during or after the mesocycle to document the adjustments.
 
 ## Rules for skills
 
-1. **Read the template** from `${CLAUDE_PLUGIN_ROOT}/templates/` before creating each file.
-2. **Create the program directory** as of phase 2 (macrocycle architecture) with `goals.yaml` and `macrocycle.yaml`.
-3. **Create the mesocycle directories** and `sessions.yaml` in phase 4 (building the sessions). Start with mesocycle 1 — the following ones are created as you go.
+1. **Read the template** from `${CLAUDE_PLUGIN_ROOT}/templates/` to plan each document body.
+2. **Use the workflow skill's `workout-data` calls** to create the program directory's `goals.yaml` and `macrocycle.yaml` during phase 2.
+3. **Use `workout-data`** to create mesocycle directories and `sessions.yaml` during phase 4. Start with mesocycle 1 — the following ones are created as you go. Never hand-edit `profile.yaml`, `status.yaml`, `goals.yaml`, `macrocycle.yaml`, or `sessions.yaml`; if the CLI does not support the operation, stop rather than manually editing it.
 4. **Never overwrite** an existing file without the user's confirmation.
 5. **`review.md` files** are not created in advance — they are created when the user asks for a review.
-6. **Dates** in the templates must be replaced by the real dates computed from the start date supplied by the user.
+6. **Dates**: Put real dates computed from the user's start date in CLI create payloads for YAML files. Replace date placeholders directly only when rendering Markdown templates (`review.md` and `summary.md`).
 7. **Loads** stay at `—` if the user does not provide them; they will be filled in over time.

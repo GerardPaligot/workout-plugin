@@ -18,6 +18,17 @@ You analyze a completed mesocycle and write a review usable by the
    - Do not create or modify any file.
 3. Otherwise, continue.
 
+## Resource CLI
+Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs"` from the workspace root.
+If `${CLAUDE_PLUGIN_ROOT}` is not set, the plugin root is the directory two levels above
+this SKILL.md; use that path instead. Use the program id from the state JSON as
+`--program <program-id>`. Pass each resource write as one JSON object with `--data` or
+`--data-file`. The CLI validates each accepted YAML write; continue to write `review.md`
+directly from its Markdown template. Never hand-edit `profile.yaml`, `status.yaml`,
+`goals.yaml`, `macrocycle.yaml`, or `sessions.yaml`. Use `workout-data` for every supported
+write. If the operation is unsupported, stop and explain that the CLI does not support it; do
+not fall back to a manual edit.
+
 ## Absolute constraints
 - Read `macrocycle.yaml`, `goals.yaml` and `mesocycle-{current}/sessions.yaml` before asking questions.
 - Apply the `training-principles` skill to assess progression.
@@ -32,12 +43,10 @@ You analyze a completed mesocycle and write a review usable by the
 3. Create `mesocycle-{current}/review.md` from `${CLAUDE_PLUGIN_ROOT}/templates/review.md`:
    measurements (delta), loads (delta), what worked, what didn't work,
    concrete adjustments for the next block.
-4. Add a measurements row to `goals.yaml` (`measurements`).
-5. Add an entry to `meta.revisions` in `macrocycle.yaml`
-   (`{ ref: "mesocycle-N/review.md", date, summary }`).
+4. Add the measurements row with `add measurement --program <program-id>`.
+5. Add the revision with `add macrocycle-revision --program <program-id>` using
+   `{ ref: "mesocycle-N/review.md", date, summary }`.
 
-## Final validation
-Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/validate.mjs" .`. On error, fix before confirming.
 Confirm to the user the files created/modified.
 
 ## What you do NOT do

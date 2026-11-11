@@ -9,6 +9,9 @@ None: this skill must work on older or unusual workspaces, so it has no `profile
 You audit a 0.1.0 workspace against plugin 0.2.0 and offer optional cleanups.
 0.1.0 files stay valid under 0.2.0 unchanged and the data carries no version marker
 (`meta.schema_version` is still 1): there is nothing to convert, only entries to review.
+The v1 `workout-data` CLI does not mutate `exercises.custom.yaml` or perform catalog rename
+migrations. Keep this skill on its standalone validator and make confirmed custom-catalog edits
+carefully as part of this migration workflow.
 
 ## First action — validation
 Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/validate.mjs" .` from the workspace root (it also walks `programs/archives/`).

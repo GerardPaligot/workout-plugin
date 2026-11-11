@@ -18,32 +18,42 @@ and measurements up to date.
    - Do not create or modify any file.
 3. Otherwise, continue.
 
+## Resource CLI
+Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs"` from the workspace root.
+If `${CLAUDE_PLUGIN_ROOT}` is not set, the plugin root is the directory two levels above
+this SKILL.md; use that path instead. Use the active program id returned by the state JSON
+as `--program <program-id>`. Pass each write as one JSON object with `--data` or `--data-file`.
+The CLI validates each accepted write. Never hand-edit `profile.yaml`, `status.yaml`,
+`goals.yaml`, `macrocycle.yaml`, or `sessions.yaml`. Use `workout-data` for every supported
+write. If the operation is unsupported, stop and explain that the CLI does not support it; do
+not fall back to a manual edit.
+
 ## Workflow
-Ask the user what changed, then update the relevant files.
+Ask the user what changed, then make the relevant resource call.
 
 ### status.yaml (active program)
-- `current_week`, `last_session`, `next_session`.
+- Update `current_week`, `last_session`, `next_session`, `next_session_id`, or `status`
+  with `update program-status --program <program-id> --data '<changed fields>'`.
 - Scheduling mode = `scheduling` in the program's `macrocycle.yaml` (absent = weekdays); never inferred from `status.yaml`.
 - Rotation mode (`scheduling: rotation`): after a logged session set `last_session` to the logged session's date and
   `next_session_id` to the id following the one just done in the current `sessions.yaml` (wrap to the first
   after the last; a single session wraps to itself); keep `next_session: null`. Out of order: follow the session
   actually done. Absent/null `next_session_id` = next session is the first in `sessions.yaml` order. If the session just done is not in `sessions.yaml` (or the pointer's id is unknown), set the pointer to the first session. Keeps rotating across
   weeks and deloads (no weekly reset). Never edit `sessions.yaml`. Weekdays mode: unchanged.
-- Pause: add an entry to `pauses` (`{ start, end, reason }`) and set `status: paused`.
-- Resume: set `status: active`.
+- Pause: call `add status-pause --program <program-id>` with `{ start, end, reason }`,
+  then `update program-status` with `{ "status": "paused" }`.
+- Resume: call `update program-status` with `{ "status": "active" }`.
 - End of program: if the last planned mesocycle (see `macrocycle.yaml`) is reviewed,
   set `status: completed` (makes `archive-program` available).
-- Add a free note in `notes` if relevant.
+- Add a free note, when relevant, with `add status-note --program <program-id>`.
 
 ### goals.yaml (as you go)
-- New load: add an entry to `reference_loads` (`{ date, exercise, load, reps }`),
+- New load: use `add reference-load --program <program-id>` with `{ date, exercise, load, reps }`,
   `exercise` ∈ the catalog (plugin `catalog/exercises.yaml` + workspace `exercises.custom.yaml`). `load` is in `profile.units.load`.
-- New measurement: add an entry to `measurements` (allowed measurement keys,
+- New measurement: use `add measurement --program <program-id>` with the allowed measurement keys
   see the header of `${CLAUDE_PLUGIN_ROOT}/templates/goals.yaml`). Lengths are in `profile.units.length`,
   `body_weight` in `profile.units.load`.
 
-## Final validation
-Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/validate.mjs" .`. On error, fix before confirming.
 Confirm to the user the fields updated.
 
 ## What you do NOT do

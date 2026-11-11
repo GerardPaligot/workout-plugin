@@ -18,12 +18,22 @@ knowledge skills, and save it in `programs/`.
    - Do not create or modify any file.
 3. Otherwise, continue.
 
+## Resource CLI
+Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs"` from the workspace root.
+If `${CLAUDE_PLUGIN_ROOT}` is not set, the plugin root is the directory two levels above
+this SKILL.md; use that path instead. Choose the program id from the agreed directory name
+and pass it as `--program <program-id>`. Use one JSON object through `--data` or `--data-file`
+for each write. The CLI creates template-backed YAML and validates each accepted write. Never
+hand-edit `profile.yaml`, `status.yaml`, `goals.yaml`, `macrocycle.yaml`, or `sessions.yaml`.
+Use `workout-data` for every supported write. If the operation is unsupported, stop and explain
+that the CLI does not support it; do not fall back to a manual edit.
+
 ## Absolute constraints
 - NEVER suggest an exercise whose equipment is not in `profile.equipment` (`profile.yaml` + the catalog). An exercise's `equipment` may be a list: ALL listed ids must be in `profile.equipment`. A custom entry in `exercises.custom.yaml` overrides the catalog one (validator warning).
 - Follow the macrocycle → mesocycles → microcycles methodology (the `training-programming` skill).
 - Apply the `training-principles` skill (progressive overload, exercise economy).
 - Validate every exercise with the `lifting-biomechanics` skill.
-- Read the `${CLAUDE_PLUGIN_ROOT}/templates/*.yaml` template before creating each file, then replace the values.
+- Read the `${CLAUDE_PLUGIN_ROOT}/templates/*.yaml` template to plan each document body; the CLI applies the matching template when it creates the document.
 - Follow the `program-structure` skill for the directory tree and names.
 
 ## Workflow
@@ -34,10 +44,16 @@ macrocycle duration, scheduling mode (weekdays: fixed training days; rotation: n
 ### Phase 2 — Macrocycle architecture
 Build the breakdown into mesocycles (one goal per mesocycle), the microcycle
 structure (mechanical → metabolic → overreaching), the deloads.
-Create `programs/YYYY-MM_short-name/` with `status.yaml` (status: active), `goals.yaml`,
-`macrocycle.yaml`. Replace all dates with the real dates.
-Rotation mode only: write `scheduling: rotation` in `macrocycle.yaml`, `weekly_split` entries
-`{ session, muscle_groups }` without `day`. Weekdays mode: omit `scheduling`.
+Create the agreed `programs/YYYY-MM_short-name/` through, in order, `create program-status`,
+`create goals`, and `create macrocycle`, each with `--program <program-id>`. Supply the real
+dates in the resource payloads. `create program-status` receives the active status body;
+`create goals` receives its goals/measurements body; `create macrocycle` receives its full
+editable macrocycle body.
+For rotation, omit `next_session_id` from the `create program-status` payload: the first
+sessions document does not exist yet.
+Rotation mode only: include `scheduling: rotation` and `weekly_split` entries
+`{ session, muscle_groups }` without `day` in the `create macrocycle` payload. Weekdays mode:
+omit `scheduling` from that payload.
 
 ### Phase 3 — Exercise selection
 2-3 exercises max per muscle group (`*-training` skills), feasible with
@@ -46,13 +62,13 @@ used must exist in the catalog (plugin `catalog/exercises.yaml` or the workspace
 If an exercise or piece of equipment is missing, have the user add it to `exercises.custom.yaml` in the workspace; never edit the plugin catalog.
 
 ### Phase 4 — Building the sessions
-Create `mesocycle-1/sessions.yaml` (order, sets × reps per microcycle, rest, target
-loads or RPE, cardio). Do NOT create the following mesocycles (skill `create-mesocycle`).
-Rotation mode: no `days` on sessions, file order = rotation order, distinct ids; set `status.yaml`
-`next_session_id` to the first session id, keep `next_session: null`.
+Create the first block with `create sessions --program <program-id> --mesocycle 1`, using a
+complete sessions body (order, sets × reps per microcycle, rest, target loads or RPE, cardio).
+Do NOT create the following mesocycles (skill `create-mesocycle`).
+Rotation mode: no `days` on sessions, file order = rotation order, distinct ids; set
+`next_session_id` to the first session id and `next_session: null` only after `create sessions`
+succeeds, with `update program-status --program <program-id>`.
 
-## Final validation
-Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/validate.mjs" .`. On error, fix before confirming.
 Confirm to the user the files created and their path.
 
 ## What you do NOT do
