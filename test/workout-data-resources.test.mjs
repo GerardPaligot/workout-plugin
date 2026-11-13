@@ -48,6 +48,11 @@ test('positional help exposes concise JSON resource operations and selector payl
   assert.equal(goal.selector.option, '--id');
   assert.deepEqual(goal.payloads.add.required, ['id', 'priority', 'description', 'tracked_measures']);
   assert.deepEqual(goal.payloads.update.allowed, ['priority', 'description', 'tracked_measures', 'deadline']);
+
+  output.stdout = '';
+  assert.equal(await main(['help', 'session-exercise'], io), 0);
+  const sessionExercise = JSON.parse(output.stdout);
+  assert.deepEqual(sessionExercise.selector.item, { option: '--order', key: 'order', label: 'exercise-order', requiredFor: ['remove'] });
 });
 
 test('positional help renders a compact text guide and rejects unrelated options', async () => {
@@ -60,6 +65,7 @@ test('positional help renders a compact text guide and rejects unrelated options
   assert.match(output.stdout, /session-exercise/);
   assert.match(output.stdout, /document: sessions\.yaml/);
   assert.match(output.stdout, /--program <id> --mesocycle <n> --id <session>/);
+  assert.match(output.stdout, /--order <exercise-order> \(remove\)/);
   assert.match(output.stdout, /add: required order, exercise, sets, reps/);
 
   for (const argv of [
@@ -399,4 +405,51 @@ test('persisted nested session mutations retain unrelated comments, flow style, 
   assert.match(text, /period: \{ start: 2026-01-01, end: 2026-01-28 \}/);
   assert.match(text, /order: "A1",\n          superset: "chest-back"/);
   assert.ok(text.indexOf('id: C') < text.indexOf('id: A'));
+});
+
+
+test('session exercise removal selects one order and retains the remaining exercise', () => {
+  const sessions = document('sessions.yaml');
+  const result = applyResourceOperation(sessions, request('remove', 'session-exercise', { id: 'A', order: 'A2' }), {});
+  assert.deepEqual(result.selector, { id: 'A', order: 'A2' });
+  assert.deepEqual(readResource(sessions, request('list', 'session-exercise', { id: 'A' })).items.map(({ order }) => order), ['A1']);
+});
+
+test('session exercise add rejects duplicate normalized orders without mutation', () => {
+  const sameText = document('sessions.yaml');
+  const sameTextBefore = String(sameText);
+  expectCode(() => applyResourceOperation(sameText, request('add', 'session-exercise', { id: 'A' }), { order: 'A1', exercise: 'seated_row', sets: 3, reps: '10' }), 'already_exists');
+  assert.equal(String(sameText), sameTextBefore);
+
+  const numeric = document('sessions.yaml');
+  numeric.getIn(['sessions', 0, 'exercises', 0], true).set('order', 1);
+  const numericBefore = String(numeric);
+  expectCode(() => applyResourceOperation(numeric, request('add', 'session-exercise', { id: 'A' }), { order: '1', exercise: 'seated_row', sets: 3, reps: '10' }), 'already_exists');
+  assert.equal(String(numeric), numericBefore);
+});
+
+
+test('session exercise removal rejects missing and duplicate orders without mutation', () => {
+  const missing = document('sessions.yaml');
+  const missingBefore = String(missing);
+  expectCode(() => applyResourceOperation(missing, request('remove', 'session-exercise', { id: 'A', order: 'missing' }), {}), 'not_found');
+  assert.equal(String(missing), missingBefore);
+
+  const duplicate = document('sessions.yaml');
+  const exercises = duplicate.getIn(['sessions', 0, 'exercises'], true);
+  exercises.add(exercises.items[0].clone());
+  const duplicateBefore = String(duplicate);
+  expectCode(() => applyResourceOperation(duplicate, request('remove', 'session-exercise', { id: 'A', order: 'A1' }), {}), 'conflict');
+  assert.equal(String(duplicate), duplicateBefore);
+});
+
+test('CLI atomically rejects removal of a session exercise when it is the sole exercise', async () => {
+  const workspace = mkdtempSync(join(tmpdir(), 'workout-data-session-minimum-'));
+  cpSync(new URL('./fixtures/workspace/', import.meta.url), workspace, { recursive: true });
+  const path = join(workspace, 'programs', '2026-01_sample-program', 'mesocycle-1/sessions.yaml');
+  const original = readFileSync(path, 'utf8');
+  const { io, output } = memoryIo(workspace);
+  assert.equal(await main(['remove', 'session-exercise', '--program', '2026-01_sample-program', '--mesocycle', '1', '--id', 'C', '--order', '1', '--data', '{}'], io), 1);
+  assert.equal(JSON.parse(output.stderr).code, 'schema_invalid');
+  assert.equal(readFileSync(path, 'utf8'), original);
 });

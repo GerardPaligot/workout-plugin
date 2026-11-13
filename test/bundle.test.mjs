@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, readFileSync } from 'node:fs';
+import { cpSync, mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -58,6 +58,31 @@ test('smoke: bundled workout-data CLI handles public commands from another cwd',
   const validation = invokeWorkoutData(['validate', '--program', program]);
   assert.equal(validation.status, 0);
   assert.equal(JSON.parse(validation.stdout).ok, true);
+});
+
+
+test('smoke: bundled workout-data CLI removes a selected session exercise', () => {
+  const workspace = mkdtempSync(join(tmpdir(), 'workout-data-public-remove-'));
+  cpSync(FIXTURE, workspace, { recursive: true });
+  const result = invokeWorkoutData(['remove', 'session-exercise', '--program', '2026-01_sample-program', '--mesocycle', '1', '--id', 'A', '--order', 'A2', '--data', '{}'], workspace);
+  assert.equal(result.status, 0, result.stderr);
+  const receipt = JSON.parse(result.stdout);
+  assert.equal(receipt.ok, true);
+  assert.deepEqual(receipt.selector, { id: 'A', order: 'A2' });
+  const sessions = readFileSync(join(workspace, 'programs', '2026-01_sample-program', 'mesocycle-1', 'sessions.yaml'), 'utf8');
+  assert.doesNotMatch(sessions, /order: "A2"/);
+  assert.match(sessions, /order: "A1"/);
+});
+
+test('smoke: bundled workout-data CLI rejects a duplicate session exercise order without writing', () => {
+  const workspace = mkdtempSync(join(tmpdir(), 'workout-data-public-duplicate-order-'));
+  cpSync(FIXTURE, workspace, { recursive: true });
+  const path = join(workspace, 'programs', '2026-01_sample-program', 'mesocycle-1', 'sessions.yaml');
+  const original = readFileSync(path, 'utf8');
+  const result = invokeWorkoutData(['add', 'session-exercise', '--program', '2026-01_sample-program', '--mesocycle', '1', '--id', 'A', '--data', '{"order":"A1","exercise":"seated_row","sets":3,"reps":"10"}'], workspace);
+  assert.equal(result.status, 1);
+  assert.equal(JSON.parse(result.stderr).code, 'already_exists');
+  assert.equal(readFileSync(path, 'utf8'), original);
 });
 
 test('smoke: bundled workout-data CLI creates and validates a profile from another cwd', () => {

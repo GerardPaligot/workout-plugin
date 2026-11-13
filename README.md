@@ -111,7 +111,7 @@ Use `help` to see available resources and verbs. When unsure about a resource's 
 
 In Codex, use the plugin-root fallback above in place of `${CLAUDE_PLUGIN_ROOT}`. The command defaults `--workspace` to the current directory. Program resources always require a safe immediate program-directory name through `--program`; `archives`, paths, and traversal values are rejected. `sessions`, `session`, `session-exercise`, and `session-cardio` also require a positive integer `--mesocycle`.
 
-Every `create`, `add`, and `update` accepts exactly one JSON object with `--data '<json>'` or `--data-file <utf8-json-file>`. `remove` and `move` likewise require `--data '{}'`; a session move also requires exactly one of `--before <session-id>` or `--after <session-id>`. The command accepts only the editable fields for that resource and derives its metadata. `list` accepts `--fields id,name` to project its response. Use `--as-of YYYY-MM-DD` to record a macrocycle or sessions write date. There is no generic YAML path or patch command.
+Every `create`, `add`, and `update` accepts exactly one JSON object with `--data '<json>'` or `--data-file <utf8-json-file>`. `remove` and `move` likewise require `--data '{}'`; a session move also requires exactly one of `--before <session-id>` or `--after <session-id>`. To replace a session exercise, add its replacement with a distinct unused final `order`, then select the old item with its parent `--id <session-id>` and `--order <old-exercise-order>` for removal. A duplicate order on add returns `already_exists`; no matching removal order returns `not_found`, duplicate legacy orders return `conflict`, and removal of the final exercise returns `schema_invalid`. Exercise order cannot be changed or moved in v1. The command accepts only the editable fields for that resource and derives its metadata. `list` accepts `--fields id,name` to project its response. Use `--as-of YYYY-MM-DD` to record a macrocycle or sessions write date. There is no generic YAML path or patch command.
 
 Successful `get` responses contain `{ ok, resource, location, selector, data }`; `list` responses use `items` in place of `data`. Successful writes contain `{ ok, operation, resource, location, selector, changed, validation }`. Errors are one JSON object on stderr with a stable code such as `invalid_payload`, `invalid_target`, `schema_invalid`, or `cross_validation`; writes return a nonzero status on error. Add `--format text` for a human-readable response, or `--quiet` to suppress a successful write receipt.
 
@@ -128,9 +128,10 @@ node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs" add goal --program 2026-01
   --data '{"id":"upper-body-hypertrophy","priority":1,"description":"Build upper-body muscle.","tracked_measures":["body_weight"]}'
 node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs" list session --program 2026-01_sample-program --mesocycle 1 --fields id,name
 
-# Add an exercise to a selected session, then validate one program or the whole workspace.
+# For an unstarted block, add a replacement with a distinct final order, then remove the old item.
 node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs" add session-exercise --program 2026-01_sample-program --mesocycle 1 --id A \
   --data '{"order":"A3","exercise":"lat_pulldown","sets":3,"reps":"10","rest_s":90,"target_load":null,"notes":null}'
+node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs" remove session-exercise --program 2026-01_sample-program --mesocycle 1 --id A --order A2 --data '{}'
 # Move session C before session A. Moves require an empty JSON object.
 node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs" move session --program 2026-01_sample-program --mesocycle 1 --id C --before A --data '{}'
 node "${CLAUDE_PLUGIN_ROOT}/scripts/workout-data.mjs" validate --program 2026-01_sample-program

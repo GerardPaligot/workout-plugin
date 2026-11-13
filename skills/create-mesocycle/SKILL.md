@@ -40,6 +40,13 @@ that the CLI does not support it; do not fall back to a manual edit.
 4. Read `scheduling` in `macrocycle.yaml`; keep the mode. Rotation: no `days`, distinct session ids, file order = rotation order (default: same as previous block).
 5. Read `${CLAUDE_PLUGIN_ROOT}/templates/sessions.yaml` to plan the complete body, then call
    `create sessions --program <program-id> --mesocycle <N+1>` first. Never overwrite an existing document.
+   If the new block remains unstarted and an exercise needs adaptation, list its session exercises,
+   add the approved replacement with a distinct unused final `order`, then call
+   `remove session-exercise --program <program-id> --mesocycle <N+1> --id <session-id>
+   --order <old-exercise-order> --data '{}'`. Never edit `sessions.yaml` directly. Adding a
+   duplicate order returns `already_exists`; an unknown removal order returns `not_found`,
+   duplicate legacy orders return `conflict`, and the final exercise cannot be removed. Exercise
+   order cannot be changed or moved in v1, so choose the replacement's final unused order.
 6. Call `update program-status --program <program-id>` with `current_mesocycle: N+1` and
    `current_week: 1`. Rotation: include `next_session_id` as the first id in the new sessions
    document and keep `next_session: null`.

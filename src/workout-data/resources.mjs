@@ -69,8 +69,8 @@ export const RESOURCE_DEFINITIONS = Object.freeze({
   session: definition('sessions.yaml', 'mesocycle', ['sessions'], identified, ['list', 'get', 'add', 'update', 'remove', 'move'], {
     selectorKey: 'id', add: { required: ['id', 'name', 'format', 'exercises'], optional: ['days', 'circuit'] }, update: ['name', 'days', 'format', 'circuit'], forbidden: ['id', 'exercises'],
   }),
-  'session-exercise': definition('sessions.yaml', 'mesocycle', ['sessions', '$session', 'exercises'], appendOnly, ['list', 'add'], {
-    owner: { option: 'id', resource: 'session', selectorKey: 'id' },
+  'session-exercise': definition('sessions.yaml', 'mesocycle', ['sessions', '$session', 'exercises'], appendOnly, ['list', 'add', 'remove'], {
+    owner: { option: 'id', resource: 'session', selectorKey: 'id' }, itemSelectorKey: 'order', itemSelectorLabel: 'exercise-order',
     add: { required: ['order', 'exercise', 'sets', 'reps'], optional: ['superset', 'rest_s', 'target_load', 'notes'] },
   }),
   'session-cardio': definition('sessions.yaml', 'mesocycle', ['cardio'], appendOnly, ['list', 'add'], {
@@ -143,6 +143,13 @@ export function resolveResourceRequest(args) {
     throw invalidTarget('--before and --after are only valid for move session.');
   }
 
+  const requiresItemSelector = definition.itemSelectorKey && !['list', 'add'].includes(operation);
+  if (requiresItemSelector) {
+    requiredOption(options, 'order', `This resource requires --order for its exercise.`);
+  } else if (options.order !== undefined) {
+    throw invalidTarget('This resource does not accept --order.');
+  }
+
   return Object.freeze({
     operation,
     resource,
@@ -150,6 +157,7 @@ export function resolveResourceRequest(args) {
     program,
     mesocycle,
     selector: resolveSelector(definition, operation, options),
+    itemSelector: requiresItemSelector ? { [definition.itemSelectorKey]: options.order } : null,
     placement: operation === 'move' ? (options.before === undefined ? { after: options.after } : { before: options.before }) : null,
     asOf: options['as-of'],
   });
@@ -192,7 +200,9 @@ function findMatches(sequence, selector) {
   if (!selector) return [];
   const [key, wanted] = Object.entries(selector)[0];
   return sequence.items.reduce((matches, item, index) => {
-    if (isMap(item) && valueOf(item.get(key, true)) === wanted) matches.push({ item, index });
+    if (!isMap(item)) return matches;
+    const value = valueOf(item.get(key, true));
+    if (value === wanted || (key === 'order' && String(value) === wanted)) matches.push({ item, index });
     return matches;
   }, []);
 }
@@ -265,11 +275,18 @@ export function applyResourceOperation(document, request, payload) {
       if (findMatches(collection, { [key]: payload[key] }).length > 0) {
         throw new ResourceRequestError('already_exists', `A resource already uses ${key} ${JSON.stringify(payload[key])}.`);
       }
+    } else if (definition.itemSelectorKey) {
+      const key = definition.itemSelectorKey;
+      if (findMatches(collection, { [key]: payload[key] }).length > 0) {
+        throw new ResourceRequestError('already_exists', `A resource already uses ${key} ${JSON.stringify(payload[key])}.`);
+      }
     }
     collection.add(definition.itemPayload ? payload[definition.itemPayload] : payload);
   } else {
     const collection = definition.selector === singleton ? null : routeNode(document, request);
-    const selected = definition.selector === singleton ? selectedNode(document, request) : selectorError(findMatches(collection, request.selector), request.selector);
+    const selected = definition.selector === singleton
+      ? selectedNode(document, request)
+      : selectorError(findMatches(collection, request.itemSelector ?? request.selector), request.itemSelector ?? request.selector);
     if ((operation === 'remove' || operation === 'move') && Object.keys(payload).length !== 0) {
       throw invalidPayload(`${operation} requires an empty payload object.`);
     }
@@ -297,5 +314,5 @@ export function applyResourceOperation(document, request, payload) {
     }
   }
   touchVersion(document, request);
-  return { selector: request.selector, changed: [definition.route[0] ?? request.resource] };
+  return { selector: request.itemSelector ? { ...request.selector, ...request.itemSelector } : request.selector, changed: [definition.route[0] ?? request.resource] };
 }

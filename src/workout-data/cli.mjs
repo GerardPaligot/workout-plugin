@@ -6,7 +6,7 @@ import { applyResourceOperation, readResource, RESOURCE_DEFINITIONS, ResourceReq
 import { atomicReplace, createFromTemplate, loadRoundTripDocument, resolveTarget, withTargetLock } from './workspace.mjs';
 import { validateProfileClosure, validateProgramClosure, validateWorkspace } from '../validate.mjs';
 
-const VALUE_OPTIONS = new Set(['workspace', 'data', 'data-file', 'program', 'mesocycle', 'id', 'as-of', 'format', 'fields', 'before', 'after', 'scope']);
+const VALUE_OPTIONS = new Set(['workspace', 'data', 'data-file', 'program', 'mesocycle', 'id', 'order', 'as-of', 'format', 'fields', 'before', 'after', 'scope']);
 const FLAG_OPTIONS = new Set(['help', 'quiet']);
 const WRITE_OPERATIONS = new Set(['create', 'add', 'update', 'remove', 'move']);
 const HELP = 'Usage: workout-data [--workspace <path>] <verb> <resource> [options]';
@@ -121,7 +121,18 @@ function targetSyntax(definition) {
 }
 
 function selectorGuide(definition) {
-  if (definition.owner) return { type: 'owner', option: '--id', owner: definition.owner.resource, key: definition.owner.selectorKey };
+  if (definition.owner) {
+    const selector = { type: 'owner', option: '--id', owner: definition.owner.resource, key: definition.owner.selectorKey };
+    if (definition.itemSelectorKey) {
+      selector.item = {
+        option: '--order',
+        key: definition.itemSelectorKey,
+        label: definition.itemSelectorLabel ?? definition.itemSelectorKey,
+        requiredFor: ['remove'],
+      };
+    }
+    return selector;
+  }
   if (definition.selector === 'id') return { type: 'identifier', option: '--id', key: definition.selectorKey };
   return { type: definition.selector };
 }
@@ -152,10 +163,13 @@ function helpText(resource) {
   const selector = resource.selector.type === 'owner'
     ? ' --id <session>'
     : resource.selector.type === 'identifier' ? ` ${resource.selector.option} <${resource.selector.key}>` : '';
+  const itemSelector = resource.selector.item
+    ? ` ${resource.selector.item.option} <${resource.selector.item.label}> (${resource.selector.item.requiredFor.join(', ')})`
+    : '';
   const lines = [
     resource.resource,
     `document: ${resource.document}`,
-    `target: ${resource.target}${selector}`,
+    `target: ${resource.target}${selector}${itemSelector}`,
     `verbs: ${resource.verbs.join(', ')}`,
   ];
   for (const [operation, payload] of Object.entries(resource.payloads)) {
@@ -167,7 +181,10 @@ function helpText(resource) {
 }
 
 function overviewSelector(selector) {
-  if (selector.type === 'owner') return '--id <session>';
+  if (selector.type === 'owner') {
+    const itemSelector = selector.item ? ` ${selector.item.option} <${selector.item.label}> (${selector.item.requiredFor.join(', ')})` : '';
+    return `--id <session>${itemSelector}`;
+  }
   if (selector.type === 'identifier') return `${selector.option} <${selector.key}>`;
   return selector.type;
 }

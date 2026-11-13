@@ -65,6 +65,13 @@ If an exercise or piece of equipment is missing, have the user add it to `exerci
 Create the first block with `create sessions --program <program-id> --mesocycle 1`, using a
 complete sessions body (order, sets × reps per microcycle, rest, target loads or RPE, cardio).
 Do NOT create the following mesocycles (skill `create-mesocycle`).
+If the first block is still unstarted and a planned exercise must change after creation, list
+the session exercises, add the approved replacement with a distinct unused final `order`, then
+use `remove session-exercise --program <program-id> --mesocycle 1 --id <session-id>
+--order <old-exercise-order> --data '{}'`. Never hand-edit the sessions file. Adding a duplicate
+order returns `already_exists`; a missing removal order returns `not_found`, duplicate legacy
+orders return `conflict`, and the CLI will not remove a session's final exercise. Exercise order
+cannot be changed or moved in v1, so choose the replacement's final unused order when adding it.
 Rotation mode: no `days` on sessions, file order = rotation order, distinct ids; set
 `next_session_id` to the first session id and `next_session: null` only after `create sessions`
 succeeds, with `update program-status --program <program-id>`.

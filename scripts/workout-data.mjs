@@ -15128,8 +15128,10 @@ var RESOURCE_DEFINITIONS = Object.freeze({
     update: ["name", "days", "format", "circuit"],
     forbidden: ["id", "exercises"]
   }),
-  "session-exercise": definition("sessions.yaml", "mesocycle", ["sessions", "$session", "exercises"], appendOnly, ["list", "add"], {
+  "session-exercise": definition("sessions.yaml", "mesocycle", ["sessions", "$session", "exercises"], appendOnly, ["list", "add", "remove"], {
     owner: { option: "id", resource: "session", selectorKey: "id" },
+    itemSelectorKey: "order",
+    itemSelectorLabel: "exercise-order",
     add: { required: ["order", "exercise", "sets", "reps"], optional: ["superset", "rest_s", "target_load", "notes"] }
   }),
   "session-cardio": definition("sessions.yaml", "mesocycle", ["cardio"], appendOnly, ["list", "add"], {
@@ -15194,6 +15196,12 @@ function resolveResourceRequest(args) {
   } else if (options.before !== void 0 || options.after !== void 0) {
     throw invalidTarget("--before and --after are only valid for move session.");
   }
+  const requiresItemSelector = definition2.itemSelectorKey && !["list", "add"].includes(operation);
+  if (requiresItemSelector) {
+    requiredOption(options, "order", `This resource requires --order for its exercise.`);
+  } else if (options.order !== void 0) {
+    throw invalidTarget("This resource does not accept --order.");
+  }
   return Object.freeze({
     operation,
     resource,
@@ -15201,6 +15209,7 @@ function resolveResourceRequest(args) {
     program,
     mesocycle,
     selector: resolveSelector(definition2, operation, options),
+    itemSelector: requiresItemSelector ? { [definition2.itemSelectorKey]: options.order } : null,
     placement: operation === "move" ? options.before === void 0 ? { after: options.after } : { before: options.before } : null,
     asOf: options["as-of"]
   });
@@ -15237,7 +15246,9 @@ function findMatches(sequence, selector) {
   if (!selector) return [];
   const [key, wanted] = Object.entries(selector)[0];
   return sequence.items.reduce((matches, item, index) => {
-    if ((0, import_yaml.isMap)(item) && valueOf(item.get(key, true)) === wanted) matches.push({ item, index });
+    if (!(0, import_yaml.isMap)(item)) return matches;
+    const value = valueOf(item.get(key, true));
+    if (value === wanted || key === "order" && String(value) === wanted) matches.push({ item, index });
     return matches;
   }, []);
 }
@@ -15302,11 +15313,16 @@ function applyResourceOperation(document, request, payload) {
       if (findMatches(collection, { [key]: payload[key] }).length > 0) {
         throw new ResourceRequestError("already_exists", `A resource already uses ${key} ${JSON.stringify(payload[key])}.`);
       }
+    } else if (definition2.itemSelectorKey) {
+      const key = definition2.itemSelectorKey;
+      if (findMatches(collection, { [key]: payload[key] }).length > 0) {
+        throw new ResourceRequestError("already_exists", `A resource already uses ${key} ${JSON.stringify(payload[key])}.`);
+      }
     }
     collection.add(definition2.itemPayload ? payload[definition2.itemPayload] : payload);
   } else {
     const collection = definition2.selector === singleton ? null : routeNode(document, request);
-    const selected = definition2.selector === singleton ? selectedNode(document, request) : selectorError(findMatches(collection, request.selector), request.selector);
+    const selected = definition2.selector === singleton ? selectedNode(document, request) : selectorError(findMatches(collection, request.itemSelector ?? request.selector), request.itemSelector ?? request.selector);
     if ((operation === "remove" || operation === "move") && Object.keys(payload).length !== 0) {
       throw invalidPayload(`${operation} requires an empty payload object.`);
     }
@@ -15334,7 +15350,7 @@ function applyResourceOperation(document, request, payload) {
     }
   }
   touchVersion(document, request);
-  return { selector: request.selector, changed: [definition2.route[0] ?? request.resource] };
+  return { selector: request.itemSelector ? { ...request.selector, ...request.itemSelector } : request.selector, changed: [definition2.route[0] ?? request.resource] };
 }
 
 // src/workout-data/workspace.mjs
@@ -18359,7 +18375,7 @@ if (process.argv[1] && basename2(process.argv[1]) === "validate.mjs" && resolve2
 }
 
 // src/workout-data/cli.mjs
-var VALUE_OPTIONS = /* @__PURE__ */ new Set(["workspace", "data", "data-file", "program", "mesocycle", "id", "as-of", "format", "fields", "before", "after", "scope"]);
+var VALUE_OPTIONS = /* @__PURE__ */ new Set(["workspace", "data", "data-file", "program", "mesocycle", "id", "order", "as-of", "format", "fields", "before", "after", "scope"]);
 var FLAG_OPTIONS = /* @__PURE__ */ new Set(["help", "quiet"]);
 var WRITE_OPERATIONS = /* @__PURE__ */ new Set(["create", "add", "update", "remove", "move"]);
 var HELP = "Usage: workout-data [--workspace <path>] <verb> <resource> [options]";
@@ -18462,7 +18478,18 @@ function targetSyntax(definition2) {
   return definition2.target === "workspace" ? "workspace" : definition2.target === "program" ? "--program <id>" : "--program <id> --mesocycle <n>";
 }
 function selectorGuide(definition2) {
-  if (definition2.owner) return { type: "owner", option: "--id", owner: definition2.owner.resource, key: definition2.owner.selectorKey };
+  if (definition2.owner) {
+    const selector = { type: "owner", option: "--id", owner: definition2.owner.resource, key: definition2.owner.selectorKey };
+    if (definition2.itemSelectorKey) {
+      selector.item = {
+        option: "--order",
+        key: definition2.itemSelectorKey,
+        label: definition2.itemSelectorLabel ?? definition2.itemSelectorKey,
+        requiredFor: ["remove"]
+      };
+    }
+    return selector;
+  }
   if (definition2.selector === "id") return { type: "identifier", option: "--id", key: definition2.selectorKey };
   return { type: definition2.selector };
 }
@@ -18488,10 +18515,11 @@ function helpResource(resource, definition2) {
 }
 function helpText(resource) {
   const selector = resource.selector.type === "owner" ? " --id <session>" : resource.selector.type === "identifier" ? ` ${resource.selector.option} <${resource.selector.key}>` : "";
+  const itemSelector = resource.selector.item ? ` ${resource.selector.item.option} <${resource.selector.item.label}> (${resource.selector.item.requiredFor.join(", ")})` : "";
   const lines = [
     resource.resource,
     `document: ${resource.document}`,
-    `target: ${resource.target}${selector}`,
+    `target: ${resource.target}${selector}${itemSelector}`,
     `verbs: ${resource.verbs.join(", ")}`
   ];
   for (const [operation, payload] of Object.entries(resource.payloads)) {
@@ -18502,7 +18530,10 @@ function helpText(resource) {
   return lines.join("\n");
 }
 function overviewSelector(selector) {
-  if (selector.type === "owner") return "--id <session>";
+  if (selector.type === "owner") {
+    const itemSelector = selector.item ? ` ${selector.item.option} <${selector.item.label}> (${selector.item.requiredFor.join(", ")})` : "";
+    return `--id <session>${itemSelector}`;
+  }
   if (selector.type === "identifier") return `${selector.option} <${selector.key}>`;
   return selector.type;
 }

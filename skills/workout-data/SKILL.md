@@ -31,10 +31,19 @@ user may create or update it manually as a custom-catalog workflow. Use
 - Use `get` for a singleton and `list` for a collection. Use `--fields id,name` only with `list`.
 - Program resources require `--program <program-id>`. Sessions resources also require
   `--mesocycle <positive-integer>`. Identified resources require `--id` when selecting an
-  existing item; `session-exercise --id` selects its parent session.
+  existing item; `session-exercise --id` selects its parent session. To remove one exercise,
+  also pass its existing `--order`: `remove session-exercise --program <program-id>
+  --mesocycle <n> --id <session-id> --order <exercise-order> --data '{}'`.
 - `create`, `add`, and `update` take exactly one JSON object through `--data` or
   `--data-file`. `remove` and `move` require `--data '{}'`; a session move requires
   exactly one of `--before <session-id>` or `--after <session-id>`.
+- To replace a planned exercise, first add its approved replacement with a distinct, unused final
+  `order`, then remove the old order. Adding a duplicate order returns `already_exists`. Before
+  removing, list that session's exercises to obtain the old `order`; an absent order returns
+  `not_found`, while duplicate legacy orders are ambiguous and return `conflict`. The CLI rejects
+  removal that would leave a session with no exercises (`schema_invalid`) and leaves the YAML
+  unchanged. Exercise order cannot be changed or moved in v1; if session rotation order needs
+  adjustment afterward, use the supported `move session` operation instead.
 - Use `validate --program <program-id>` for a target-program audit or
   `validate --scope workspace` for the full workspace audit.
 
