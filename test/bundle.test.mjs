@@ -74,6 +74,18 @@ test('smoke: bundled workout-data CLI removes a selected session exercise', () =
   assert.match(sessions, /order: "A1"/);
 });
 
+test('smoke: bundled workout-data CLI updates a selected session exercise', () => {
+  const workspace = mkdtempSync(join(tmpdir(), 'workout-data-public-update-exercise-'));
+  cpSync(FIXTURE, workspace, { recursive: true });
+  const result = invokeWorkoutData(['update', 'session-exercise', '--program', '2026-01_sample-program', '--mesocycle', '1', '--id', 'A', '--order', 'A1', '--data', '{"order":"A3","reps":"10-12","target_load":57.5}'], workspace);
+  assert.equal(result.status, 0, result.stderr);
+  assert.deepEqual(JSON.parse(result.stdout).selector, { id: 'A', order: 'A3' });
+  const sessions = readFileSync(join(workspace, 'programs', '2026-01_sample-program', 'mesocycle-1', 'sessions.yaml'), 'utf8');
+  assert.match(sessions, /reps: "10-12"/);
+  assert.match(sessions, /target_load: 57.5/);
+  assert.match(sessions, /# format: standard/);
+});
+
 test('smoke: bundled workout-data CLI rejects a duplicate session exercise order without writing', () => {
   const workspace = mkdtempSync(join(tmpdir(), 'workout-data-public-duplicate-order-'));
   cpSync(FIXTURE, workspace, { recursive: true });

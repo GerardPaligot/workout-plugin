@@ -148,7 +148,7 @@ test('writer skills: name only matrix-supported resource mutations', () => {
     'macrocycle-cardio': ['list', 'add'],
     sessions: ['get', 'create', 'update'],
     session: ['list', 'get', 'add', 'update', 'remove', 'move'],
-    'session-exercise': ['list', 'add', 'remove'],
+    'session-exercise': ['list', 'add', 'update', 'remove'],
     'session-cardio': ['list', 'add'],
   };
   const inlineMutationPattern = /`([a-z]+) ([a-z][a-z-]*)\b(?:\s+--[^`]*)?`/g;

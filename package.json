@@ -1,6 +1,6 @@
 {
   "name": "workout-plugin",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Strength-training coach plugin (skills + state/validate scripts) for Claude Code and OpenAI Codex",
   "type": "module",
   "private": true,

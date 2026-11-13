@@ -69,9 +69,10 @@ export const RESOURCE_DEFINITIONS = Object.freeze({
   session: definition('sessions.yaml', 'mesocycle', ['sessions'], identified, ['list', 'get', 'add', 'update', 'remove', 'move'], {
     selectorKey: 'id', add: { required: ['id', 'name', 'format', 'exercises'], optional: ['days', 'circuit'] }, update: ['name', 'days', 'format', 'circuit'], forbidden: ['id', 'exercises'],
   }),
-  'session-exercise': definition('sessions.yaml', 'mesocycle', ['sessions', '$session', 'exercises'], appendOnly, ['list', 'add', 'remove'], {
+  'session-exercise': definition('sessions.yaml', 'mesocycle', ['sessions', '$session', 'exercises'], appendOnly, ['list', 'add', 'update', 'remove'], {
     owner: { option: 'id', resource: 'session', selectorKey: 'id' }, itemSelectorKey: 'order', itemSelectorLabel: 'exercise-order',
     add: { required: ['order', 'exercise', 'sets', 'reps'], optional: ['superset', 'rest_s', 'target_load', 'notes'] },
+    update: ['order', 'superset', 'exercise', 'sets', 'reps', 'rest_s', 'target_load', 'notes'],
   }),
   'session-cardio': definition('sessions.yaml', 'mesocycle', ['cardio'], appendOnly, ['list', 'add'], {
     add: { required: ['type', 'duration_min'], optional: ['intensity', 'notes'] },
@@ -292,6 +293,12 @@ export function applyResourceOperation(document, request, payload) {
     }
     if (operation === 'update') {
       assertAllowedPayload(definition, operation, payload);
+      if (definition.itemSelectorKey && Object.hasOwn(payload, definition.itemSelectorKey)) {
+        const matches = findMatches(collection, { [definition.itemSelectorKey]: payload[definition.itemSelectorKey] });
+        if (matches.some((match) => match.item !== selected.item)) {
+          throw new ResourceRequestError('already_exists', `A resource already uses ${definition.itemSelectorKey} ${JSON.stringify(payload[definition.itemSelectorKey])}.`);
+        }
+      }
       if (request.resource === 'session' && payload.format === 'circuit' && !Object.hasOwn(payload, 'circuit')) {
         throw invalidPayload('A circuit session update requires circuit.');
       }
@@ -314,5 +321,9 @@ export function applyResourceOperation(document, request, payload) {
     }
   }
   touchVersion(document, request);
-  return { selector: request.itemSelector ? { ...request.selector, ...request.itemSelector } : request.selector, changed: [definition.route[0] ?? request.resource] };
+  const selector = request.itemSelector ? { ...request.selector, ...request.itemSelector } : request.selector;
+  if (operation === 'update' && request.itemSelector && Object.hasOwn(payload, definition.itemSelectorKey)) {
+    selector[definition.itemSelectorKey] = payload[definition.itemSelectorKey];
+  }
+  return { selector, changed: [definition.route[0] ?? request.resource] };
 }

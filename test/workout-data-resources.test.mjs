@@ -52,7 +52,7 @@ test('positional help exposes concise JSON resource operations and selector payl
   output.stdout = '';
   assert.equal(await main(['help', 'session-exercise'], io), 0);
   const sessionExercise = JSON.parse(output.stdout);
-  assert.deepEqual(sessionExercise.selector.item, { option: '--order', key: 'order', label: 'exercise-order', requiredFor: ['remove'] });
+  assert.deepEqual(sessionExercise.selector.item, { option: '--order', key: 'order', label: 'exercise-order', requiredFor: ['update', 'remove'] });
 });
 
 test('positional help renders a compact text guide and rejects unrelated options', async () => {
@@ -65,7 +65,7 @@ test('positional help renders a compact text guide and rejects unrelated options
   assert.match(output.stdout, /session-exercise/);
   assert.match(output.stdout, /document: sessions\.yaml/);
   assert.match(output.stdout, /--program <id> --mesocycle <n> --id <session>/);
-  assert.match(output.stdout, /--order <exercise-order> \(remove\)/);
+  assert.match(output.stdout, /--order <exercise-order> \(update, remove\)/);
   assert.match(output.stdout, /add: required order, exercise, sets, reps/);
 
   for (const argv of [
@@ -407,6 +407,55 @@ test('persisted nested session mutations retain unrelated comments, flow style, 
   assert.ok(text.indexOf('id: C') < text.indexOf('id: A'));
 });
 
+
+test('session exercise update patches mutable fields and retains the selected exercise comments', () => {
+  const sessions = document('sessions.yaml');
+  const result = applyResourceOperation(sessions, request('update', 'session-exercise', { id: 'A', order: 'A1' }), {
+    order: 'A3',
+    reps: '10-12',
+    target_load: 57.5,
+    notes: 'Pause at contraction',
+  });
+  assert.deepEqual(result.selector, { id: 'A', order: 'A3' });
+  const exercise = readResource(sessions, request('list', 'session-exercise', { id: 'A' })).items.find(({ order }) => order === 'A3');
+  assert.deepEqual(exercise, {
+    order: 'A3', superset: 'chest-back', exercise: 'chest_press_machine', sets: 4,
+    reps: '10-12', rest_s: null, target_load: 57.5, notes: 'Pause at contraction',
+  });
+});
+
+test('session exercise update rejects an empty payload and duplicate normalized new order without mutation', () => {
+  const empty = document('sessions.yaml');
+  const emptyBefore = String(empty);
+  expectCode(() => applyResourceOperation(empty, request('update', 'session-exercise', { id: 'A', order: 'A1' }), {}), 'invalid_payload');
+  assert.equal(String(empty), emptyBefore);
+
+  const duplicate = document('sessions.yaml');
+  const duplicateBefore = String(duplicate);
+  expectCode(() => applyResourceOperation(duplicate, request('update', 'session-exercise', { id: 'A', order: 'A1' }), { order: 'A2' }), 'already_exists');
+  assert.equal(String(duplicate), duplicateBefore);
+});
+
+test('CLI persists a session exercise update and rejects invalid changes without writing', async () => {
+  const workspace = mkdtempSync(join(tmpdir(), 'workout-data-session-exercise-update-'));
+  cpSync(new URL('./fixtures/workspace/', import.meta.url), workspace, { recursive: true });
+  const program = '2026-01_sample-program';
+  const path = join(workspace, 'programs', program, 'mesocycle-1', 'sessions.yaml');
+  const { io, output } = memoryIo(workspace);
+  assert.equal(await main(['update', 'session-exercise', '--program', program, '--mesocycle', '1', '--id', 'A', '--order', 'A1', '--data', '{"order":"A3","sets":5,"reps":"10-12","target_load":57.5}'], io), 0);
+  const receipt = JSON.parse(output.stdout);
+  assert.deepEqual(receipt.selector, { id: 'A', order: 'A3' });
+  const persisted = readFileSync(path, 'utf8');
+  assert.match(persisted, /order: "A3"/);
+  assert.match(persisted, /sets: 5/);
+  assert.match(persisted, /# format: standard/);
+
+  output.stderr = '';
+  const beforeInvalid = readFileSync(path, 'utf8');
+  assert.equal(await main(['update', 'session-exercise', '--program', program, '--mesocycle', '1', '--id', 'A', '--order', 'A3', '--data', '{"sets":0}'], io), 1);
+  assert.equal(JSON.parse(output.stderr).code, 'schema_invalid');
+  assert.equal(readFileSync(path, 'utf8'), beforeInvalid);
+});
 
 test('session exercise removal selects one order and retains the remaining exercise', () => {
   const sessions = document('sessions.yaml');

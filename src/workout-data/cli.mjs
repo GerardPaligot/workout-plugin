@@ -128,7 +128,7 @@ function selectorGuide(definition) {
         option: '--order',
         key: definition.itemSelectorKey,
         label: definition.itemSelectorLabel ?? definition.itemSelectorKey,
-        requiredFor: ['remove'],
+        requiredFor: definition.verbs.filter((verb) => !['list', 'add'].includes(verb)),
       };
     }
     return selector;

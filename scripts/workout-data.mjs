@@ -15128,11 +15128,12 @@ var RESOURCE_DEFINITIONS = Object.freeze({
     update: ["name", "days", "format", "circuit"],
     forbidden: ["id", "exercises"]
   }),
-  "session-exercise": definition("sessions.yaml", "mesocycle", ["sessions", "$session", "exercises"], appendOnly, ["list", "add", "remove"], {
+  "session-exercise": definition("sessions.yaml", "mesocycle", ["sessions", "$session", "exercises"], appendOnly, ["list", "add", "update", "remove"], {
     owner: { option: "id", resource: "session", selectorKey: "id" },
     itemSelectorKey: "order",
     itemSelectorLabel: "exercise-order",
-    add: { required: ["order", "exercise", "sets", "reps"], optional: ["superset", "rest_s", "target_load", "notes"] }
+    add: { required: ["order", "exercise", "sets", "reps"], optional: ["superset", "rest_s", "target_load", "notes"] },
+    update: ["order", "superset", "exercise", "sets", "reps", "rest_s", "target_load", "notes"]
   }),
   "session-cardio": definition("sessions.yaml", "mesocycle", ["cardio"], appendOnly, ["list", "add"], {
     add: { required: ["type", "duration_min"], optional: ["intensity", "notes"] }
@@ -15328,6 +15329,12 @@ function applyResourceOperation(document, request, payload) {
     }
     if (operation === "update") {
       assertAllowedPayload(definition2, operation, payload);
+      if (definition2.itemSelectorKey && Object.hasOwn(payload, definition2.itemSelectorKey)) {
+        const matches = findMatches(collection, { [definition2.itemSelectorKey]: payload[definition2.itemSelectorKey] });
+        if (matches.some((match) => match.item !== selected.item)) {
+          throw new ResourceRequestError("already_exists", `A resource already uses ${definition2.itemSelectorKey} ${JSON.stringify(payload[definition2.itemSelectorKey])}.`);
+        }
+      }
       if (request.resource === "session" && payload.format === "circuit" && !Object.hasOwn(payload, "circuit")) {
         throw invalidPayload("A circuit session update requires circuit.");
       }
@@ -15350,7 +15357,11 @@ function applyResourceOperation(document, request, payload) {
     }
   }
   touchVersion(document, request);
-  return { selector: request.itemSelector ? { ...request.selector, ...request.itemSelector } : request.selector, changed: [definition2.route[0] ?? request.resource] };
+  const selector = request.itemSelector ? { ...request.selector, ...request.itemSelector } : request.selector;
+  if (operation === "update" && request.itemSelector && Object.hasOwn(payload, definition2.itemSelectorKey)) {
+    selector[definition2.itemSelectorKey] = payload[definition2.itemSelectorKey];
+  }
+  return { selector, changed: [definition2.route[0] ?? request.resource] };
 }
 
 // src/workout-data/workspace.mjs
@@ -18485,7 +18496,7 @@ function selectorGuide(definition2) {
         option: "--order",
         key: definition2.itemSelectorKey,
         label: definition2.itemSelectorLabel ?? definition2.itemSelectorKey,
-        requiredFor: ["remove"]
+        requiredFor: definition2.verbs.filter((verb) => !["list", "add"].includes(verb))
       };
     }
     return selector;
