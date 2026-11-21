@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-node20:
+    name: Test (Node 20.11.1)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '20.11.1'
+          cache: npm
+      - run: npm ci
+      # The suite checks the committed bundles against a fresh build in a temporary directory.
+      - run: npm test
+
+  test-node24:
+    name: Test (Node 24)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+
+  native:
+    name: openGym native compatibility
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: DuarteSantos8/openGym
+          ref: e4a68a94c42a3c17cbd560d66ce2e46a7048ab99
+          path: _upstream/opengym
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            _upstream/opengym/api/package-lock.json
+            _upstream/opengym/mcp/package-lock.json
+      - run: npm ci
+      - run: npm ci --prefix _upstream/opengym/api
+      - run: npm ci --prefix _upstream/opengym/mcp
+      - run: node test/ci-native/run.mjs "$GITHUB_WORKSPACE/_upstream/opengym"
+
+  required:
+    name: CI required
+    if: always()
+    needs: [test-node20, test-node24, native]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check all jobs passed
+        env:
+          NODE20_RESULT: ${{ needs.test-node20.result }}
+          NODE24_RESULT: ${{ needs.test-node24.result }}
+          NATIVE_RESULT: ${{ needs.native.result }}
+        run: test "$NODE20_RESULT" = success && test "$NODE24_RESULT" = success && test "$NATIVE_RESULT" = success

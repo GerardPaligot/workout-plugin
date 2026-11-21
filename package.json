@@ -1,6 +1,6 @@
 {
   "name": "workout-plugin",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "Strength-training coach plugin (skills + state/validate scripts) for Claude Code and OpenAI Codex",
   "type": "module",
   "private": true,
@@ -9,7 +9,7 @@
     "node": ">=20.11"
   },
   "scripts": {
-    "build": "esbuild src/state.mjs src/validate.mjs --bundle --platform=node --format=esm --target=node20 --outdir=scripts --out-extension:.js=.mjs && esbuild src/workout-data/cli.mjs --bundle --platform=node --format=esm --target=node20 '--banner:js=import { createRequire as __createRequire } from \"node:module\"; const require = __createRequire(import.meta.url);' --outfile=scripts/workout-data.mjs",
+    "build": "esbuild src/state.mjs src/validate.mjs --bundle --platform=node --format=esm --target=node20 --outdir=scripts --out-extension:.js=.mjs && esbuild src/workout-data/cli.mjs --bundle --platform=node --format=esm --target=node20 '--banner:js=import { createRequire as __createRequire } from \"node:module\"; const require = __createRequire(import.meta.url);' --outfile=scripts/workout-data.mjs && esbuild src/opengym/cli.mjs --bundle --platform=node --format=esm --target=node20 --outfile=plugins/workout-opengym/skills/opengym/scripts/workout-opengym.mjs && cp plugins/workout-opengym/skills/opengym/scripts/workout-opengym.mjs scripts/workout-opengym.mjs",
     "test": "node --test test/*.test.mjs",
     "validate": "node scripts/validate.mjs .",
     "workout-data": "node scripts/workout-data.mjs"

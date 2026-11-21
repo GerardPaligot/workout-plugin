@@ -4,6 +4,7 @@ import { pathToFileURL } from 'node:url';
 import { existsSync } from 'node:fs';
 import { applyResourceOperation, readResource, RESOURCE_DEFINITIONS, ResourceRequestError, resolveResourceRequest } from './resources.mjs';
 import { atomicReplace, createFromTemplate, loadRoundTripDocument, resolveTarget, withTargetLock } from './workspace.mjs';
+import { readBackend } from '../opengym-projection.mjs';
 import { validateProfileClosure, validateProgramClosure, validateWorkspace } from '../validate.mjs';
 
 const VALUE_OPTIONS = new Set(['workspace', 'data', 'data-file', 'program', 'mesocycle', 'id', 'order', 'as-of', 'format', 'fields', 'before', 'after', 'scope']);
@@ -265,6 +266,9 @@ function validateMutation(target, request, document) {
 
 async function writeResource(target, request, payload) {
   return withTargetLock(target.path, async () => {
+    if (request.resource === 'program-status' && ['last_session', 'next_session', 'next_session_id'].some((key) => Object.hasOwn(payload ?? {}, key)) && readBackend(target.programDir)) {
+      throw new ResourceRequestError('external_progress', 'Session progress is managed by the selected external backend.');
+    }
     const document = request.operation === 'create'
       ? createFromTemplate(request.resource, payload, target, request.asOf)
       : loadRoundTripDocument(target.path);

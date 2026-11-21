@@ -1,0 +1,279 @@
+[
+  {
+    "name": "create_routine",
+    "description": "Create a routine in the user's openGym plan (it syncs to all their devices), e.g. \"squat 5 × 5 at 100 kg, plank 3 × 60 s, Tuesdays and Fridays\". Exercises are matched against the library like log_workout: when a name matches several or none, nothing is saved and `problems` lists candidates to put to the user. Each exercise starts the way picking it in the app starts it; only what you pass is set on top. `weekdays` puts it on those days of the weekly plan, next to whatever is planned there already. Call with dry_run: true first when you interpreted anything, show the preview, and save once the user agrees.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "exercises": {
+          "minItems": 1,
+          "maxItems": 40,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "exercise": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120,
+                "description": "Exercise name as the user said it (\"barbell squat\"), or an exercise id from search_exercises or an earlier answer (an id never matches the wrong exercise)."
+              },
+              "sets": {
+                "description": "Number of sets. Omit for the profile's default (3 unless they set their own).",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              },
+              "reps": {
+                "description": "Reps per set, for a rep exercise.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100
+              },
+              "seconds": {
+                "description": "Seconds per set, for a hold (plank). Not with reps.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 3600
+              },
+              "weight": {
+                "description": "Planned load in `unit`; omit or 0 to start from what the user lifted last time.",
+                "type": "number",
+                "minimum": 0
+              },
+              "rest_sec": {
+                "description": "Rest after each set, seconds. 0 or omitted: the global rest timer.",
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 900
+              },
+              "note": {
+                "description": "A note shown with this exercise in the workout.",
+                "type": "string",
+                "maxLength": 280
+              }
+            },
+            "required": [
+              "exercise"
+            ]
+          }
+        },
+        "weekdays": {
+          "description": "The weekdays to plan it on.",
+          "maxItems": 7,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "sunday",
+              "monday",
+              "tuesday",
+              "wednesday",
+              "thursday",
+              "friday",
+              "saturday"
+            ]
+          }
+        },
+        "unit": {
+          "description": "The unit weights are given in; defaults to the profile's.",
+          "type": "string",
+          "enum": [
+            "kg",
+            "lb"
+          ]
+        },
+        "dry_run": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "exercises"
+      ],
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
+    "execution": {
+      "taskSupport": "forbidden"
+    }
+  },
+  {
+    "name": "update_routine",
+    "description": "Change a routine: rename it, replace its exercise list, append exercises, or move it to other weekdays. Use routine_id from list_routines. `exercises` is the whole new list in order; an exercise named again keeps everything its slot had (rest, warm-ups, progression, notes) except what you pass. `add_exercises` appends. `weekdays` is every day it should be on (it leaves the others); omit it to leave the schedule alone. Pass expected_revision (from get_routine) when the user confirmed a change against what they saw: if the profile moved since, nothing is saved and you get a conflict to read again.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "routine_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "exercises": {
+          "minItems": 1,
+          "maxItems": 40,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "exercise": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120,
+                "description": "Exercise name as the user said it (\"barbell squat\"), or an exercise id from search_exercises or an earlier answer (an id never matches the wrong exercise)."
+              },
+              "sets": {
+                "description": "Number of sets. Omit for the profile's default (3 unless they set their own).",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              },
+              "reps": {
+                "description": "Reps per set, for a rep exercise.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100
+              },
+              "seconds": {
+                "description": "Seconds per set, for a hold (plank). Not with reps.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 3600
+              },
+              "weight": {
+                "description": "Planned load in `unit`; omit or 0 to start from what the user lifted last time.",
+                "type": "number",
+                "minimum": 0
+              },
+              "rest_sec": {
+                "description": "Rest after each set, seconds. 0 or omitted: the global rest timer.",
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 900
+              },
+              "note": {
+                "description": "A note shown with this exercise in the workout.",
+                "type": "string",
+                "maxLength": 280
+              }
+            },
+            "required": [
+              "exercise"
+            ]
+          }
+        },
+        "add_exercises": {
+          "minItems": 1,
+          "maxItems": 40,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "exercise": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120,
+                "description": "Exercise name as the user said it (\"barbell squat\"), or an exercise id from search_exercises or an earlier answer (an id never matches the wrong exercise)."
+              },
+              "sets": {
+                "description": "Number of sets. Omit for the profile's default (3 unless they set their own).",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              },
+              "reps": {
+                "description": "Reps per set, for a rep exercise.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100
+              },
+              "seconds": {
+                "description": "Seconds per set, for a hold (plank). Not with reps.",
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 3600
+              },
+              "weight": {
+                "description": "Planned load in `unit`; omit or 0 to start from what the user lifted last time.",
+                "type": "number",
+                "minimum": 0
+              },
+              "rest_sec": {
+                "description": "Rest after each set, seconds. 0 or omitted: the global rest timer.",
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 900
+              },
+              "note": {
+                "description": "A note shown with this exercise in the workout.",
+                "type": "string",
+                "maxLength": 280
+              }
+            },
+            "required": [
+              "exercise"
+            ]
+          }
+        },
+        "weekdays": {
+          "maxItems": 7,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "sunday",
+              "monday",
+              "tuesday",
+              "wednesday",
+              "thursday",
+              "friday",
+              "saturday"
+            ]
+          }
+        },
+        "unit": {
+          "type": "string",
+          "enum": [
+            "kg",
+            "lb"
+          ]
+        },
+        "expected_revision": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "dry_run": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "routine_id"
+      ],
+      "$schema": "http://json-schema.org/draft-07/schema#"
+    },
+    "annotations": {
+      "readOnlyHint": false,
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false
+    },
+    "execution": {
+      "taskSupport": "forbidden"
+    }
+  }
+]

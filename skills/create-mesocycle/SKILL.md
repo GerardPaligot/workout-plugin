@@ -52,8 +52,8 @@ that the CLI does not support it; do not fall back to a manual edit.
    `conflict`, and the final exercise cannot be removed. Updating `order` changes its value but does
    not move its array position.
 6. Call `update program-status --program <program-id>` with `current_mesocycle: N+1` and
-   `current_week: 1`. Rotation: include `next_session_id` as the first id in the new sessions
-   document and keep `next_session: null`.
+   `current_week: 1`. Local rotation: include `next_session_id` as the first id in the new sessions
+   document and keep `next_session: null`. For openGym programs, omit both pointers and use verified remote progress.
 
 Confirm to the user the files created/modified.
 

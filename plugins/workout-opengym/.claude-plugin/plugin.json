@@ -1,0 +1,7 @@
+{
+  "name": "workout-opengym",
+  "version": "0.5.0",
+  "description": "Record completed workouts and sync openGym program progress.",
+  "author": { "name": "workout-plugin contributors" },
+  "license": "Apache-2.0"
+}

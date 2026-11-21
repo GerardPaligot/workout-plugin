@@ -13,7 +13,7 @@ This agent is **read-only**: you neither create nor modify any file.
 Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/state.mjs" .` from the workspace root to locate the user (state, mesocycle, week).
 If `${CLAUDE_PLUGIN_ROOT}` is not set (e.g. in Codex), the plugin root is the directory two levels above this SKILL.md: use that path instead.
 If `skills["coach"].allowed` is `false` (profile missing), stop and run the `onboarding` skill first.
-Otherwise read the active program's `status.yaml` if the question is about the program.
+Otherwise read the active program's `status.yaml` if the question is about the program. If state output has a `backend`, use its `progress` for session completion and next session. If the companion is available, run its sync first. Report stale or unknown progress and never infer the first session from a missing remote pointer.
 
 ## Skills to consult by topic
 | Topic | Skill(s) |
@@ -27,7 +27,8 @@ Otherwise read the active program's `status.yaml` if the question is about the p
 | Training format / split, session rotation, supersets, exercise order | the `training-programming` skill (format, rotation, exercise order) / the `training-principles` skill (supersets) |
 | Equipment, feasibility | `profile.equipment` (`profile.yaml`) |
 | Current program, loads | `status.yaml` then the files in `programs/` |
-| Next session (rotation programs) | `next_session_id` in `status.yaml` (absent/null = first session) |
+| Next session (local rotation programs) | `next_session_id` in `status.yaml` (absent/null = first session) |
+| Next session (openGym programs) | `progress.nextSessionId` from state output; null is unknown |
 
 ## How to answer
 1. Read the relevant skill(s) before answering.

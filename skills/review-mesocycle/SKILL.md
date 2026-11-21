@@ -52,3 +52,5 @@ Confirm to the user the files created/modified.
 ## What you do NOT do
 - Do not modify the reviewed block's `sessions.yaml` (history). Do not create the next
   block (skill `create-mesocycle`).
+
+For an openGym program, refresh remote progress through the companion skill when available. Mark stale or unknown progress honestly and do not treat planned targets as completed sets.

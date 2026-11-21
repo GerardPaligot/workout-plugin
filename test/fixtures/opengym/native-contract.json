@@ -1,0 +1,320 @@
+{
+  "source": "openGym e4a68a94c42a3c17cbd560d66ce2e46a7048ab99",
+  "identity": {
+    "user": {
+      "id": "u_proof",
+      "name": "Proof"
+    },
+    "token": {
+      "id": "t_451e20489de4",
+      "name": "proof",
+      "scopes": {
+        "workouts": "apply",
+        "plans": "apply",
+        "bodyweight": "off",
+        "measurements": "off",
+        "notes": "off"
+      },
+      "exp": 1803024675159
+    }
+  },
+  "logSchema": {
+    "type": "object",
+    "properties": {
+      "date": {
+        "description": "YYYY-MM-DD the session was done; defaults to today. Not in the future.",
+        "type": "string",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "start": {
+        "description": "Start time HH:MM, if the user said it. Without it a session logged today ends now; one in the past starts at 18:00.",
+        "type": "string",
+        "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+      },
+      "duration_min": {
+        "description": "How long the session took, in minutes, if known.",
+        "type": "number",
+        "minimum": 1,
+        "maximum": 1440
+      },
+      "name": {
+        "description": "A name for the session, e.g. \"Arms\" or \"Push day\". Defaults to \"Workout\".",
+        "type": "string",
+        "maxLength": 80
+      },
+      "note": {
+        "description": "A note on the whole session.",
+        "type": "string",
+        "maxLength": 500
+      },
+      "unit": {
+        "description": "The unit the user gave weights in; defaults to the profile's. Converted when it differs.",
+        "type": "string",
+        "enum": [
+          "kg",
+          "lb"
+        ]
+      },
+      "speed_unit": {
+        "description": "The unit cardio speeds (and distances: km or mi) are given in; defaults to the profile's.",
+        "type": "string",
+        "enum": [
+          "kmh",
+          "mph"
+        ]
+      },
+      "exercises": {
+        "minItems": 1,
+        "maxItems": 40,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "exercise": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120,
+              "description": "Exercise name as the user said it (\"dumbbell curl\"), or an exercise id from search_exercises or an earlier answer."
+            },
+            "create_custom": {
+              "description": "Create this as the user's own exercise when the library has nothing matching. Only after the user confirms.",
+              "type": "boolean"
+            },
+            "body_part": {
+              "description": "Body part of a new custom exercise, when its name does not say.",
+              "type": "string",
+              "enum": [
+                "back",
+                "cardio",
+                "chest",
+                "lower arms",
+                "lower legs",
+                "neck",
+                "shoulders",
+                "upper arms",
+                "upper legs",
+                "waist"
+              ]
+            },
+            "note": {
+              "description": "A note on this exercise today.",
+              "type": "string",
+              "maxLength": 280
+            },
+            "sets": {
+              "minItems": 1,
+              "maxItems": 50,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "reps": {
+                    "description": "Reps done. Give reps for a rep exercise, or seconds for a hold, never both in one exercise.",
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1000
+                  },
+                  "seconds": {
+                    "description": "Seconds held, for a timed exercise (plank, hang, wall sit).",
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 21600
+                  },
+                  "weight": {
+                    "description": "Load in `unit`. Omit or 0 for bodyweight. On an assistance machine it is the help (less is better). For dumbbells: as the profile logs that exercise (see weight_means in the reply).",
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "warmup": {
+                    "description": "A warm-up set: kept out of volume, PRs and the next suggested weight.",
+                    "type": "boolean"
+                  },
+                  "failure": {
+                    "description": "Taken to failure.",
+                    "type": "boolean"
+                  },
+                  "rir": {
+                    "description": "Reps in reserve, if the user said it. Not with rpe.",
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 10
+                  },
+                  "rpe": {
+                    "description": "RPE, if the user said it. Not with rir. The only effort a cardio set takes.",
+                    "type": "number",
+                    "minimum": 6,
+                    "maximum": 10
+                  },
+                  "minutes": {
+                    "description": "Cardio only (treadmill, bike, rower\u2026): whole minutes of this interval. A cardio set is minutes plus speed or distance, never reps or weight.",
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 360
+                  },
+                  "speed": {
+                    "description": "Cardio: average speed in speed_unit. Omit when nobody said it.",
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "distance": {
+                    "description": "Cardio: distance covered, km (or miles with speed_unit mph), instead of the speed. Not with speed.",
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "incline": {
+                    "description": "Cardio on foot (treadmill, stairs): grade in percent. Refused on a bike or rower.",
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 40
+                  }
+                }
+              }
+            }
+          },
+          "required": [
+            "exercise",
+            "sets"
+          ]
+        }
+      },
+      "dry_run": {
+        "description": "Build and return the preview without saving anything.",
+        "type": "boolean"
+      },
+      "allow_duplicate": {
+        "description": "Log it even though the same sets are already logged that day (a genuine second session). Give it a different start or name too.",
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "exercises"
+    ],
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  },
+  "preview": {
+    "logged": false,
+    "dry_run": true,
+    "would_log": {
+      "workout_id": "mw1xiyz89dauf",
+      "date": "2026-10-20",
+      "start": "10:30",
+      "duration": "45 min",
+      "name": "Proof workout",
+      "unit": "kg",
+      "volume": 900,
+      "note": "session note",
+      "prs": [
+        "barbell bench press"
+      ],
+      "exercises": [
+        {
+          "id": "0025",
+          "name": "barbell bench press",
+          "you_said": "0025",
+          "sets": [
+            {
+              "label": "100\u00d75 (RIR 2)",
+              "weight": 100,
+              "reps": 5,
+              "rir": 2
+            },
+            {
+              "label": "100\u00d74 (RPE 8)",
+              "weight": 100,
+              "reps": 4,
+              "rpe": 8
+            }
+          ],
+          "note": "exercise note"
+        }
+      ]
+    }
+  },
+  "detail": {
+    "id": "mw1xiyz89dauf",
+    "date": "2026-10-20",
+    "routine_id": null,
+    "routine_name": "Proof workout",
+    "unit": "kg",
+    "bodyweight_at_workout": null,
+    "gym": null,
+    "volume": 900,
+    "sets_done": 2,
+    "sets_planned": 2,
+    "duration": "45 min",
+    "prs": [
+      "barbell bench press"
+    ],
+    "entries": [
+      {
+        "id": "0025",
+        "name": "barbell bench press",
+        "body_part": "chest",
+        "mode": "reps",
+        "target": {
+          "id": "0025"
+        },
+        "sets": [
+          {
+            "done": true,
+            "label": "100\u00d75 (RIR 2)",
+            "w": 100,
+            "r": 5,
+            "sec": 0,
+            "min": 0,
+            "speed": 0
+          },
+          {
+            "done": true,
+            "label": "100\u00d74 (RPE 8)",
+            "w": 100,
+            "r": 4,
+            "sec": 0,
+            "min": 0,
+            "speed": 0
+          }
+        ]
+      }
+    ]
+  },
+  "record": {
+    "id": "mw1xiyz89dauf",
+    "d": "2026-10-20",
+    "start": 1792485000000,
+    "end": 1792487700000,
+    "routineIds": [],
+    "routineId": null,
+    "name": "Proof workout",
+    "bw": null,
+    "entries": [
+      {
+        "id": "0025",
+        "sets": [
+          {
+            "w": 100,
+            "r": 5,
+            "done": true,
+            "rir": 2
+          },
+          {
+            "w": 100,
+            "r": 4,
+            "done": true,
+            "rpe": 8
+          }
+        ],
+        "topW": 100,
+        "target": {
+          "id": "0025"
+        },
+        "note": "exercise note"
+      }
+    ],
+    "prs": [
+      "0025"
+    ],
+    "note": "session note",
+    "vol": 900,
+    "_ts": 1795248675295
+  }
+}

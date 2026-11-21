@@ -57,3 +57,5 @@ user may create or update it manually as a custom-catalog workflow. Use
 The CLI validates and atomically replaces one supported YAML file. It does not decide
 whether a workflow is allowed, choose coaching content, create reviews or summaries, or
 archive a program; use the relevant workflow skill for those decisions.
+
+For an openGym program, session completion pointers are managed by verified remote progress. The CLI rejects local writes to those pointers; other supported coaching fields remain local.

@@ -31,11 +31,15 @@ not fall back to a manual edit.
 ## Workflow
 Ask the user what changed, then make the relevant resource call.
 
+### openGym programs
+
+If state output has `backend`, use the companion openGym skill to sync and record completed workouts. Record actual sets, loads, and reps, not planned targets. Phone and Hermes completions both count after remote verification. If the companion is unavailable or sync fails, report cached progress as stale or unknown. Do not update `last_session`, `next_session`, or `next_session_id` locally, even when the user describes a completed workout. Local week, pause, status, goals, loads, and measurements remain editable.
+
 ### status.yaml (active program)
-- Update `current_week`, `last_session`, `next_session`, `next_session_id`, or `status`
-  with `update program-status --program <program-id> --data '<changed fields>'`.
+- Update `current_week` or `status` in either mode. In local mode, also update
+  `last_session`, `next_session`, or `next_session_id` with `update program-status --program <program-id> --data '<changed fields>'`.
 - Scheduling mode = `scheduling` in the program's `macrocycle.yaml` (absent = weekdays); never inferred from `status.yaml`.
-- Rotation mode (`scheduling: rotation`): after a logged session set `last_session` to the logged session's date and
+- Local rotation mode (`scheduling: rotation`): after a logged session set `last_session` to the logged session's date and
   `next_session_id` to the id following the one just done in the current `sessions.yaml` (wrap to the first
   after the last; a single session wraps to itself); keep `next_session: null`. Out of order: follow the session
   actually done. Absent/null `next_session_id` = next session is the first in `sessions.yaml` order. If the session just done is not in `sessions.yaml` (or the pointer's id is unknown), set the pointer to the first session. Keeps rotating across

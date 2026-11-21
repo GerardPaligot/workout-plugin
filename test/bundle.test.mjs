@@ -15,6 +15,10 @@ test('bundle freshness: committed public scripts match fresh esbuild output', ()
   execFileSync(esbuild, ['src/state.mjs', 'src/validate.mjs', ...shared, `--outdir=${out}`], { cwd: ROOT, stdio: 'pipe' });
   const nodeRequireBanner = '--banner:js=import { createRequire as __createRequire } from "node:module"; const require = __createRequire(import.meta.url);';
   execFileSync(esbuild, ['src/workout-data/cli.mjs', ...shared, nodeRequireBanner, `--outfile=${join(out, 'workout-data.mjs')}`], { cwd: ROOT, stdio: 'pipe' });
+  execFileSync(esbuild, ['src/opengym/cli.mjs', ...shared, `--outfile=${join(out, 'workout-opengym.mjs')}`], { cwd: ROOT, stdio: 'pipe' });
+  for (const target of ['scripts/workout-opengym.mjs', 'plugins/workout-opengym/skills/opengym/scripts/workout-opengym.mjs']) {
+    assert.equal(readFileSync(join(out, 'workout-opengym.mjs'), 'utf8'), readFileSync(join(ROOT, target), 'utf8'), `${target} is stale: run npm run build`);
+  }
   for (const f of ['state.mjs', 'validate.mjs', 'workout-data.mjs']) {
     assert.equal(readFileSync(join(out, f), 'utf8'), readFileSync(join(ROOT, 'scripts', f), 'utf8'),
       `scripts/${f} is stale: run npm run build`);
@@ -39,23 +43,25 @@ function invokeWorkoutData(args, workspace = FIXTURE) {
 }
 
 test('smoke: bundled workout-data CLI handles public commands from another cwd', () => {
+  const workspace = mkdtempSync(join(tmpdir(), 'workout-data-smoke-'));
+  cpSync(FIXTURE, workspace, { recursive: true });
   const program = '2026-01_sample-program';
-  const status = invokeWorkoutData(['get', 'program-status', '--program', program]);
+  const status = invokeWorkoutData(['get', 'program-status', '--program', program], workspace);
   assert.equal(status.status, 0);
   assert.equal(JSON.parse(status.stdout).data.status, 'active');
 
-  const sessions = invokeWorkoutData(['list', 'session', '--program', program, '--mesocycle', '1', '--fields', 'id,name']);
+  const sessions = invokeWorkoutData(['list', 'session', '--program', program, '--mesocycle', '1', '--fields', 'id,name'], workspace);
   assert.equal(sessions.status, 0);
   assert.deepEqual(JSON.parse(sessions.stdout).items, [
     { id: 'A', name: 'Upper body' },
     { id: 'C', name: 'Circuit (optional)' },
   ]);
 
-  const invalidWrite = invokeWorkoutData(['update', 'program-status', '--program', program, '--data', '{"unknown":true}']);
+  const invalidWrite = invokeWorkoutData(['update', 'program-status', '--program', program, '--data', '{"unknown":true}'], workspace);
   assert.equal(invalidWrite.status, 1);
   assert.equal(JSON.parse(invalidWrite.stderr).code, 'invalid_payload');
 
-  const validation = invokeWorkoutData(['validate', '--program', program]);
+  const validation = invokeWorkoutData(['validate', '--program', program], workspace);
   assert.equal(validation.status, 0);
   assert.equal(JSON.parse(validation.stdout).ok, true);
 });

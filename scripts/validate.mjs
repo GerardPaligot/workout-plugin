@@ -2975,7 +2975,7 @@ var require_compile = __commonJS({
       const schOrFunc = root.refs[ref];
       if (schOrFunc)
         return schOrFunc;
-      let _sch = resolve2.call(this, root, ref);
+      let _sch = resolve3.call(this, root, ref);
       if (_sch === void 0) {
         const schema = (_a = root.localRefs) === null || _a === void 0 ? void 0 : _a[ref];
         const { schemaId } = this.opts;
@@ -3002,7 +3002,7 @@ var require_compile = __commonJS({
     function sameSchemaEnv(s1, s2) {
       return s1.schema === s2.schema && s1.root === s2.root && s1.baseId === s2.baseId;
     }
-    function resolve2(root, ref) {
+    function resolve3(root, ref) {
       let sch;
       while (typeof (sch = this.refs[ref]) == "string")
         ref = sch;
@@ -3633,7 +3633,7 @@ var require_fast_uri = __commonJS({
       }
       return uri;
     }
-    function resolve2(baseURI, relativeURI, options) {
+    function resolve3(baseURI, relativeURI, options) {
       const schemelessOptions = options ? Object.assign({ scheme: "null" }, options) : { scheme: "null" };
       const resolved = resolveComponent(parse(baseURI, schemelessOptions), parse(relativeURI, schemelessOptions), schemelessOptions, true);
       schemelessOptions.skipEscape = true;
@@ -3891,7 +3891,7 @@ var require_fast_uri = __commonJS({
     var fastUri = {
       SCHEMES,
       normalize,
-      resolve: resolve2,
+      resolve: resolve3,
       resolveComponent,
       equal,
       serialize,
@@ -7705,8 +7705,8 @@ var require_dist = __commonJS({
 });
 
 // src/validate.mjs
-import { readFileSync as readFileSync2, readdirSync, statSync, lstatSync, existsSync } from "node:fs";
-import { join as join2, basename, dirname as dirname2, relative, resolve, isAbsolute } from "node:path";
+import { readFileSync as readFileSync3, readdirSync, statSync, lstatSync as lstatSync2, existsSync } from "node:fs";
+import { join as join3, basename as basename2, dirname as dirname2, relative, resolve as resolve2, isAbsolute } from "node:path";
 import { fileURLToPath as fileURLToPath2 } from "node:url";
 
 // src/common.mjs
@@ -10082,6 +10082,37 @@ function loadYaml(filePath) {
   return index_vite_proxy_tmp_default.load(readFileSync(filePath, "utf8"), { schema: index_vite_proxy_tmp_default.JSON_SCHEMA });
 }
 
+// src/opengym-projection.mjs
+import { lstatSync, readFileSync as readFileSync2, realpathSync } from "node:fs";
+import { basename, join as join2, resolve } from "node:path";
+var nonempty = (value) => typeof value === "string" && value.length > 0;
+var scopeValid = (scope) => scope && nonempty(scope.server) && nonempty(scope.profileId);
+function readBackend(programDir) {
+  const path = join2(programDir, ".opengym-backend.json");
+  try {
+    lstatSync(path);
+  } catch (error) {
+    return error.code === "ENOENT" ? null : { valid: false };
+  }
+  let marker;
+  try {
+    marker = JSON.parse(readFileSync2(path, "utf8"));
+  } catch {
+    return { valid: false };
+  }
+  let identity;
+  try {
+    const workspace = realpathSync(resolve(programDir, "../.."));
+    const name = basename(programDir);
+    if (realpathSync(programDir) !== join2(workspace, "programs", name)) return { valid: false };
+    identity = { workspace, name };
+  } catch {
+    return { valid: false };
+  }
+  if (marker?.version !== 2 || marker.program?.workspace !== identity.workspace || marker.program?.name !== identity.name || marker.backend !== "opengym" || marker.requiresAdoption !== void 0 && typeof marker.requiresAdoption !== "boolean" || !scopeValid(marker.scope) || !nonempty(marker.configPath) || marker.stateDir !== void 0 && !nonempty(marker.stateDir)) return { valid: false };
+  return { valid: true, scope: marker.scope, program: identity, requiresAdoption: marker.requiresAdoption === true };
+}
+
 // src/validate.mjs
 var import__ = __toESM(require__(), 1);
 var import_ajv_formats = __toESM(require_dist(), 1);
@@ -10094,7 +10125,7 @@ var SCHEMA_BY_FILENAME = {
   "exercises.custom.yaml": "exercises.schema.json",
   "profile.yaml": "profile.schema.json"
 };
-var CATALOG_PATH = join2(PLUGIN_ROOT, "catalog", "exercises.yaml");
+var CATALOG_PATH = join3(PLUGIN_ROOT, "catalog", "exercises.yaml");
 var CUSTOM_CATALOG = "exercises.custom.yaml";
 function loadCatalog(workspace, catalogPath = CATALOG_PATH) {
   const base = loadYaml(catalogPath);
@@ -10106,7 +10137,7 @@ function loadCatalog(workspace, catalogPath = CATALOG_PATH) {
   };
   const errors = [];
   const warnings = [];
-  const customPath = join2(workspace, CUSTOM_CATALOG);
+  const customPath = join3(workspace, CUSTOM_CATALOG);
   if (!existsSync(customPath)) return { doc, errors, warnings };
   let custom;
   try {
@@ -10144,15 +10175,15 @@ function loadCatalog(workspace, catalogPath = CATALOG_PATH) {
   }
   return { doc, errors, warnings };
 }
-function buildValidators(schemasDir = join2(PLUGIN_ROOT, "schemas")) {
+function buildValidators(schemasDir = join3(PLUGIN_ROOT, "schemas")) {
   const ajv = new import__.default({ allErrors: true, strict: false });
   (0, import_ajv_formats.default)(ajv);
   const validators = {};
   const bySchema = {};
   for (const [yamlName, schemaFile] of Object.entries(SCHEMA_BY_FILENAME)) {
-    const schemaPath = join2(schemasDir, schemaFile);
+    const schemaPath = join3(schemasDir, schemaFile);
     if (!existsSync(schemaPath)) continue;
-    bySchema[schemaFile] ??= ajv.compile(JSON.parse(readFileSync2(schemaPath, "utf8")));
+    bySchema[schemaFile] ??= ajv.compile(JSON.parse(readFileSync3(schemaPath, "utf8")));
     validators[yamlName] = bySchema[schemaFile];
   }
   return validators;
@@ -10162,7 +10193,7 @@ function collectYamlFiles(rootDir) {
   (function walk(dir) {
     for (const entry of readdirSync(dir)) {
       if (entry === "node_modules" || entry === "schemas" || entry.startsWith(".")) continue;
-      const full = join2(dir, entry);
+      const full = join3(dir, entry);
       if (statSync(full).isDirectory()) walk(full);
       else if (entry.endsWith(".yaml") || entry.endsWith(".yml")) out.push(full);
     }
@@ -10174,8 +10205,8 @@ function collectYamlFilesWithoutSymlinks(rootDir) {
   (function walk(dir) {
     for (const entry of readdirSync(dir)) {
       if (entry === "node_modules" || entry === "schemas" || entry.startsWith(".")) continue;
-      const full = join2(dir, entry);
-      const stat = lstatSync(full);
+      const full = join3(dir, entry);
+      const stat = lstatSync2(full);
       if (stat.isSymbolicLink()) continue;
       if (stat.isDirectory()) walk(full);
       else if (entry.endsWith(".yaml") || entry.endsWith(".yml")) out.push(full);
@@ -10189,7 +10220,7 @@ function validateDoc(validators, fileName, doc) {
   if (validate(doc)) return [];
   return validate.errors.map((e) => `${e.instancePath || "/"} ${e.message}`);
 }
-function crossValidate(docs, root, catalogDoc) {
+function crossValidate(docs, root, catalogDoc, { externalProgram = () => false } = {}) {
   const errors = [];
   const catalog = catalogDoc ?? docs.find((d) => d.fileName === "exercises.yaml");
   const slugs = new Set(catalog ? (catalog.data.exercises || []).map((e) => e.slug) : []);
@@ -10231,7 +10262,7 @@ function crossValidate(docs, root, catalogDoc) {
     const revisions = d.data?.meta?.revisions;
     if (Array.isArray(revisions)) {
       for (const r of revisions) {
-        const target = resolve(dirname2(d.path), r.ref);
+        const target = resolve2(dirname2(d.path), r.ref);
         if (!existsSync(target)) {
           errors.push(`${loc}: review not found "${r.ref}"`);
         }
@@ -10254,13 +10285,13 @@ function crossValidate(docs, root, catalogDoc) {
             errors.push(`${loc}: session ${s.id} has no "days" (program is scheduled by weekdays)`);
           }
         }
-      } else if (d.data?.next_session_id != null) {
+      } else if (d.data?.next_session_id != null && !externalProgram(programDir)) {
         const id = d.data.next_session_id;
         if (!rotation) {
           errors.push(`${loc}: next_session_id "${id}" is only valid when the macrocycle sets scheduling: rotation`);
         } else {
           const n = d.data.current_mesocycle;
-          const target = join2(programDir, `mesocycle-${n}`, "sessions.yaml");
+          const target = join3(programDir, `mesocycle-${n}`, "sessions.yaml");
           const sess = docs.find((m) => m.fileName === "sessions.yaml" && m.path === target);
           if (sess && !(sess.data.sessions || []).some((s) => s.id === id)) {
             errors.push(`${loc}: next_session_id "${id}" not found in mesocycle-${n}/sessions.yaml`);
@@ -10272,10 +10303,10 @@ function crossValidate(docs, root, catalogDoc) {
   return errors;
 }
 function loadWorkspaceDocument(path, root, validators, errors, docs, replacement) {
-  const fileName = basename(path);
+  const fileName = basename2(path);
   const location = relative(root, path);
   let data;
-  if (replacement && resolve(replacement.path) === resolve(path)) {
+  if (replacement && resolve2(replacement.path) === resolve2(path)) {
     data = replacement.data;
   } else {
     try {
@@ -10291,7 +10322,7 @@ function loadWorkspaceDocument(path, root, validators, errors, docs, replacement
   if (SCHEMA_BY_FILENAME[fileName]) docs.push({ path, fileName, data });
 }
 function validateCustomCatalog(root, validators, errors) {
-  const path = join2(root, CUSTOM_CATALOG);
+  const path = join3(root, CUSTOM_CATALOG);
   if (!existsSync(path)) return 0;
   try {
     const data = loadYaml(path);
@@ -10321,7 +10352,7 @@ function validateDocuments(root, paths, replacement, { includeCustomCatalog = fa
     errors.push(`plugin catalog unreadable (${CATALOG_PATH}): ${e.message}`);
   }
   for (const path of paths) {
-    const fileName = basename(path);
+    const fileName = basename2(path);
     const location = relative(root, path);
     if (location === "exercises.yaml") {
       if (legacyWarnings) {
@@ -10334,11 +10365,11 @@ function validateDocuments(root, paths, replacement, { includeCustomCatalog = fa
   }
   const customDocumentCount = includeCustomCatalog ? validateCustomCatalog(root, validators, errors) : 0;
   const crossDocs = docs.filter((d) => d.fileName !== CUSTOM_CATALOG);
-  errors.push(...crossValidate(crossDocs, root, catalog));
+  errors.push(...crossValidate(crossDocs, root, catalog, { externalProgram: (dir) => readBackend(dir) !== null }));
   return { errors, warnings, documentCount: docs.length + customDocumentCount };
 }
 function isWithin(parent, child) {
-  const path = relative(resolve(parent), resolve(child));
+  const path = relative(resolve2(parent), resolve2(child));
   return path === "" || !path.startsWith("..") && !isAbsolute(path);
 }
 function validateWorkspace(root) {
@@ -10350,26 +10381,26 @@ function validateWorkspace(root) {
 function validateProgramClosure(root, programId, replacement) {
   if (programId === "archives") throw new TypeError('programId "archives" is reserved');
   const paths = [];
-  const profilePath = join2(root, "profile.yaml");
+  const profilePath = join3(root, "profile.yaml");
   if (existsSync(profilePath)) paths.push(profilePath);
-  const programDir = join2(root, "programs", programId);
+  const programDir = join3(root, "programs", programId);
   if (existsSync(programDir)) {
     for (const path of collectYamlFilesWithoutSymlinks(programDir)) {
-      if (SCHEMA_BY_FILENAME[basename(path)]) paths.push(path);
+      if (SCHEMA_BY_FILENAME[basename2(path)]) paths.push(path);
     }
   }
   if (replacement) {
-    const replacementPath = resolve(replacement.path);
-    if (isWithin(programDir, replacementPath) && SCHEMA_BY_FILENAME[basename(replacementPath)] && !paths.some((path) => resolve(path) === replacementPath)) {
+    const replacementPath = resolve2(replacement.path);
+    if (isWithin(programDir, replacementPath) && SCHEMA_BY_FILENAME[basename2(replacementPath)] && !paths.some((path) => resolve2(path) === replacementPath)) {
       paths.push(replacementPath);
     }
   }
   return validateDocuments(root, paths, replacement, { includeCustomCatalog: true });
 }
 function validateProfileClosure(root, replacement) {
-  const profilePath = join2(root, "profile.yaml");
+  const profilePath = join3(root, "profile.yaml");
   const paths = existsSync(profilePath) ? [profilePath] : [];
-  if (replacement && resolve(replacement.path) === resolve(profilePath) && !paths.length) paths.push(profilePath);
+  if (replacement && resolve2(replacement.path) === resolve2(profilePath) && !paths.length) paths.push(profilePath);
   return validateDocuments(root, paths, replacement, {
     includeCustomCatalog: true
   });
@@ -10386,8 +10417,8 @@ function main(root) {
 ${result.errors.length} error(s)`);
   return 1;
 }
-if (process.argv[1] && basename(process.argv[1]) === "validate.mjs" && resolve(process.argv[1]) === fileURLToPath2(import.meta.url)) {
-  process.exit(main(resolve(process.argv[2] || ".")));
+if (process.argv[1] && basename2(process.argv[1]) === "validate.mjs" && resolve2(process.argv[1]) === fileURLToPath2(import.meta.url)) {
+  process.exit(main(resolve2(process.argv[2] || ".")));
 }
 export {
   CATALOG_PATH,

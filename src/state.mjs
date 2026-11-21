@@ -2,6 +2,7 @@ import { readdirSync, statSync, existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadYaml } from './common.mjs';
+import { readBackend, readProgress } from './opengym-projection.mjs';
 
 export const SKILLS = ['coach', 'track', 'review-mesocycle', 'create-mesocycle', 'create-program', 'archive-program', 'onboarding'];
 
@@ -121,6 +122,20 @@ export function main(root) {
     current_week: ctx.status?.current_week ?? null,
     skills,
   };
+  if (ctx.programDir) {
+    const backend = readBackend(ctx.programDir);
+    if (backend) {
+      out.backend = backend.valid ? 'opengym' : 'unknown';
+      out.progress = readProgress(ctx.programDir, backend, ctx.status?.current_mesocycle);
+      if (out.progress.nextSessionId !== null) {
+        let sessions;
+        try { sessions = loadYaml(join(ctx.programDir, `mesocycle-${ctx.status.current_mesocycle}`, 'sessions.yaml')); } catch { sessions = null; }
+        if (!Array.isArray(sessions?.sessions) || !sessions.sessions.some((session) => session.id === out.progress.nextSessionId)) {
+          out.progress = { ...out.progress, status: 'unknown', nextSessionId: null, needs_mapping: true };
+        }
+      }
+    }
+  }
   if (ctx.anomaly) out.anomaly = ctx.anomaly;
   console.log(JSON.stringify(out, null, 2));
   return 0;

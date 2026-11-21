@@ -97,6 +97,10 @@ codex plugin remove workout@workout-plugin
 
 Skills call the scripts as `node "${CLAUDE_PLUGIN_ROOT}/scripts/state.mjs" .`. Claude Code substitutes `${CLAUDE_PLUGIN_ROOT}`; Codex documents no such variable. Each skill therefore states the fallback: *the plugin root is the directory two levels above that SKILL.md*. Always run the scripts from the workspace root.
 
+## Optional openGym plugin
+
+Install the companion with `./install.sh --plugin workout-opengym`. The default `./install.sh` installs the local workout plugin. Connect an existing program explicitly through the `opengym` skill; new programs use local tracking. After moving a connected workspace or program, reconnect and review the adoption mapping. The companion requires Node 20.11 or later and stores the token in the environment, not the config file. Run `sync`, then `history`, to inspect phone workout IDs and actuals before explicitly adopting a workout. Use `--help` for commands and configuration examples. For Hermes Docker, provide the portable skill and bundled CLI under `plugins/workout-opengym/skills/opengym/`, mount the workout workspace and persistent state directory, and supply the config, token environment variable, and private MCP URL. The bundle needs Node 20.11 or later, with no runtime npm install.
+
 ## `workout-data` CLI
 
 The installed resource CLI reads and changes the five template-backed workspace YAML documents. Invoke it from any directory:
@@ -153,6 +157,8 @@ claude plugin validate .
 ```
 
 `scripts/` contains generated bundles: edit `src/`, rebuild and commit both. A test fails if the bundles are stale. Node >= 20.11.
+
+GitHub Actions runs the tests on Linux with Node 20.11.1 and 24, and checks the companion against a pinned openGym revision using a disposable local service. Run `npm test` before rebuilding to check bundle freshness. Repository administrators can require the `CI required` check in branch protection.
 
 ## Attribution
 

@@ -44,6 +44,8 @@ macrocycle duration, scheduling mode (weekdays: fixed training days; rotation: n
 ### Phase 2 — Macrocycle architecture
 Build the breakdown into mesocycles (one goal per mesocycle), the microcycle
 structure (mechanical → metabolic → overreaching), the deloads.
+New programs use local tracking by default. Do not enable openGym unless the user explicitly connects a program using the companion skill.
+
 Create the agreed `programs/YYYY-MM_short-name/` through, in order, `create program-status`,
 `create goals`, and `create macrocycle`, each with `--program <program-id>`. Supply the real
 dates in the resource payloads. `create program-status` receives the active status body;

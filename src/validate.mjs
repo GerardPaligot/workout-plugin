@@ -2,6 +2,7 @@ import { readFileSync, readdirSync, statSync, lstatSync, existsSync } from 'node
 import { join, basename, dirname, relative, resolve, isAbsolute } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadYaml, PLUGIN_ROOT } from './common.mjs';
+import { readBackend } from './opengym-projection.mjs';
 import Ajv from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 
@@ -106,7 +107,7 @@ export function validateDoc(validators, fileName, doc) {
   return validate.errors.map((e) => `${e.instancePath || '/'} ${e.message}`);
 }
 
-export function crossValidate(docs, root, catalogDoc) {
+export function crossValidate(docs, root, catalogDoc, { externalProgram = () => false } = {}) {
   const errors = [];
   const catalog = catalogDoc ?? docs.find((d) => d.fileName === 'exercises.yaml');
   const slugs = new Set(catalog ? (catalog.data.exercises || []).map((e) => e.slug) : []);
@@ -179,7 +180,7 @@ export function crossValidate(docs, root, catalogDoc) {
             errors.push(`${loc}: session ${s.id} has no "days" (program is scheduled by weekdays)`);
           }
         }
-      } else if (d.data?.next_session_id != null) {
+      } else if (d.data?.next_session_id != null && !externalProgram(programDir)) {
         const id = d.data.next_session_id;
         if (!rotation) {
           errors.push(`${loc}: next_session_id "${id}" is only valid when the macrocycle sets scheduling: rotation`);
@@ -267,7 +268,7 @@ function validateDocuments(root, paths, replacement, { includeCustomCatalog = fa
   const customDocumentCount = includeCustomCatalog ? validateCustomCatalog(root, validators, errors) : 0;
   // Custom catalog is merged into `catalog`; keep it out of the per-file cross checks.
   const crossDocs = docs.filter((d) => d.fileName !== CUSTOM_CATALOG);
-  errors.push(...crossValidate(crossDocs, root, catalog));
+  errors.push(...crossValidate(crossDocs, root, catalog, { externalProgram: (dir) => readBackend(dir) !== null }));
   return { errors, warnings, documentCount: docs.length + customDocumentCount };
 }
 

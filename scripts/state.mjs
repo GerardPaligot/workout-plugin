@@ -1,6 +1,6 @@
 // src/state.mjs
 import { readdirSync, statSync, existsSync } from "node:fs";
-import { join as join2, resolve } from "node:path";
+import { join as join3, resolve as resolve2 } from "node:path";
 import { fileURLToPath as fileURLToPath2 } from "node:url";
 
 // src/common.mjs
@@ -586,9 +586,9 @@ var require_timestamp = /* @__PURE__ */ __commonJSMin(((exports, module) => {
       delta = (tzHour * 60 + tzMinute) * 6e4;
       if (match[9] === "-") delta = -delta;
     }
-    const date = new Date(Date.UTC(year, month, day, hour, minute, second, fraction));
-    if (delta) date.setTime(date.getTime() - delta);
-    return date;
+    const date2 = new Date(Date.UTC(year, month, day, hour, minute, second, fraction));
+    if (delta) date2.setTime(date2.getTime() - delta);
+    return date2;
   }
   function representYamlTimestamp(object) {
     return object.toISOString();
@@ -2376,20 +2376,70 @@ function loadYaml(filePath) {
   return index_vite_proxy_tmp_default.load(readFileSync(filePath, "utf8"), { schema: index_vite_proxy_tmp_default.JSON_SCHEMA });
 }
 
+// src/opengym-projection.mjs
+import { lstatSync, readFileSync as readFileSync2, realpathSync } from "node:fs";
+import { basename, join as join2, resolve } from "node:path";
+var nonempty = (value) => typeof value === "string" && value.length > 0;
+var timestamp = (value) => typeof value === "string" && Number.isFinite(Date.parse(value));
+var date = (value) => /^\d{4}-\d{2}-\d{2}$/.test(value) && timestamp(value) && new Date(value).toISOString().slice(0, 10) === value;
+var scopeValid = (scope) => scope && nonempty(scope.server) && nonempty(scope.profileId);
+var assignmentValid = (a) => a && nonempty(a.occurrenceId) && nonempty(a.sessionId) && nonempty(a.workoutId) && timestamp(a.completedAt);
+function readBackend(programDir) {
+  const path = join2(programDir, ".opengym-backend.json");
+  try {
+    lstatSync(path);
+  } catch (error) {
+    return error.code === "ENOENT" ? null : { valid: false };
+  }
+  let marker;
+  try {
+    marker = JSON.parse(readFileSync2(path, "utf8"));
+  } catch {
+    return { valid: false };
+  }
+  let identity;
+  try {
+    const workspace = realpathSync(resolve(programDir, "../.."));
+    const name = basename(programDir);
+    if (realpathSync(programDir) !== join2(workspace, "programs", name)) return { valid: false };
+    identity = { workspace, name };
+  } catch {
+    return { valid: false };
+  }
+  if (marker?.version !== 2 || marker.program?.workspace !== identity.workspace || marker.program?.name !== identity.name || marker.backend !== "opengym" || marker.requiresAdoption !== void 0 && typeof marker.requiresAdoption !== "boolean" || !scopeValid(marker.scope) || !nonempty(marker.configPath) || marker.stateDir !== void 0 && !nonempty(marker.stateDir)) return { valid: false };
+  return { valid: true, scope: marker.scope, program: identity, requiresAdoption: marker.requiresAdoption === true };
+}
+function readProgress(programDir, backend, currentMesocycle, now = Date.now()) {
+  const unknown = { status: "unknown", lastSession: null, nextSessionId: null, needs_mapping: true };
+  if (!backend?.valid || backend.requiresAdoption) return unknown;
+  let p;
+  try {
+    p = JSON.parse(readFileSync2(join2(programDir, ".opengym-projection.json"), "utf8"));
+  } catch {
+    return unknown;
+  }
+  if (p?.requiresAdoption === true || p?.requiresAdoption !== void 0 && typeof p.requiresAdoption !== "boolean") return unknown;
+  if (p?.version !== 2 || p.program?.workspace !== backend.program.workspace || p.program?.name !== backend.program.name || !Number.isSafeInteger(p.currentMesocycle) || p.currentMesocycle < 1 || p.currentMesocycle !== currentMesocycle || !scopeValid(p.scope) || p.scope.server !== backend.scope.server || p.scope.profileId !== backend.scope.profileId || !timestamp(p.observedAt) || !p.coverage || !date(p.coverage.from) || !date(p.coverage.to) || Date.parse(p.coverage.from) > Date.parse(p.coverage.to) || typeof p.coverage.complete !== "boolean" || !Number.isFinite(p.freshnessMaxAgeMs) || p.freshnessMaxAgeMs <= 0 || p.activeUnknown !== true || !Array.isArray(p.assignments) || !p.assignments.every(assignmentValid) || !(p.lastSession === null || assignmentValid(p.lastSession)) || !(p.nextSessionId === null || nonempty(p.nextSessionId)) || typeof p.needs_mapping !== "boolean") return unknown;
+  const age = now - Date.parse(p.observedAt);
+  const today = new Date(now).toISOString().slice(0, 10);
+  const coversToday = p.coverage.from.slice(0, 10) <= today && p.coverage.to.slice(0, 10) >= today;
+  return { status: age < 0 || age > p.freshnessMaxAgeMs || !p.coverage.complete || !coversToday ? "stale" : "fresh", observedAt: p.observedAt, coverage: p.coverage, activeUnknown: true, assignments: p.assignments, lastSession: p.lastSession, nextSessionId: p.nextSessionId, needs_mapping: p.needs_mapping };
+}
+
 // src/state.mjs
 var SKILLS = ["coach", "track", "review-mesocycle", "create-mesocycle", "create-program", "archive-program", "onboarding"];
 var STATE_BY_STATUS = { active: "in_progress", paused: "paused", completed: "completed" };
 function detectState(root) {
   const empty = { state: "no_program", programDir: null, program: null, status: null };
-  if (!existsSync(join2(root, "profile.yaml"))) return { ...empty, state: "needs_onboarding" };
-  const base = join2(root, "programs");
+  if (!existsSync(join3(root, "profile.yaml"))) return { ...empty, state: "needs_onboarding" };
+  const base = join3(root, "programs");
   if (!existsSync(base)) return empty;
   const candidates = [];
   for (const entry of readdirSync(base)) {
     if (entry === "archives" || entry.startsWith(".")) continue;
-    const full = join2(base, entry);
+    const full = join3(base, entry);
     if (!statSync(full).isDirectory()) continue;
-    const sf = join2(full, "status.yaml");
+    const sf = join3(full, "status.yaml");
     if (!existsSync(sf)) continue;
     let status = null;
     try {
@@ -2415,7 +2465,7 @@ function detectState(root) {
   return { state: STATE_BY_STATUS[p.status.status], programDir: p.programDir, program: p.program, status: p.status };
 }
 function plannedMesocycleCount(programDir) {
-  const f = join2(programDir, "macrocycle.yaml");
+  const f = join3(programDir, "macrocycle.yaml");
   if (!existsSync(f)) return null;
   try {
     const macro = loadYaml(f);
@@ -2453,7 +2503,7 @@ function computeSkills(root, ctx) {
     return skills;
   }
   const m = status.current_mesocycle;
-  const currentSessions = join2(programDir, `mesocycle-${m}`, "sessions.yaml");
+  const currentSessions = join3(programDir, `mesocycle-${m}`, "sessions.yaml");
   const hasCurrentSessions = existsSync(currentSessions);
   if (state === "completed") {
     set("archive-program", true);
@@ -2467,8 +2517,8 @@ function computeSkills(root, ctx) {
   set("archive-program", false, `Program not completed (status: ${status.status})`);
   set("track", true);
   set("review-mesocycle", hasCurrentSessions, hasCurrentSessions ? void 0 : `mesocycle-${m}/sessions.yaml missing`);
-  const currentReview = join2(programDir, `mesocycle-${m}`, "review.md");
-  const nextSessions = join2(programDir, `mesocycle-${m + 1}`, "sessions.yaml");
+  const currentReview = join3(programDir, `mesocycle-${m}`, "review.md");
+  const nextSessions = join3(programDir, `mesocycle-${m + 1}`, "sessions.yaml");
   const plannedCount = plannedMesocycleCount(programDir);
   let reason = null;
   if (!existsSync(currentReview)) reason = `Review mesocycle ${m} first (mesocycle-${m}/review.md missing)`;
@@ -2487,11 +2537,29 @@ function main(root) {
     current_week: ctx.status?.current_week ?? null,
     skills
   };
+  if (ctx.programDir) {
+    const backend = readBackend(ctx.programDir);
+    if (backend) {
+      out.backend = backend.valid ? "opengym" : "unknown";
+      out.progress = readProgress(ctx.programDir, backend, ctx.status?.current_mesocycle);
+      if (out.progress.nextSessionId !== null) {
+        let sessions;
+        try {
+          sessions = loadYaml(join3(ctx.programDir, `mesocycle-${ctx.status.current_mesocycle}`, "sessions.yaml"));
+        } catch {
+          sessions = null;
+        }
+        if (!Array.isArray(sessions?.sessions) || !sessions.sessions.some((session) => session.id === out.progress.nextSessionId)) {
+          out.progress = { ...out.progress, status: "unknown", nextSessionId: null, needs_mapping: true };
+        }
+      }
+    }
+  }
   if (ctx.anomaly) out.anomaly = ctx.anomaly;
   console.log(JSON.stringify(out, null, 2));
   return 0;
 }
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath2(import.meta.url)) process.exit(main(resolve(process.argv[2] || ".")));
+if (process.argv[1] && resolve2(process.argv[1]) === fileURLToPath2(import.meta.url)) process.exit(main(resolve2(process.argv[2] || ".")));
 export {
   SKILLS,
   computeSkills,

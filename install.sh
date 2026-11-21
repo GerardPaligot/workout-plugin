@@ -2,9 +2,10 @@
 # Install the `workout` plugin into Claude Code and/or OpenAI Codex (whichever are on PATH).
 # Uses only official CLI subcommands.
 #
-# Usage: ./install.sh [--source <path|git-url|owner/repo>] [--scope user|project|local] [--dry-run]
+# Usage: ./install.sh [--source <path|git-url|owner/repo>] [--scope user|project|local] [--plugin workout|workout-opengym] [--dry-run]
 #   --source   marketplace source (default: this repo's directory)
 #   --scope    Claude Code install scope (default: user). Codex has no scope option: always user-level.
+#   --plugin   plugin to install (default: workout)
 #   --dry-run  print the commands without running them
 set -euo pipefail
 
@@ -14,11 +15,12 @@ SOURCE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCOPE=user
 DRY=0
 
-usage() { sed -n '2,8p' "$0" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '2,9p' "$0" | sed 's/^# \{0,1\}//'; }
 
 while [ $# -gt 0 ]; do
   case "$1" in
     --source) [ $# -ge 2 ] || { echo "error: --source needs a value" >&2; exit 2; }; SOURCE="$2"; shift 2 ;;
+    --plugin) [ $# -ge 2 ] || { echo "error: --plugin needs a value" >&2; exit 2; }; PLUGIN="$2"; shift 2 ;;
     --scope)  [ $# -ge 2 ] || { echo "error: --scope needs a value" >&2; exit 2; }; SCOPE="$2"; shift 2 ;;
     --dry-run) DRY=1; shift ;;
     -h|--help) usage; exit 0 ;;
@@ -26,6 +28,7 @@ while [ $# -gt 0 ]; do
   esac
 done
 
+case "$PLUGIN" in workout|workout-opengym) ;; *) echo "error: --plugin must be workout or workout-opengym" >&2; exit 2 ;; esac
 case "$SCOPE" in user|project|local) ;; *) echo "error: --scope must be user, project or local" >&2; exit 2 ;; esac
 
 run() {

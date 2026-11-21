@@ -10312,7 +10312,7 @@ var require_compile = __commonJS({
       const schOrFunc = root.refs[ref];
       if (schOrFunc)
         return schOrFunc;
-      let _sch = resolve4.call(this, root, ref);
+      let _sch = resolve5.call(this, root, ref);
       if (_sch === void 0) {
         const schema = (_a = root.localRefs) === null || _a === void 0 ? void 0 : _a[ref];
         const { schemaId } = this.opts;
@@ -10339,7 +10339,7 @@ var require_compile = __commonJS({
     function sameSchemaEnv(s1, s2) {
       return s1.schema === s2.schema && s1.root === s2.root && s1.baseId === s2.baseId;
     }
-    function resolve4(root, ref) {
+    function resolve5(root, ref) {
       let sch;
       while (typeof (sch = this.refs[ref]) == "string")
         ref = sch;
@@ -10970,7 +10970,7 @@ var require_fast_uri = __commonJS({
       }
       return uri;
     }
-    function resolve4(baseURI, relativeURI, options) {
+    function resolve5(baseURI, relativeURI, options) {
       const schemelessOptions = options ? Object.assign({ scheme: "null" }, options) : { scheme: "null" };
       const resolved = resolveComponent(parse(baseURI, schemelessOptions), parse(relativeURI, schemelessOptions), schemelessOptions, true);
       schemelessOptions.skipEscape = true;
@@ -11228,7 +11228,7 @@ var require_fast_uri = __commonJS({
     var fastUri = {
       SCHEMES,
       normalize,
-      resolve: resolve4,
+      resolve: resolve5,
       resolveComponent,
       equal,
       serialize,
@@ -15042,8 +15042,8 @@ var require_dist2 = __commonJS({
 });
 
 // src/workout-data/cli.mjs
-import { readFileSync as readFileSync4 } from "node:fs";
-import { resolve as resolve3 } from "node:path";
+import { readFileSync as readFileSync5 } from "node:fs";
+import { resolve as resolve4 } from "node:path";
 import { pathToFileURL } from "node:url";
 import { existsSync as existsSync3 } from "node:fs";
 
@@ -15699,14 +15699,45 @@ function atomicReplace(targetPath, text, filesystem = defaultFilesystem) {
   }
 }
 
+// src/opengym-projection.mjs
+import { lstatSync as lstatSync2, readFileSync as readFileSync2, realpathSync as realpathSync2 } from "node:fs";
+import { basename as basename2, join as join2, resolve as resolve2 } from "node:path";
+var nonempty = (value) => typeof value === "string" && value.length > 0;
+var scopeValid = (scope) => scope && nonempty(scope.server) && nonempty(scope.profileId);
+function readBackend(programDir) {
+  const path = join2(programDir, ".opengym-backend.json");
+  try {
+    lstatSync2(path);
+  } catch (error) {
+    return error.code === "ENOENT" ? null : { valid: false };
+  }
+  let marker;
+  try {
+    marker = JSON.parse(readFileSync2(path, "utf8"));
+  } catch {
+    return { valid: false };
+  }
+  let identity;
+  try {
+    const workspace = realpathSync2(resolve2(programDir, "../.."));
+    const name = basename2(programDir);
+    if (realpathSync2(programDir) !== join2(workspace, "programs", name)) return { valid: false };
+    identity = { workspace, name };
+  } catch {
+    return { valid: false };
+  }
+  if (marker?.version !== 2 || marker.program?.workspace !== identity.workspace || marker.program?.name !== identity.name || marker.backend !== "opengym" || marker.requiresAdoption !== void 0 && typeof marker.requiresAdoption !== "boolean" || !scopeValid(marker.scope) || !nonempty(marker.configPath) || marker.stateDir !== void 0 && !nonempty(marker.stateDir)) return { valid: false };
+  return { valid: true, scope: marker.scope, program: identity, requiresAdoption: marker.requiresAdoption === true };
+}
+
 // src/validate.mjs
-import { readFileSync as readFileSync3, readdirSync, statSync as statSync2, lstatSync as lstatSync2, existsSync as existsSync2 } from "node:fs";
-import { join as join3, basename as basename2, dirname as dirname3, relative as relative2, resolve as resolve2, isAbsolute as isAbsolute2 } from "node:path";
+import { readFileSync as readFileSync4, readdirSync, statSync as statSync2, lstatSync as lstatSync3, existsSync as existsSync2 } from "node:fs";
+import { join as join4, basename as basename3, dirname as dirname3, relative as relative2, resolve as resolve3, isAbsolute as isAbsolute2 } from "node:path";
 import { fileURLToPath as fileURLToPath3 } from "node:url";
 
 // src/common.mjs
-import { readFileSync as readFileSync2 } from "node:fs";
-import { dirname as dirname2, join as join2 } from "node:path";
+import { readFileSync as readFileSync3 } from "node:fs";
+import { dirname as dirname2, join as join3 } from "node:path";
 import { fileURLToPath as fileURLToPath2 } from "node:url";
 
 // node_modules/js-yaml/dist/js-yaml.mjs
@@ -18072,9 +18103,9 @@ var { Type, Schema, FAILSAFE_SCHEMA, JSON_SCHEMA, CORE_SCHEMA, DEFAULT_SCHEMA, l
 var index_vite_proxy_tmp_default = import_js_yaml.default;
 
 // src/common.mjs
-var PLUGIN_ROOT = join2(dirname2(fileURLToPath2(import.meta.url)), "..");
+var PLUGIN_ROOT = join3(dirname2(fileURLToPath2(import.meta.url)), "..");
 function loadYaml(filePath) {
-  return index_vite_proxy_tmp_default.load(readFileSync2(filePath, "utf8"), { schema: index_vite_proxy_tmp_default.JSON_SCHEMA });
+  return index_vite_proxy_tmp_default.load(readFileSync3(filePath, "utf8"), { schema: index_vite_proxy_tmp_default.JSON_SCHEMA });
 }
 
 // src/validate.mjs
@@ -18089,7 +18120,7 @@ var SCHEMA_BY_FILENAME = {
   "exercises.custom.yaml": "exercises.schema.json",
   "profile.yaml": "profile.schema.json"
 };
-var CATALOG_PATH = join3(PLUGIN_ROOT, "catalog", "exercises.yaml");
+var CATALOG_PATH = join4(PLUGIN_ROOT, "catalog", "exercises.yaml");
 var CUSTOM_CATALOG = "exercises.custom.yaml";
 function loadCatalog(workspace, catalogPath = CATALOG_PATH) {
   const base = loadYaml(catalogPath);
@@ -18101,7 +18132,7 @@ function loadCatalog(workspace, catalogPath = CATALOG_PATH) {
   };
   const errors = [];
   const warnings = [];
-  const customPath = join3(workspace, CUSTOM_CATALOG);
+  const customPath = join4(workspace, CUSTOM_CATALOG);
   if (!existsSync2(customPath)) return { doc, errors, warnings };
   let custom;
   try {
@@ -18139,15 +18170,15 @@ function loadCatalog(workspace, catalogPath = CATALOG_PATH) {
   }
   return { doc, errors, warnings };
 }
-function buildValidators(schemasDir = join3(PLUGIN_ROOT, "schemas")) {
+function buildValidators(schemasDir = join4(PLUGIN_ROOT, "schemas")) {
   const ajv = new import__.default({ allErrors: true, strict: false });
   (0, import_ajv_formats.default)(ajv);
   const validators = {};
   const bySchema = {};
   for (const [yamlName, schemaFile] of Object.entries(SCHEMA_BY_FILENAME)) {
-    const schemaPath = join3(schemasDir, schemaFile);
+    const schemaPath = join4(schemasDir, schemaFile);
     if (!existsSync2(schemaPath)) continue;
-    bySchema[schemaFile] ??= ajv.compile(JSON.parse(readFileSync3(schemaPath, "utf8")));
+    bySchema[schemaFile] ??= ajv.compile(JSON.parse(readFileSync4(schemaPath, "utf8")));
     validators[yamlName] = bySchema[schemaFile];
   }
   return validators;
@@ -18157,7 +18188,7 @@ function collectYamlFiles(rootDir) {
   (function walk(dir) {
     for (const entry of readdirSync(dir)) {
       if (entry === "node_modules" || entry === "schemas" || entry.startsWith(".")) continue;
-      const full = join3(dir, entry);
+      const full = join4(dir, entry);
       if (statSync2(full).isDirectory()) walk(full);
       else if (entry.endsWith(".yaml") || entry.endsWith(".yml")) out.push(full);
     }
@@ -18169,8 +18200,8 @@ function collectYamlFilesWithoutSymlinks(rootDir) {
   (function walk(dir) {
     for (const entry of readdirSync(dir)) {
       if (entry === "node_modules" || entry === "schemas" || entry.startsWith(".")) continue;
-      const full = join3(dir, entry);
-      const stat = lstatSync2(full);
+      const full = join4(dir, entry);
+      const stat = lstatSync3(full);
       if (stat.isSymbolicLink()) continue;
       if (stat.isDirectory()) walk(full);
       else if (entry.endsWith(".yaml") || entry.endsWith(".yml")) out.push(full);
@@ -18184,7 +18215,7 @@ function validateDoc(validators, fileName, doc) {
   if (validate(doc)) return [];
   return validate.errors.map((e) => `${e.instancePath || "/"} ${e.message}`);
 }
-function crossValidate(docs, root, catalogDoc) {
+function crossValidate(docs, root, catalogDoc, { externalProgram = () => false } = {}) {
   const errors = [];
   const catalog = catalogDoc ?? docs.find((d) => d.fileName === "exercises.yaml");
   const slugs = new Set(catalog ? (catalog.data.exercises || []).map((e) => e.slug) : []);
@@ -18226,7 +18257,7 @@ function crossValidate(docs, root, catalogDoc) {
     const revisions = d.data?.meta?.revisions;
     if (Array.isArray(revisions)) {
       for (const r of revisions) {
-        const target = resolve2(dirname3(d.path), r.ref);
+        const target = resolve3(dirname3(d.path), r.ref);
         if (!existsSync2(target)) {
           errors.push(`${loc}: review not found "${r.ref}"`);
         }
@@ -18249,13 +18280,13 @@ function crossValidate(docs, root, catalogDoc) {
             errors.push(`${loc}: session ${s.id} has no "days" (program is scheduled by weekdays)`);
           }
         }
-      } else if (d.data?.next_session_id != null) {
+      } else if (d.data?.next_session_id != null && !externalProgram(programDir)) {
         const id = d.data.next_session_id;
         if (!rotation) {
           errors.push(`${loc}: next_session_id "${id}" is only valid when the macrocycle sets scheduling: rotation`);
         } else {
           const n = d.data.current_mesocycle;
-          const target = join3(programDir, `mesocycle-${n}`, "sessions.yaml");
+          const target = join4(programDir, `mesocycle-${n}`, "sessions.yaml");
           const sess = docs.find((m) => m.fileName === "sessions.yaml" && m.path === target);
           if (sess && !(sess.data.sessions || []).some((s) => s.id === id)) {
             errors.push(`${loc}: next_session_id "${id}" not found in mesocycle-${n}/sessions.yaml`);
@@ -18267,10 +18298,10 @@ function crossValidate(docs, root, catalogDoc) {
   return errors;
 }
 function loadWorkspaceDocument(path, root, validators, errors, docs, replacement) {
-  const fileName = basename2(path);
+  const fileName = basename3(path);
   const location = relative2(root, path);
   let data;
-  if (replacement && resolve2(replacement.path) === resolve2(path)) {
+  if (replacement && resolve3(replacement.path) === resolve3(path)) {
     data = replacement.data;
   } else {
     try {
@@ -18286,7 +18317,7 @@ function loadWorkspaceDocument(path, root, validators, errors, docs, replacement
   if (SCHEMA_BY_FILENAME[fileName]) docs.push({ path, fileName, data });
 }
 function validateCustomCatalog(root, validators, errors) {
-  const path = join3(root, CUSTOM_CATALOG);
+  const path = join4(root, CUSTOM_CATALOG);
   if (!existsSync2(path)) return 0;
   try {
     const data = loadYaml(path);
@@ -18316,7 +18347,7 @@ function validateDocuments(root, paths, replacement, { includeCustomCatalog = fa
     errors.push(`plugin catalog unreadable (${CATALOG_PATH}): ${e.message}`);
   }
   for (const path of paths) {
-    const fileName = basename2(path);
+    const fileName = basename3(path);
     const location = relative2(root, path);
     if (location === "exercises.yaml") {
       if (legacyWarnings) {
@@ -18329,11 +18360,11 @@ function validateDocuments(root, paths, replacement, { includeCustomCatalog = fa
   }
   const customDocumentCount = includeCustomCatalog ? validateCustomCatalog(root, validators, errors) : 0;
   const crossDocs = docs.filter((d) => d.fileName !== CUSTOM_CATALOG);
-  errors.push(...crossValidate(crossDocs, root, catalog));
+  errors.push(...crossValidate(crossDocs, root, catalog, { externalProgram: (dir) => readBackend(dir) !== null }));
   return { errors, warnings, documentCount: docs.length + customDocumentCount };
 }
 function isWithin(parent, child) {
-  const path = relative2(resolve2(parent), resolve2(child));
+  const path = relative2(resolve3(parent), resolve3(child));
   return path === "" || !path.startsWith("..") && !isAbsolute2(path);
 }
 function validateWorkspace(root) {
@@ -18345,26 +18376,26 @@ function validateWorkspace(root) {
 function validateProgramClosure(root, programId, replacement) {
   if (programId === "archives") throw new TypeError('programId "archives" is reserved');
   const paths = [];
-  const profilePath = join3(root, "profile.yaml");
+  const profilePath = join4(root, "profile.yaml");
   if (existsSync2(profilePath)) paths.push(profilePath);
-  const programDir = join3(root, "programs", programId);
+  const programDir = join4(root, "programs", programId);
   if (existsSync2(programDir)) {
     for (const path of collectYamlFilesWithoutSymlinks(programDir)) {
-      if (SCHEMA_BY_FILENAME[basename2(path)]) paths.push(path);
+      if (SCHEMA_BY_FILENAME[basename3(path)]) paths.push(path);
     }
   }
   if (replacement) {
-    const replacementPath = resolve2(replacement.path);
-    if (isWithin(programDir, replacementPath) && SCHEMA_BY_FILENAME[basename2(replacementPath)] && !paths.some((path) => resolve2(path) === replacementPath)) {
+    const replacementPath = resolve3(replacement.path);
+    if (isWithin(programDir, replacementPath) && SCHEMA_BY_FILENAME[basename3(replacementPath)] && !paths.some((path) => resolve3(path) === replacementPath)) {
       paths.push(replacementPath);
     }
   }
   return validateDocuments(root, paths, replacement, { includeCustomCatalog: true });
 }
 function validateProfileClosure(root, replacement) {
-  const profilePath = join3(root, "profile.yaml");
+  const profilePath = join4(root, "profile.yaml");
   const paths = existsSync2(profilePath) ? [profilePath] : [];
-  if (replacement && resolve2(replacement.path) === resolve2(profilePath) && !paths.length) paths.push(profilePath);
+  if (replacement && resolve3(replacement.path) === resolve3(profilePath) && !paths.length) paths.push(profilePath);
   return validateDocuments(root, paths, replacement, {
     includeCustomCatalog: true
   });
@@ -18381,8 +18412,8 @@ function main(root) {
 ${result.errors.length} error(s)`);
   return 1;
 }
-if (process.argv[1] && basename2(process.argv[1]) === "validate.mjs" && resolve2(process.argv[1]) === fileURLToPath3(import.meta.url)) {
-  process.exit(main(resolve2(process.argv[2] || ".")));
+if (process.argv[1] && basename3(process.argv[1]) === "validate.mjs" && resolve3(process.argv[1]) === fileURLToPath3(import.meta.url)) {
+  process.exit(main(resolve3(process.argv[2] || ".")));
 }
 
 // src/workout-data/cli.mjs
@@ -18447,7 +18478,7 @@ function parsePayload(options, cwd, operation) {
   if (sources.length === 0) return void 0;
   let json;
   try {
-    json = options.data ?? readFileSync4(resolve3(cwd, options["data-file"]), "utf8");
+    json = options.data ?? readFileSync5(resolve4(cwd, options["data-file"]), "utf8");
   } catch {
     throw new ResourceRequestError("invalid_payload", "Unable to read --data-file as UTF-8.");
   }
@@ -18618,6 +18649,9 @@ function validateMutation(target, request, document) {
 }
 async function writeResource(target, request, payload) {
   return withTargetLock(target.path, async () => {
+    if (request.resource === "program-status" && ["last_session", "next_session", "next_session_id"].some((key) => Object.hasOwn(payload ?? {}, key)) && readBackend(target.programDir)) {
+      throw new ResourceRequestError("external_progress", "Session progress is managed by the selected external backend.");
+    }
     const document = request.operation === "create" ? createFromTemplate(request.resource, payload, target, request.asOf) : loadRoundTripDocument(target.path);
     const mutation = request.operation === "create" ? { selector: null, changed: [request.resource] } : applyResourceOperation(document, request, payload ?? {});
     const validation = validateMutation(target, request, document);

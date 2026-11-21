@@ -1,0 +1,31 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+
+test('CLI preserves publication identity and reconciles current remote history', async () => {
+  const { stdout } = await promisify(execFile)(process.execPath, ['test/fixtures/opengym/integrity-probe.mjs'], { maxBuffer: 1024 * 1024 });
+  const r = JSON.parse(stdout);
+  assert.equal(r.sameRevision.initialSave, 'verified');
+  assert.equal(r.sameRevision.nextReview, 'needs_review');
+  assert.deepEqual(r.sameRevision.ledger, [{ revision: 'r1', weight: 50 }]);
+  assert.equal(r.sameRevision.writes, 1);
+  assert.equal(r.queuedCreate.queued, 'retry_at');
+  assert.equal(r.queuedCreate.uncertain, 'uncertain');
+  assert.deepEqual(r.queuedCreate.writes, ['limited', 'lost']);
+  assert.deepEqual(r.queuedCreate.routines.map(x => x.weight), [60]);
+  const h = r.missingLinkedWorkout;
+  assert.equal(h.publicHistory.data.observations[0].id, 'phone-a');
+  assert.equal(h.publicHistory.data.observations[0].assignment, null);
+  assert.equal(h.applied, 'adopted');
+  assert.equal(h.initialProjection.currentMesocycle, 1);
+  assert.equal(h.initialProjection.lastSession.completedAt, '2026-07-01');
+  assert.equal(h.initialProjection.nextSessionId, 'B');
+  assert.equal(h.editProjection.lastSession.completedAt, '2026-07-02');
+  assert.equal(h.editProjection.currentMesocycle, 1);
+  assert.equal(h.deletionProjection.lastSession, null);
+  assert.equal(h.deletionProjection.nextSessionId, null);
+  assert.equal(r.retryTimezone.queued, 'retry_at');
+  assert.deepEqual(r.retryTimezone.actualSaves.map(x => x.outcome), ['limited']);
+  assert.equal(r.retryTimezone.storedWorkouts, 0);
+});

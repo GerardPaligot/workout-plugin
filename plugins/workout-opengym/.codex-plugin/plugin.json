@@ -1,0 +1,6 @@
+{
+  "name": "workout-opengym",
+  "version": "0.5.0",
+  "description": "Record completed workouts and sync openGym program progress.",
+  "skills": "./skills/"
+}
